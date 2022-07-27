@@ -7,9 +7,10 @@ extends KinematicBody2D
 
 # Constants
 const runSpeed: float = 150.0
-const jumpForce: float = 500.0
+const jumpForce: float = 200.0
 const gravity: float = 800.0
 const NO_SNAP = Vector2.ZERO
+const DOWN_SNAP = Vector2(0, -32)
 
 # state variables
 var isMoving: bool = false
@@ -26,26 +27,23 @@ func _ready():
 # NOTE: GODOT src seems to already calculate everything by delta, so no need to do it here
 func _physics_process(delta):
 	self.velocity.x = 0
-	var snapVector = Vector2.UP
+	var snapVector = DOWN_SNAP
 	
 	if Input.is_action_pressed("move_left"):
 		self.velocity.x -= self.runSpeed
 	elif Input.is_action_pressed("move_right"):
 		self.velocity.x += self.runSpeed
 		
-	print(is_on_floor())
 	if Input.is_action_pressed("jump") and is_on_floor():
-		print("HERE")
 		self.velocity.y -= jumpForce
 		snapVector = NO_SNAP	
 	
 	self.velocity.y += gravity * delta
 	print(self.velocity)
 	
-	self.velocity = move_and_slide_with_snap(self.velocity, Vector2(0, -1), snapVector)
+	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
 	self.handlePlayerState(delta)
 
-		
 func handlePlayerState(delta):
 	self.isMoving = false
 	
@@ -64,5 +62,5 @@ func handlePlayerAnimation(delta):
 		
 	if self.velocity.x < 0:
 		self.animatedSprite.flip_h = true
-	else:
+	elif self.velocity.x > 0:
 		self.animatedSprite.flip_h = false

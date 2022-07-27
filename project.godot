@@ -14,6 +14,10 @@ config/name="Platformer Godot"
 run/main_scene="res://levels/DemoLevel.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Globals="*res://objects/Globals.gd"
+
 [display]
 
 window/size/width=384
