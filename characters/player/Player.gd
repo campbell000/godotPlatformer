@@ -7,7 +7,7 @@ extends KinematicBody2D
 
 # Constants
 const runSpeed: float = 150.0
-const jumpForce: float = 200.0
+const jumpForce: float = 290.0
 const gravity: float = 800.0
 const NO_SNAP = Vector2.ZERO
 const DOWN_SNAP = Vector2(0, -32)
@@ -39,7 +39,6 @@ func _physics_process(delta):
 		snapVector = NO_SNAP	
 	
 	self.velocity.y += gravity * delta
-	print(self.velocity)
 	
 	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
 	self.handlePlayerState(delta)
