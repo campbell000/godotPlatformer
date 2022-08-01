@@ -6,7 +6,7 @@ extends KinematicBody2D
 # var b = "text"
 
 # Constants
-const runSpeed: float = 150.0
+const runSpeed: float = 170.0
 const jumpForce: float = 290.0
 const gravity: float = 800.0
 const NO_SNAP = Vector2.ZERO
@@ -14,6 +14,7 @@ const DOWN_SNAP = Vector2(0, -32)
 
 # state variables
 var isMoving: bool = false
+var isFacingForward: bool = false
 var velocity: Vector2 = Vector2()
 
 # Scene Nodes
@@ -41,19 +42,24 @@ func _physics_process(delta):
 	self.velocity.y += gravity * delta
 	
 	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
-	self.handlePlayerState(delta)
+	self._handlePlayerState(delta)
 
-func handlePlayerState(delta):
+func _handlePlayerState(delta):
 	self.isMoving = false
 	
 	if self.velocity.x != 0:
 		self.isMoving = true
 
+	if self.velocity.x > 0:
+		self.isFacingForward = true
+	elif self.velocity.x < 0:
+		self.isFacingForward = false
+
 func _process(delta):
-	self.handlePlayerAnimation(delta)
+	self._handlePlayerAnimation(delta)
 		
 	
-func handlePlayerAnimation(delta):
+func _handlePlayerAnimation(delta):
 	if self.isMoving:
 		self.animatedSprite.play("Run")
 	else:
