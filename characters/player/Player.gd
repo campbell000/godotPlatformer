@@ -6,9 +6,12 @@ extends KinematicBody2D
 # var b = "text"
 
 # Constants
-const runSpeed: float = 170.0
+const runSpeed: float = 190.0
+const runAccel: float = 825.0
 const jumpForce: float = 290.0
 const gravity: float = 800.0
+const groundDrag: float = 15.0
+const airDrag: float = 50.0;
 const NO_SNAP = Vector2.ZERO
 const DOWN_SNAP = Vector2(0, -32)
 
@@ -27,13 +30,23 @@ func _ready():
 # All of this is placeholder physics logic
 # NOTE: GODOT src seems to already calculate everything by delta, so no need to do it here
 func _physics_process(delta):
-	self.velocity.x = 0
 	var snapVector = DOWN_SNAP
 	
 	if Input.is_action_pressed("move_left"):
-		self.velocity.x -= self.runSpeed
+		self.velocity.x  = self.velocity.x - (runAccel * delta)
 	elif Input.is_action_pressed("move_right"):
-		self.velocity.x += self.runSpeed
+		self.velocity.x = self.velocity.x + (runAccel * delta)
+	else:
+		# TODO Different friction on ground vs in air
+		self.velocity.x = self.velocity.x / (1 + (groundDrag * delta))
+		
+	if self.velocity.x > runSpeed:
+		self.velocity.x = runSpeed
+	if self.velocity.x < -runSpeed:
+		self.velocity.x = -runSpeed
+		
+	if self.velocity.x < 1 and self.velocity.x > -1:
+		self.velocity.x = 0
 		
 	if Input.is_action_pressed("jump") and is_on_floor():
 		self.velocity.y -= jumpForce
