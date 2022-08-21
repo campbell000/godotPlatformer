@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Player
 
 const DOWN_SNAP = Vector2(0, -32)
 const LEFT_SNAP = Vector2(-32, 0)
@@ -42,22 +43,29 @@ const WALL_DRAG = 50.0
 const NO_WALL_COLLISON = -1
 const LEFT_WALL_COLLISION = 0
 const RIGHT_WALL_COLLISION = 1
-const WALL_JUMP_FORCE = Vector2(220, -260)
+const WALL_JUMP_FORCE = Vector2(220, -275)
+const WALL_JUMP_Y_VEL_THRESHOLD = -30
 
 # state variables
 var isMoving: bool = false
 var isFacingForward: bool = false
 var velocity: Vector2 = Vector2()
 var prevVector: Vector2 = Vector2()
+
 var doJump = false
 var isJumping: bool = false
 var isHighJumping = false
 var canJump = true
+
+
 var bufferTimer = 0.0
 var canWallJump = false
 var doWallJump = false
 var isWallDragging = false
+var isWallJumping = false
 
+enum State {GROUND, JUMPING, FALLING, WALL_DRAG, WALL_JUMPING}
+var state = State.GROUND
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
@@ -78,22 +86,21 @@ func _physics_process(delta):
 	# First, handle the inputs. 
 	self._handlePlayerStateBeforeMove(delta)
 	
-	# Handle ground movement differently, depending on whether we're in the air on ground
-	var snapVector
 	var wallCollision = self._is_near_wall(delta)
-	if is_on_floor():
+	var snapVector
+	if self.state == State.GROUND:
 		snapVector = self._handleGroundMovement(delta)
-	else:
-		if wallCollision != NO_WALL_COLLISON:
-			snapVector = self._handleWallMovement(delta, wallCollision)
-		else:
-			snapVector = self._handleAirMovement(delta)
+	elif self.staet == State.FALLING:
+		snapVector = self._handleAirMovement(delta)
+	elif self.staet == State.JUMPING:
+		snapVector = self._handleJumpMovement(delta)
+	elif self.staet == State.WALL_DRAG:
+		snapVector = self._handleWallDragMovement(delta, wallCollision)
+	elif self.staet == State.WALL_JUMPING:
+		snapVector = self._handleWallJumpMovement(delta, wallCollision)
 	
 	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
-	print("==")
 	self.prevVector = Vector2(self.velocity.x, self.velocity.y)
-	
-	
 	self._handlePlayerStateAfterMove(delta)
 
 func _handlePlayerStateBeforeMove(delta):
@@ -107,8 +114,12 @@ func _handlePlayerStateBeforeMove(delta):
 	elif Input.is_action_pressed("move_right"):
 		self.isFacingForward = true
 		
-	if self._is_near_wall(delta) == NO_WALL_COLLISON || is_on_floor():
-		self.isWallDragging = false
+	# Set the player's state.
+	if is_on_floor():
+		self.state = State.GROUND # If on floor, this takes precedence over all other states
+	elif self.state == State.GROUND:
+		# Otherwise, if we WERE on the ground, and now we're not, then we're falling
+		self.state = State.FALLING
 		
 func _handlePlayerInputsAfter(delta):
 	pass
@@ -172,10 +183,45 @@ func _handleGroundMovement(delta):
 		self.velocity.y += GRAVITY * delta
 	return snapVector
 	
-# In the air, the following holds true:
-# - If forward is NOT held, slowly decelerate (i.e. air drag)
-# - If forward IS held, same speed as ground but DONT allow gaining speed
-# - If BACKWARDS is held, allow SLOW change of movement (forgiveness)
+
+func _handleJumpMovement(delta):
+	###########################################
+	# State management
+	###########################################
+	# If the user is currently jumping, but the jump button isn't being held down, stop ascending
+	if self.isJumping and self.isHighJumping:
+		if !Input.is_action_pressed("jump"):
+			self.isHighJumping = false
+	
+	###########################################
+	# Horizontal Movement
+	###########################################
+	var shouldDrag = !Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")
+	if shouldDrag:
+		self.velocity.x = self.velocity.x / (1 + (AIR_DRAG * delta))
+	else:
+		var accel = 0
+		if Input.is_action_pressed("move_left"):
+			accel = -AIR_ACCEL
+		elif Input.is_action_pressed("move_right"):
+			accel = AIR_ACCEL
+			
+		self.velocity.x = self.velocity.x + (accel * delta)
+		if self.velocity.x > MAX_RUN_SPEED:
+			self.velocity.x = MAX_RUN_SPEED
+		if self.velocity.x < -MAX_RUN_SPEED:
+			self.velocity.x = -MAX_RUN_SPEED
+			
+	###########################################
+	# Vertical Movement
+	###########################################
+	var gravity = GRAVITY
+	if self.isJumping and self.isHighJumping and self.velocity.y < JUMP_VEL_LIMIT:
+		gravity = JUMP_GRAVITY
+		
+	self.velocity.y += gravity * delta
+	return DOWN_SNAP
+
 func _handleAirMovement(delta):
 	###########################################
 	# State management
@@ -213,7 +259,7 @@ func _handleAirMovement(delta):
 		
 	self.velocity.y += gravity * delta
 	return DOWN_SNAP
-	
+
 func _handleWallMovement(delta, collisionSide):
 	###########################################
 	# State Management
@@ -224,7 +270,7 @@ func _handleWallMovement(delta, collisionSide):
 		elif collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_right"):
 			self.isWallDragging = false
 	else:
-		if self.velocity.y > 0:
+		if self.velocity.y > WALL_JUMP_Y_VEL_THRESHOLD:
 			if collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_left"):
 				self.isWallDragging = true
 			elif collisionSide == RIGHT_WALL_COLLISION and Input.is_action_pressed("move_right"):
@@ -267,10 +313,8 @@ func _handlePlayerAnimation(delta):
 		
 func _is_near_wall(delta):
 	if self.leftRaycast.is_colliding():
-		print("LEFT COLLISDE")
 		return LEFT_WALL_COLLISION
 	elif self.rightRaycast.is_colliding():
-		print("RIGHT COLLIDE")
 		return RIGHT_WALL_COLLISION
 	else:
 		return NO_WALL_COLLISON
