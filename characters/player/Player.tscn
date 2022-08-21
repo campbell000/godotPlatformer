@@ -62,6 +62,7 @@ script = ExtResource( 2 )
 position = Vector2( 0, -0.5 )
 frames = SubResource( 1 )
 animation = "Idle"
+frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -72,13 +73,13 @@ shape = SubResource( 5 )
 [node name="RaycastContainer" type="Position2D" parent="."]
 
 [node name="LeftRaycast" type="RayCast2D" parent="RaycastContainer"]
-position = Vector2( -8, -8 )
+position = Vector2( -8, -2 )
 scale = Vector2( 0.5, 1 )
 enabled = true
-cast_to = Vector2( 0, 24 )
+cast_to = Vector2( 0, 18 )
 
 [node name="RightRaycast" type="RayCast2D" parent="RaycastContainer"]
-position = Vector2( 8, -8 )
+position = Vector2( 8, -2 )
 scale = Vector2( 0.5, 1 )
 enabled = true
-cast_to = Vector2( 0, 24 )
+cast_to = Vector2( 0, 18 )
