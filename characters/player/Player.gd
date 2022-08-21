@@ -4,9 +4,6 @@ const DOWN_SNAP = Vector2(0, -32)
 const LEFT_SNAP = Vector2(-32, 0)
 const RIGHT_SNAP = Vector2(32, 0)
 
-const RIGHT_COLLISION = 0
-const LEFT_COLLISION = 1
-
 # Max speed the player can be moving due to simply running (TODO: factor in things that affect speed)
 const MAX_RUN_SPEED: float = 200.0
 
@@ -42,9 +39,10 @@ const JUMP_VEL_LIMIT = -120.0
 const JUMP_BUFFER_TIME_WINDOW = 0.07
 
 const WALL_DRAG = 50.0
-
-const WALL_JUMP_X_FORCE = 200
-const WALL_JUMP_Y_FORCE = 200
+const NO_WALL_COLLISON = -1
+const LEFT_WALL_COLLISION = 0
+const RIGHT_WALL_COLLISION = 1
+const WALL_JUMP_FORCE = Vector2(220, -260)
 
 # state variables
 var isMoving: bool = false
@@ -58,11 +56,14 @@ var canJump = true
 var bufferTimer = 0.0
 var canWallJump = false
 var doWallJump = false
+var isWallDragging = false
 
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
 onready var collisionShape = $CollisionShape2D
+onready var leftRaycast = $RaycastContainer/LeftRaycast
+onready var rightRaycast = $RaycastContainer/RightRaycast
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -79,19 +80,19 @@ func _physics_process(delta):
 	
 	# Handle ground movement differently, depending on whether we're in the air on ground
 	var snapVector
-	print(is_on_wall())
+	var wallCollision = self._is_near_wall(delta)
 	if is_on_floor():
 		snapVector = self._handleGroundMovement(delta)
 	else:
-		if is_on_wall():
-			snapVector = self._handleWallMovement(delta)
+		if wallCollision != NO_WALL_COLLISON:
+			snapVector = self._handleWallMovement(delta, wallCollision)
 		else:
 			snapVector = self._handleAirMovement(delta)
 	
 	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
+	print("==")
 	self.prevVector = Vector2(self.velocity.x, self.velocity.y)
-	print(self.velocity.x)
-	print(self.position.x)
+	
 	
 	self._handlePlayerStateAfterMove(delta)
 
@@ -105,6 +106,9 @@ func _handlePlayerStateBeforeMove(delta):
 		self.isFacingForward = false
 	elif Input.is_action_pressed("move_right"):
 		self.isFacingForward = true
+		
+	if self._is_near_wall(delta) == NO_WALL_COLLISON || is_on_floor():
+		self.isWallDragging = false
 		
 func _handlePlayerInputsAfter(delta):
 	pass
@@ -210,36 +214,33 @@ func _handleAirMovement(delta):
 	self.velocity.y += gravity * delta
 	return DOWN_SNAP
 	
-func _handleWallMovement(delta):
+func _handleWallMovement(delta, collisionSide):
 	###########################################
 	# State Management
 	###########################################
-	# Determine if we can wall jump. Can only wall jump if the player is moving towards a wall
-	var collisionSide = -1
-	for i in range(get_slide_count()):
-		var collision = self.get_slide_collision(i)
-		if collision.normal.x > 0:
-			collisionSide = LEFT_COLLISION
-			break
-		elif collision.normal.x < 0:
-			collisionSide = RIGHT_COLLISION
-			break
-	var isWallDragging = false
-	if ((collisionSide == LEFT_COLLISION and Input.is_action_pressed("move_left")) or (collisionSide == RIGHT_COLLISION and Input.is_action_pressed("move_right"))) and self.velocity.y > 0:
-		isWallDragging = true
-	
+	if self.isWallDragging:
+		if collisionSide == RIGHT_WALL_COLLISION and Input.is_action_pressed("move_left"):
+			self.isWallDragging = false
+		elif collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_right"):
+			self.isWallDragging = false
+	else:
+		if self.velocity.y > 0:
+			if collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_left"):
+				self.isWallDragging = true
+			elif collisionSide == RIGHT_WALL_COLLISION and Input.is_action_pressed("move_right"):
+				self.isWallDragging = true
+
 	if isWallDragging:	
 		if Input.is_action_just_pressed("jump"):
-			self.velocity.x = WALL_JUMP_X_FORCE
-			self.velocity.y = -WALL_JUMP_Y_FORCE
-			if collisionSide == RIGHT_COLLISION:
-				self.velocity.x = -self.velocity.x
+			self.velocity = WALL_JUMP_FORCE
+			if collisionSide == RIGHT_WALL_COLLISION:
+				self.velocity = WALL_JUMP_FORCE * Vector2(-1, 1)
 			return DOWN_SNAP
 		else:
 			self.velocity.y = WALL_DRAG
-			if collisionSide == LEFT_COLLISION:
+			if collisionSide == LEFT_WALL_COLLISION:
 				return LEFT_SNAP
-			elif collisionSide == RIGHT_COLLISION:
+			elif collisionSide == RIGHT_WALL_COLLISION:
 				return RIGHT_SNAP
 	else:
 		return self._handleAirMovement(delta)
@@ -263,3 +264,13 @@ func _handlePlayerAnimation(delta):
 		self.animatedSprite.flip_h = true
 	elif self.isFacingForward:
 		self.animatedSprite.flip_h = false
+		
+func _is_near_wall(delta):
+	if self.leftRaycast.is_colliding():
+		print("LEFT COLLISDE")
+		return LEFT_WALL_COLLISION
+	elif self.rightRaycast.is_colliding():
+		print("RIGHT COLLIDE")
+		return RIGHT_WALL_COLLISION
+	else:
+		return NO_WALL_COLLISON
