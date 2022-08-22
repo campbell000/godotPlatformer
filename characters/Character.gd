@@ -11,6 +11,7 @@ var state: State
 
 func transition_to_state(newState: State):
 	# Clean up the current state, and start the new one
-	self.state.exit(self)
+	self.state.end(self)
 	newState.start(self)
+	self.state = newState
 	return newState

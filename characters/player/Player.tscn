@@ -67,7 +67,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, -0.5 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 2
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -105,3 +104,11 @@ script = ExtResource( 3 )
 
 [node name="WallJumping" type="Node2D" parent="States"]
 script = ExtResource( 4 )
+
+[node name="DebugStateLabel" type="Label" parent="."]
+margin_left = -39.0
+margin_top = -24.0
+margin_right = 39.0
+margin_bottom = -10.0
+text = "TEST"
+align = 1

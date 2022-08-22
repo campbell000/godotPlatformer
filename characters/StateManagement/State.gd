@@ -4,6 +4,8 @@ class_name State
 
 # Variables that are used by multiple states
 const GRAVITY = 1000.0
+const MAX_RUN_SPEED: float = 215.0
+const WALL_JUMP_FORCE = Vector2(220, -262)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,4 +28,7 @@ func update_after_move(player, delta):
 	
 # Called when the state is being exited for a new state. Do cleanup if necessary
 func end(player):
+	pass
+	
+func getName():
 	pass

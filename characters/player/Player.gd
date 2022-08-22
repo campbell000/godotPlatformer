@@ -53,9 +53,6 @@ var isMoving: bool = false
 var isFacingForward: bool = true
 
 # state variables
-
-
-
 var doJump = false
 var isJumping: bool = false
 var isHighJumping = false
@@ -75,6 +72,7 @@ onready var animatedSprite = $AnimatedSprite
 onready var collisionShape = $CollisionShape2D
 onready var leftRaycast = $RaycastContainer/LeftRaycast
 onready var rightRaycast = $RaycastContainer/RightRaycast
+onready var debugStateLabel = $DebugStateLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -82,211 +80,20 @@ func _ready():
 	pass # Replace with function body.
 
 func _process(delta):
-	self._handlePlayerAnimation(delta)
+	pass
 		
 
 # All of this is placeholder physics logic
 func _physics_process(delta):
 	# First, handle the inputs. 
 	self.state.update(self, delta)
-	
-	self.velocity = move_and_slide_with_snap(self.velocity, snapVector, Vector2.UP)
+	self.velocity = move_and_slide_with_snap(self.velocity, self.snapVector, Vector2.UP)
 	self.prevVector = Vector2(self.velocity.x, self.velocity.y)
 	self.state.update_after_move(self, delta)
 	self._handlePlayerStateAfterMove(delta)
-
-func _handlePlayerStateBeforeMove(delta):
-	# If the user JUST pressed jump, set the buffer timer
-	if Input.is_action_just_pressed("jump"):
-		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
-	
-	# Set the direction the player is facing
-
-		
-	# Set the player's state.
-	if is_on_floor():
-		self.state = State.GROUND # If on floor, this takes precedence over all other states
-	elif self.state == State.GROUND:
-		# Otherwise, if we WERE on the ground, and now we're not, then we're falling
-		self.state = State.FALLING
-		
-func _handlePlayerInputsAfter(delta):
-	pass
-	
-# Concept: allow for snappy, but subtly weighted, ground movement
-func _handleGroundMovement(delta):
-	###########################################
-	# State management
-	###########################################
-	# If on floor, allow the player to jump again
-	if is_on_floor():
-		self.isJumping = false
-		
-	# If the user JUST pressed jump, set the buffer timer
-	if Input.is_action_just_pressed("jump"):
-		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
-	
-	# If the jump button was just pressed OR the user buffered a jump, and theyre on the ground, set the jump flag
-	if (Input.is_action_just_pressed("jump") || self.bufferTimer > 0) and self.canJump:
-		self.doJump = true
-		self.isJumping = true
-		self.isHighJumping = true
-	
-	###########################################
-	# Horizontal Movement
-	###########################################
-	# If the user is pressing left or right, have the player start running
-	if Input.is_action_pressed("move_left"):
-		self.velocity.x  = self.velocity.x - (RUN_ACCEL * delta)
-	elif Input.is_action_pressed("move_right"):
-		self.velocity.x = self.velocity.x + (RUN_ACCEL * delta)
-	else:
-		self.velocity.x = self.velocity.x / (1 + (GROUND_DRAG * delta))
-		
-	# Don't let their ground speed exceed a maximum
-	if self.velocity.x > MAX_RUN_SPEED:
-		self.velocity.x = MAX_RUN_SPEED
-	if self.velocity.x < -MAX_RUN_SPEED:
-		self.velocity.x = -MAX_RUN_SPEED
-		
-	# Dont allow tiny numbers. Otherwise, the user will keep inching forward
-	if self.velocity.x < 10 and self.velocity.x > -10:
-		self.velocity.x = 0
-	
-	
-	###########################################
-	# Vertical Movement
-	###########################################
-	# If the user presses the jump button (or DID in the previous few frames) and is allowed to jump,
-	# start jumping
-	var snapVector = DOWN_SNAP
-	var justJumped = false
-	if self.doJump:
-		self.doJump = false
-		self.velocity.y -= JUMP_FORCE
-		snapVector = Vector2.ZERO	
-		justJumped = true
-	
-	# If we didnt JUST jump, have gravity apply its force on the player's y pos
-	if !justJumped:
-		self.velocity.y += GRAVITY * delta
-	return snapVector
-	
-
-func _handleJumpMovement(delta):
-	###########################################
-	# State management
-	###########################################
-	# If the user is currently jumping, but the jump button isn't being held down, stop ascending
-	if self.isJumping and self.isHighJumping:
-		if !Input.is_action_pressed("jump"):
-			self.isHighJumping = false
-	
-	###########################################
-	# Horizontal Movement
-	###########################################
-	var shouldDrag = !Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")
-	if shouldDrag:
-		self.velocity.x = self.velocity.x / (1 + (AIR_DRAG * delta))
-	else:
-		var accel = 0
-		if Input.is_action_pressed("move_left"):
-			accel = -AIR_ACCEL
-		elif Input.is_action_pressed("move_right"):
-			accel = AIR_ACCEL
-			
-		self.velocity.x = self.velocity.x + (accel * delta)
-		if self.velocity.x > MAX_RUN_SPEED:
-			self.velocity.x = MAX_RUN_SPEED
-		if self.velocity.x < -MAX_RUN_SPEED:
-			self.velocity.x = -MAX_RUN_SPEED
-			
-	###########################################
-	# Vertical Movement
-	###########################################
-	var gravity = GRAVITY
-	if self.isJumping and self.isHighJumping and self.velocity.y < JUMP_VEL_LIMIT:
-		gravity = JUMP_GRAVITY
-		
-	self.velocity.y += gravity * delta
-	return DOWN_SNAP
-
-func _handleAirMovement(delta):
-	###########################################
-	# State management
-	###########################################
-	# If the user is currently jumping, but the jump button isn't being held down, stop ascending
-	if self.isJumping and self.isHighJumping:
-		if !Input.is_action_pressed("jump"):
-			self.isHighJumping = false
-	
-	###########################################
-	# Horizontal Movement
-	###########################################
-	var shouldDrag = !Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")
-	if shouldDrag:
-		self.velocity.x = self.velocity.x / (1 + (AIR_DRAG * delta))
-	else:
-		var accel = 0
-		if Input.is_action_pressed("move_left"):
-			accel = -AIR_ACCEL
-		elif Input.is_action_pressed("move_right"):
-			accel = AIR_ACCEL
-			
-		self.velocity.x = self.velocity.x + (accel * delta)
-		if self.velocity.x > MAX_RUN_SPEED:
-			self.velocity.x = MAX_RUN_SPEED
-		if self.velocity.x < -MAX_RUN_SPEED:
-			self.velocity.x = -MAX_RUN_SPEED
-			
-	###########################################
-	# Vertical Movement
-	###########################################
-	var gravity = GRAVITY
-	if self.isJumping and self.isHighJumping and self.velocity.y < JUMP_VEL_LIMIT:
-		gravity = JUMP_GRAVITY
-		
-	self.velocity.y += gravity * delta
-	return DOWN_SNAP
-
-func _handleWallMovement(delta, collisionSide):
-	###########################################
-	# State Management
-	###########################################
-	if self.isWallDragging:
-		if collisionSide == RIGHT_WALL_COLLISION and Input.is_action_pressed("move_left"):
-			self.isWallDragging = false
-		elif collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_right"):
-			self.isWallDragging = false
-	else:
-		if self.velocity.y > WALL_JUMP_Y_VEL_THRESHOLD:
-			if collisionSide == LEFT_WALL_COLLISION and Input.is_action_pressed("move_left"):
-				self.isWallDragging = true
-			elif collisionSide == RIGHT_WALL_COLLISION and Input.is_action_pressed("move_right"):
-				self.isWallDragging = true
-
-	if isWallDragging:	
-		if Input.is_action_just_pressed("jump"):
-			self.velocity = WALL_JUMP_FORCE
-			if collisionSide == RIGHT_WALL_COLLISION:
-				self.velocity = WALL_JUMP_FORCE * Vector2(-1, 1)
-			return DOWN_SNAP
-		else:
-			self.velocity.y = WALL_DRAG
-			if collisionSide == LEFT_WALL_COLLISION:
-				return LEFT_SNAP
-			elif collisionSide == RIGHT_WALL_COLLISION:
-				return RIGHT_SNAP
-	else:
-		return self._handleAirMovement(delta)
+	self.debugStateLabel.text = self.state.getName()
 
 func _handlePlayerStateAfterMove(delta):
-	# Check if the player is moving. If so, set the flag
-	self.isMoving = false
-	if self.velocity.x != 0 || Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
-		self.isMoving = true
-		
-	
 	if self.bufferTimer > 0:
 		self.bufferTimer -= delta
 		
@@ -295,25 +102,13 @@ func _handlePlayerStateAfterMove(delta):
 	elif Input.is_action_pressed("move_right"):
 		self.isFacingForward = true
 		
-	# If the user JUST pressed jump, set the buffer timer
-	if Input.is_action_just_pressed("jump"):
-		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
-	
-func _handlePlayerAnimation(delta):
-	if self.isMoving:
-		self.animatedSprite.play("Run")
-	else:
-		self.animatedSprite.play("Idle")
-		
 	if !self.isFacingForward:
 		self.animatedSprite.flip_h = true
 	elif self.isFacingForward:
 		self.animatedSprite.flip_h = false
 		
-func _is_near_wall(delta):
-	if self.leftRaycast.is_colliding():
-		return LEFT_WALL_COLLISION
-	elif self.rightRaycast.is_colliding():
-		return RIGHT_WALL_COLLISION
-	else:
-		return NO_WALL_COLLISON
+func collidedWithLeftWall():
+	return self.leftRaycast.is_colliding()
+	
+func collidedWithRightWall():
+	return self.rightRaycast.is_colliding()
