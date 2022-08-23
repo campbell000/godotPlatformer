@@ -20,8 +20,6 @@ func _ready():
 	self.player = get_node(Globals.PLAYER_NODE_PATH)
 	self.target = self.player
 	self.position.x = self.target.position.x
-	print(self.position.x)
-	print(self.target.position.x)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

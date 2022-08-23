@@ -1,13 +1,6 @@
 extends Node
 class_name State
 
-
-# Variables that are used by multiple states
-const GRAVITY = 1000.0
-const MAX_RUN_SPEED: float = 225.0
-const WALL_JUMP_FORCE = Vector2(225, -300)
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(false)

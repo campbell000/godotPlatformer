@@ -5,9 +5,6 @@ class_name Jumping
 # Less drag than on ground
 const AIR_DRAG: float = 2.0;
 
-# Rate at which the player gains speed in the air. Slower so that jumps are more committal
-const AIR_ACCEL: float = 530.0
-
 # Gravity when the player is holding the JUMP button
 const JUMP_GRAVITY: float = 300.0
 
@@ -22,8 +19,7 @@ const DOWN_SNAP = Vector2(0, -32)
 const JUMP_VEL_LIMIT = -120.0
 
 var isHighJumping = true
-var currentGrav = GRAVITY
-var currPlayer
+var firstUpdate = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,83 +27,64 @@ func _ready():
 	set_physics_process(false)
 	set_process_input(false)
 
-# Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
-	self.currPlayer = player
 	self.isHighJumping = true
-	
-	if !Input.is_action_just_pressed("jump") && player.bufferTimer > 0:
-		player.bufferTimer = 0
-		
+	player.bufferTimer = 0
 	player.velocity.y = -JUMP_FORCE
+	self.firstUpdate = true
 	
-# Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	# If the user is currently jumping, but the jump button isn't being held down, stop ascending
+	# If the user is holding down the jump button, then do a high jump for this frame.
+	# If they aren't, then don't allow a high jump for the rest of the jump, even if the
+	# user holds down jump again
+	var currentGrav = Physics.GRAVITY
 	if self.isHighJumping:
 		if !Input.is_action_pressed("jump"):
 			self.isHighJumping = false
 			
+	# If we ARE high high jumping, apply a lesser gravity to the player
 	if self.isHighJumping and player.velocity.y < JUMP_VEL_LIMIT:
-		self.currentGrav = JUMP_GRAVITY
-	else:
-		self.currentGrav = GRAVITY
-	
+		currentGrav = JUMP_GRAVITY
+
+	# Stop high jumping at a certain point, no matter what. Makes it so the user doesn't need to hold
+	# jump for the entirety of the jump (which would be annoying)
 	if player.velocity.y >= JUMP_VEL_LIMIT:
 		self.isHighJumping = false
 	
-	###########################################
-	# Horizontal Movement
-	###########################################
-	var shouldDrag = !Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")
-	if shouldDrag:
-		player.velocity.x = player.velocity.x / (1 + (AIR_DRAG * delta))
-	else:
-		var accel = 0
-		if Input.is_action_pressed("move_left"):
-			accel = -AIR_ACCEL
-		elif Input.is_action_pressed("move_right"):
-			accel = AIR_ACCEL
-			
-		player.velocity.x = player.velocity.x + (accel * delta)
-		if player.velocity.x > MAX_RUN_SPEED:
-			player.velocity.x = MAX_RUN_SPEED
-		if player.velocity.x < -MAX_RUN_SPEED:
-			player.velocity.x = -MAX_RUN_SPEED
-			
-	###########################################
-	# Vertical Movement
-	###########################################
-	#if !self.isFirstFrame:
-	player.velocity.y += self.currentGrav * delta
+	var accel = 0
+	if Input.is_action_pressed("move_left"):
+		accel = -Physics.AIR_ACCEL
+	elif Input.is_action_pressed("move_right"):
+		accel = Physics.AIR_ACCEL
 	
-	player.velocity = player.move_and_slide_with_snap(player.velocity, DOWN_SNAP, Vector2.UP)
+	# Snap vector must be zero on the first frame to allow the jump to happen at all
+	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
+	Physics.process_air_movement(player, delta, accel, (accel == 0), currentGrav, true, snapVector)
+	
+	if player.velocity.y >= 0:
+		player.animatedSprite.play("Fall")
+	
 	self.transitionToNewStateIfNecessary(player, delta)
+	self.firstUpdate = false
 
 func transitionToNewStateIfNecessary(player, delta):
+	# If on the floor, then transition to ground
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
-		print("Transition to Ground!")
 	else:
-		if Input.is_action_just_pressed("jump"):
-			print(player.collidedWithLeftWall() || player.collidedWithRightWall())
-			print(player.velocity)
-			print(player.bufferTimer)
-			print(Input.is_action_just_pressed("jump"))
-			print("=======")
+		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
+		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
 		var goToWallDrag = false
-		if (Input.is_action_just_pressed("jump") || player.bufferTimer > 0) && (player.collidedWithLeftWall() || player.collidedWithRightWall()):
-			print("Jump => Wall jump[]")
+		if !self.firstUpdate && player.justJumpedOrBufferedAJump() && (player.collidedWithLeftWall() || player.collidedWithRightWall()):
 			player.transition_to_state(player.get_node("States/WallJumping"))
 		elif player.velocity.y >= 0 && (player.collidedWithLeftWall() && Input.is_action_pressed("move_left") || player.collidedWithRightWall() && Input.is_action_pressed("move_right")):
-			print("JUNM => drag")
+			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
 			var wallDraggingState = player.get_node("States/WallDragging")
-			player.transition_to_state(wallDraggingState)
-			
+			player.transition_to_state(wallDraggingState)	
 
 func end(player):
 	self.isHighJumping = false
 	
 func getName():
-	return "Jumping" + "(" + str(int(currPlayer.velocity.y)) + ")" + "(" + str(self.currentGrav) + ")"
+	return "Jumping"

@@ -3,7 +3,7 @@ class_name Player
 
 # The length of the buffer window. In other words, the maximum amount of time a user can press the jump button
 # early
-const JUMP_BUFFER_TIME_WINDOW = 0.07
+const JUMP_BUFFER_TIME_WINDOW = 0.08333
 
 var bufferTimer = 0.0
 var velocity: Vector2 = Vector2()
@@ -13,6 +13,7 @@ var isFacingForward: bool = true
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
+onready var sprite = $Sprite
 onready var collisionShape = $CollisionShape2D
 onready var leftRaycast = $RaycastContainer/LeftRaycast
 onready var rightRaycast = $RaycastContainer/RightRaycast
@@ -29,24 +30,26 @@ func _process(delta):
 		
 # All of this is placeholder physics logic
 func _physics_process(delta):
+	# If the user JUST pressed jump, set the buffer timer
+	if Input.is_action_just_pressed("jump"):
+		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW	
+
 	# First, handle the inputs. 
 	self.state.update(self, delta)
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()
+	
+func justJumpedOrBufferedAJump():
+	return Input.is_action_just_pressed("jump") || self.bufferTimer > 0
 
 func _handlePlayerStateAfterMove(delta):
 	if self.bufferTimer > 0:
 		self.bufferTimer -= delta
 		
 	if Input.is_action_pressed("move_left"):
-		self.isFacingForward = false
+		self.sprite.flip_h = true
 	elif Input.is_action_pressed("move_right"):
-		self.isFacingForward = true
-		
-	if !self.isFacingForward:
-		self.animatedSprite.flip_h = true
-	elif self.isFacingForward:
-		self.animatedSprite.flip_h = false
+		self.sprite.flip_h = false
 		
 func collidedWithLeftWall():
 	return self.leftRaycast.is_colliding()
