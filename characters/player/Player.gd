@@ -22,6 +22,7 @@ onready var debugStateLabel = $DebugStateLabel
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.state = self.get_node("States/OnGround")
+	self.sprite = $Sprite
 	self.state.start(self)
 	pass # Replace with function body.
 

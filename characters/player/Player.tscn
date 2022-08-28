@@ -208,8 +208,8 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 6, 15 )
+[sub_resource type="RectangleShape2D" id=25]
+extents = Vector2( 6.5, 14 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -230,8 +230,8 @@ hframes = 7
 vframes = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 1 )
-shape = SubResource( 5 )
+position = Vector2( 0, 2 )
+shape = SubResource( 25 )
 
 [node name="RaycastContainer" type="Position2D" parent="."]
 

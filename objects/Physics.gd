@@ -1,7 +1,7 @@
 extends Node
 
 
-const DOWN_SNAP = Vector2(0, 1)
+const DOWN_SNAP = Vector2(0, 16)
 
 const GRAVITY = 1000.0
 
@@ -44,7 +44,7 @@ func process_air_movement(player: KinematicBody2D, delta, xAccel, shouldDrag=fal
 	player.velocity.y += gravity * delta
 	
 	# Move the player and set their new velocity based on their current velocity, collisions, etc
-	player.velocity = player.move_and_slide_with_snap(player.velocity, snap_vector, Vector2.UP)
+	player.velocity = player.move_and_slide_with_snap(player.velocity, snap_vector, Vector2.UP, true)
 
 func process_ground_movement(player: KinematicBody2D, delta, xAccel, shouldDrag=false, gravity=GRAVITY, limitXSpeed=true):
 	###########################################
@@ -66,5 +66,5 @@ func process_ground_movement(player: KinematicBody2D, delta, xAccel, shouldDrag=
 	if player.velocity.x < 10 and player.velocity.x > -10:
 		player.velocity.x = 0
 
-	player.velocity.y += GRAVITY * delta
-	player.velocity = player.move_and_slide_with_snap(player.velocity, DOWN_SNAP, Vector2.UP)
+	player.velocity.y += gravity * delta
+	player.velocity = player.move_and_slide_with_snap(player.velocity, DOWN_SNAP, Vector2.UP, true)
