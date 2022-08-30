@@ -27,7 +27,11 @@ func update(player: Player, delta: float):
 	elif Input.is_action_pressed("move_right"):
 		accel = RUN_ACCEL
 		
-	Physics.process_ground_movement(player, delta, accel, (accel == 0))
+	var shouldDrag = (accel == 0)
+	var shouldLimitX = true #!player.isOnSlope()
+		
+	# process_air_movement(player: KinematicBody2D, delta, xAccel, shouldDrag=false, gravity=GRAVITY, limitXSpeed=true, snap_vector=DOWN_SNAP):
+	Physics.process_ground_movement(player, delta, accel, shouldDrag, Physics.GRAVITY, shouldLimitX)
 	self.transitionToNewStateIfNecessary(player, delta)
 
 func transitionToNewStateIfNecessary(player, delta):

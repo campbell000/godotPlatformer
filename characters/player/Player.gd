@@ -38,7 +38,7 @@ func _physics_process(delta):
 	# First, handle the inputs. 
 	self.state.update(self, delta)
 	self._handlePlayerStateAfterMove(delta)
-	self.debugStateLabel.text = self.state.getName()
+	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	
 func justJumpedOrBufferedAJump():
 	return Input.is_action_just_pressed("jump") || self.bufferTimer > 0
@@ -47,13 +47,22 @@ func _handlePlayerStateAfterMove(delta):
 	if self.bufferTimer > 0:
 		self.bufferTimer -= delta
 		
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") && self.velocity.x < 0:
 		self.sprite.flip_h = true
-	elif Input.is_action_pressed("move_right"):
+	elif Input.is_action_pressed("move_right") && self.velocity.x > 0:
 		self.sprite.flip_h = false
+		
+	
+	if isOnSlope():
+		self.sprite.position.y = 1.5
+	else:
+		self.sprite.position.y = 0
 		
 func collidedWithLeftWall():
 	return self.leftRaycast.is_colliding()
 	
 func collidedWithRightWall():
 	return self.rightRaycast.is_colliding()
+	
+func isOnSlope():
+	return self.is_on_floor() and self.get_floor_normal().dot(Vector2.UP) != 1

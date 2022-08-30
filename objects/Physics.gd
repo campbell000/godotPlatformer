@@ -1,7 +1,7 @@
 extends Node
 
 
-const DOWN_SNAP = Vector2(0, 16)
+const DOWN_SNAP = Vector2(0, 32)
 
 const GRAVITY = 1000.0
 
