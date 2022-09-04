@@ -30,8 +30,10 @@ func update(player: Player, delta: float):
 		accel = -Physics.AIR_ACCEL
 	elif Input.is_action_pressed("move_right"):
 		accel = Physics.AIR_ACCEL
+		
+	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 	
-	Physics.process_air_movement(player, delta, accel, (accel == 0))
+	Physics.process_air_movement(player, delta, accel, dragVal, Physics.GRAVITY, Physics.MAX_RUN_SPEED)
 	self.transitionToNewStateIfNecessary(player, delta)
 	
 	# Keep track of the ledge grace time.

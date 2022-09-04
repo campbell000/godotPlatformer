@@ -52,17 +52,25 @@ func _handlePlayerStateAfterMove(delta):
 	elif Input.is_action_pressed("move_right") && self.velocity.x > 0:
 		self.sprite.flip_h = false
 		
-	
-	if isOnSlope():
-		self.sprite.position.y = 1.5
+	if self.is_on_floor():
+		self.rotation = get_floor_normal().angle() + PI/2
 	else:
-		self.sprite.position.y = 0
+		self.rotation = 0
 		
 func collidedWithLeftWall():
 	return self.leftRaycast.is_colliding()
 	
 func collidedWithRightWall():
 	return self.rightRaycast.is_colliding()
+	
+func isRunningDownHill():
+	var angleOfSlope = get_floor_normal().angle() + PI/2
+	if angleOfSlope > 0 and self.velocity.x > 0:
+		return true
+	elif angleOfSlope < -0.01 and self.velocity.x < 0:
+		return true
+	else:
+		return false
 	
 func isOnSlope():
 	return self.is_on_floor() and self.get_floor_normal().dot(Vector2.UP) != 1

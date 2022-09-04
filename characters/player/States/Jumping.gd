@@ -1,10 +1,6 @@
 extends State
 class_name Jumping
 
-# Consttant that slows the player down in teh air when they are moving, but not pressing buttons.
-# Less drag than on ground
-const AIR_DRAG: float = 2.0;
-
 # Gravity when the player is holding the JUMP button
 const JUMP_GRAVITY: float = 300.0
 
@@ -57,9 +53,14 @@ func update(player: Player, delta: float):
 	elif Input.is_action_pressed("move_right"):
 		accel = Physics.AIR_ACCEL
 	
+	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
+	
 	# Snap vector must be zero on the first frame to allow the jump to happen at all
 	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
-	Physics.process_air_movement(player, delta, accel, (accel == 0), currentGrav, true, snapVector)
+	
+	var maxRunSpeed = Physics.MAX_RUN_SPEED
+	
+	Physics.process_air_movement(player, delta, accel, dragVal, currentGrav, maxRunSpeed, snapVector)
 	
 	if player.velocity.y >= 0:
 		player.animatedSprite.play("Fall")

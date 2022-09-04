@@ -84,6 +84,7 @@ window/stretch/aspect="keep"
 
 window=false
 Snap=false
+GPU=false
 
 [importer_defaults]
 
@@ -165,10 +166,12 @@ camera_reset={
 [physics]
 
 common/enable_pause_aware_picking=true
+common/physics_interpolation=true
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
+2d/snapping/use_gpu_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 environment/default_environment="res://default_env.tres"

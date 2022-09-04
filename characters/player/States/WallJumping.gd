@@ -31,7 +31,9 @@ func update(player: Player, delta: float):
 	elif Input.is_action_pressed("move_right"):
 		accel = Physics.AIR_ACCEL
 
-	Physics.process_air_movement(player, delta, accel, (accel == 0))
+	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
+
+	Physics.process_air_movement(player, delta, accel, dragVal, Physics.GRAVITY, Physics.MAX_RUN_SPEED)
 	self.wallJumpCooldownTimer -= delta
 	self.transitionToNewStateIfNecessary(player, delta)
 	

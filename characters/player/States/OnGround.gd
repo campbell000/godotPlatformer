@@ -27,11 +27,16 @@ func update(player: Player, delta: float):
 	elif Input.is_action_pressed("move_right"):
 		accel = RUN_ACCEL
 		
-	var shouldDrag = (accel == 0)
-	var shouldLimitX = true #!player.isOnSlope()
+	# Drag if the player is doing nothing
+	var dragVal = Physics.GROUND_DRAG if (accel == 0) else 0;
+	
+	# If we're on the ground AND running down a slope, allow the max speed to go higher
+	var maxRunSpeed = Physics.MAX_RUN_SPEED
+	if player.isRunningDownHill():
+		maxRunSpeed = Physics.MAX_RUN_SPEED_SLOPE
 		
-	# process_air_movement(player: KinematicBody2D, delta, xAccel, shouldDrag=false, gravity=GRAVITY, limitXSpeed=true, snap_vector=DOWN_SNAP):
-	Physics.process_ground_movement(player, delta, accel, shouldDrag, Physics.GRAVITY, shouldLimitX)
+	# func process_ground_movement(player: KinematicBody2D, delta, xAccel, dragVal=0, gravity=GRAVITY, maxSpeed=NO_SPEED_LIMIT, snap_vector=DOWN_SNAP):
+	Physics.process_ground_movement(player, delta, accel, dragVal, Physics.GRAVITY, maxRunSpeed, Physics.DOWN_SNAP, false)
 	self.transitionToNewStateIfNecessary(player, delta)
 
 func transitionToNewStateIfNecessary(player, delta):
