@@ -84,7 +84,7 @@ func _physics_process(delta):
 				elif !self.isTrackingForwardMotion:
 					if self.isTransitioning and playerScreenXPos < lineThreePos:
 						cameraMovementAmount = CAMERA_OFFSET_SPEED * delta
-						if playerScreenXPos - cameraMovementAmount > lineThreePos:
+						if playerScreenXPos + cameraMovementAmount > lineThreePos:
 							cameraMovementAmount = abs(playerScreenXPos - lineThreePos)
 						self.position.x -= cameraMovementAmount
 						playerScreenXPos = playerScreenXPos + cameraMovementAmount

@@ -34,7 +34,7 @@ func _process(delta):
 func _physics_process(delta):
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
-		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW	
+		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
 
 	# First, handle the inputs. 
 	self.state.update(self, delta)

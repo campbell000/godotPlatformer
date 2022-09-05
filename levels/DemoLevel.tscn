@@ -6,6 +6,7 @@
 [ext_resource path="res://objects/Camera.gd" type="Script" id=4]
 
 [node name="GameNode" type="Node2D"]
+physics_interpolation_mode = 2
 
 [node name="Interface" type="CanvasLayer" parent="."]
 
@@ -37,4 +38,5 @@ offset = Vector2( 192, 108 )
 transform = Transform2D( 1, 0, 0, 1, 192, 108 )
 
 [node name="Player" parent="World/Environment" instance=ExtResource( 3 )]
+physics_interpolation_mode = 2
 position = Vector2( 56, 168 )
