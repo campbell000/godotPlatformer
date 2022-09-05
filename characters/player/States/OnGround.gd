@@ -1,7 +1,7 @@
 extends State
 class_name OnGround
 
-const RUN_ACCEL: float = 1000.0
+var isFirstFrame: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,7 +11,7 @@ func _ready():
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
-	pass
+	self.isFirstFrame = true
 	
 func update(player: Player, delta: float):
 	# Handle run/idle animations
@@ -23,21 +23,20 @@ func update(player: Player, delta: float):
 	# Determine if we should apply run acceleration. Do it if teh user is pressing left or right
 	var accel = 0
 	if Input.is_action_pressed("move_left"):
-		accel = -RUN_ACCEL
+		accel = -Physics.RUN_ACCEL
 	elif Input.is_action_pressed("move_right"):
-		accel = RUN_ACCEL
+		accel = Physics.RUN_ACCEL
 		
 	# Drag if the player is doing nothing
 	var dragVal = Physics.GROUND_DRAG if (accel == 0) else 0;
 	
 	# If we're on the ground AND running down a slope, allow the max speed to go higher
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
-	if player.isRunningDownHill():
-		maxRunSpeed = Physics.MAX_RUN_SPEED_SLOPE
-		
-	# func process_ground_movement(player: KinematicBody2D, delta, xAccel, dragVal=0, gravity=GRAVITY, maxSpeed=NO_SPEED_LIMIT, snap_vector=DOWN_SNAP):
-	Physics.process_ground_movement(player, delta, accel, dragVal, Physics.GRAVITY, maxRunSpeed, Physics.DOWN_SNAP, false)
+	var gravity = Physics.GRAVITY
+
+	Physics.process_ground_movement(player, delta, accel, dragVal, gravity, maxRunSpeed, Physics.DOWN_SNAP)
 	self.transitionToNewStateIfNecessary(player, delta)
+	self.isFirstFrame = false
 
 func transitionToNewStateIfNecessary(player, delta):
 	# If we're not on the floor, and we're not jumping, then we're falling

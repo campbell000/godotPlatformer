@@ -7,15 +7,22 @@ const DEBUG_CAMERA_SPEED = 300
 const NUM_TILES_FROM_BOTTOM_OF_VIEWPORT = 2
 const NUM_TILES_FROM_CENTER = 4
 const x_offset = 40
-const CAMERA_OFFSET_SPEED = 400
+const CAMERA_OFFSET_SPEED = 465
 const LINE_DISTANCE = 30
 var player
 var target
 var is_debug_freeform: bool = false
 var isTrackingForwardMotion = true
 var GAME_WIDTH: float
-var NUMBER_OF_LINES: float = 10.0
+const NUMBER_OF_LINES: float = 10.0
 var LINE_UNIT_DISTANCE: float
+var isTransitioning: bool = false
+
+const LINE_ONE = 2.5
+const LINE_TWO = 4
+const LINE_THREE = 6
+const LINE_FOUR = 7.5
+const MIDDLE_LINES_DISTANCE_FROM_CENTER = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -41,32 +48,52 @@ func _physics_process(delta):
 			var playerScreenXPos = self.target.get_global_transform_with_canvas().origin.x
 			if self.target == self.player:
 				var previousIsTrackingForwardMotion = self.isTrackingForwardMotion
-				var lineOnePos = self.LINE_UNIT_DISTANCE * 3
-				var lineTwoPos = self.LINE_UNIT_DISTANCE * 4.5
-				var lineThreePos = self.LINE_UNIT_DISTANCE * 5.5
-				var lineFourPos = self.LINE_UNIT_DISTANCE * 7
+				var lineOnePos = self.LINE_UNIT_DISTANCE * LINE_ONE
+				var lineTwoPos = self.LINE_UNIT_DISTANCE * LINE_TWO
+				var lineThreePos = self.LINE_UNIT_DISTANCE * LINE_THREE
+				var lineFourPos = self.LINE_UNIT_DISTANCE * LINE_FOUR
 				
 				# Determine if we need to reorient the camera for forward or backwards running
 				if playerScreenXPos <= lineOnePos:
 					self.isTrackingForwardMotion = false
+					self.isTransitioning = true
 				elif playerScreenXPos >= lineFourPos:
 					self.isTrackingForwardMotion = true
+					self.isTransitioning = true
 						
-				# If the curerent camera position is BEHIND the first line (which is LEFT of the player),
-				# then start following the THIRD line (shifts the camera forward).
-				# 
-				# If the camera pos is AHEAD of the fourth line, then start following the second line 
-				# (shifts the camera left). 
-				#
-				# But don't SNAP to the desired line. Do so in increments so that it's a smoother animation
-				if self.isTrackingForwardMotion and playerScreenXPos >= lineTwoPos:
-					self.position.x += CAMERA_OFFSET_SPEED * delta
-					if (playerScreenXPos - (CAMERA_OFFSET_SPEED * delta)) <= lineTwoPos:
-						self.position.x = self.target.position.x + (self.LINE_UNIT_DISTANCE * 0.5)
-				elif !self.isTrackingForwardMotion and playerScreenXPos <= lineThreePos: 
-					self.position.x -= CAMERA_OFFSET_SPEED * delta
-					if (playerScreenXPos + (CAMERA_OFFSET_SPEED * delta)) >= lineThreePos:
-						self.position.x = self.target.position.x - (self.LINE_UNIT_DISTANCE * 0.5)
+				var cameraMovementAmount = 0
+				
+				# If forward tracking, ensure the player is lined up with the second line when moving forward
+				if self.isTrackingForwardMotion:
+					# If we're transitioning, move the camera forward. But this frame will move the player PAST
+					# the second line, only move it so that the player will be ON the second line
+					if self.isTransitioning and playerScreenXPos > lineTwoPos:
+						cameraMovementAmount = CAMERA_OFFSET_SPEED * delta
+						if playerScreenXPos - cameraMovementAmount < lineTwoPos: # Checking the camera will move too far
+							cameraMovementAmount = abs(playerScreenXPos - lineTwoPos) # instead, move the camera so that the player will be ON the second line
+						self.position.x += cameraMovementAmount
+						playerScreenXPos = playerScreenXPos - cameraMovementAmount # the player's screen position doesn't update yet, so we need to keep track of it
+					
+					# If we no longer need to transition because the player is now at or less than the second line, stop
+					if self.isTransitioning and playerScreenXPos <= lineTwoPos:
+						self.isTransitioning = false
+						
+					# If we're not transitioning and the player moved past the second line, move the camera forward so that they're at the second line again
+					if !self.isTransitioning and playerScreenXPos > lineTwoPos:
+						self.position.x = self.target.position.x + (self.LINE_UNIT_DISTANCE * MIDDLE_LINES_DISTANCE_FROM_CENTER)
+				elif !self.isTrackingForwardMotion:
+					if self.isTransitioning and playerScreenXPos < lineThreePos:
+						cameraMovementAmount = CAMERA_OFFSET_SPEED * delta
+						if playerScreenXPos - cameraMovementAmount > lineThreePos:
+							cameraMovementAmount = abs(playerScreenXPos - lineThreePos)
+						self.position.x -= cameraMovementAmount
+						playerScreenXPos = playerScreenXPos + cameraMovementAmount
+						
+					if self.isTransitioning and playerScreenXPos >= lineThreePos:
+						self.isTransitioning = false
+						
+					if !self.isTransitioning and playerScreenXPos < lineThreePos:
+						self.position.x = self.target.position.x - (self.LINE_UNIT_DISTANCE * MIDDLE_LINES_DISTANCE_FROM_CENTER)
 			else:
 				self.position.x = targetPos.x
 		

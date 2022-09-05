@@ -33,7 +33,7 @@ func update(player: Player, delta: float):
 
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 
-	Physics.process_air_movement(player, delta, accel, dragVal, Physics.GRAVITY, Physics.MAX_RUN_SPEED)
+	Physics.process_air_movement(player, delta, accel, dragVal, Physics.GRAVITY, Physics.MAX_RUN_SPEED, Physics.DOWN_SNAP)
 	self.wallJumpCooldownTimer -= delta
 	self.transitionToNewStateIfNecessary(player, delta)
 	

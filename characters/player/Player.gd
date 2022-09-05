@@ -10,6 +10,7 @@ var velocity: Vector2 = Vector2()
 var prevVector: Vector2 = Vector2()
 var isMoving: bool = false
 var isFacingForward: bool = true
+var maintainInertia: bool = false
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
@@ -53,9 +54,9 @@ func _handlePlayerStateAfterMove(delta):
 		self.sprite.flip_h = false
 		
 	if self.is_on_floor():
-		self.rotation = get_floor_normal().angle() + PI/2
+		self.sprite.rotation = get_floor_normal().angle() + PI/2
 	else:
-		self.rotation = 0
+		self.sprite.rotation = 0
 		
 func collidedWithLeftWall():
 	return self.leftRaycast.is_colliding()

@@ -49,14 +49,23 @@ func update(player: Player, delta: float):
 	
 	var accel = 0
 	if Input.is_action_pressed("move_left"):
-		accel = -Physics.AIR_ACCEL
+		if player.velocity.x <= -Physics.MAX_RUN_SPEED:
+			accel = -Physics.RUN_ACCEL
+		else:
+			accel = -Physics.AIR_ACCEL
+			
 	elif Input.is_action_pressed("move_right"):
-		accel = Physics.AIR_ACCEL
+		if player.velocity.x >= Physics.MAX_RUN_SPEED:
+			accel = Physics.RUN_ACCEL
+		else:
+			accel = Physics.AIR_ACCEL
 	
-	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
+
 	
 	# Snap vector must be zero on the first frame to allow the jump to happen at all
 	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
+	
+	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 	
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
 	
