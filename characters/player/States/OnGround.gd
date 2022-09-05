@@ -33,6 +33,10 @@ func update(player: Player, delta: float):
 	# If we're on the ground AND running down a slope, allow the max speed to go higher
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
 	var gravity = Physics.GRAVITY
+	
+	if player.isRunningDownHill():
+		player.maintainInertia = true
+		maxRunSpeed = Physics.MAX_RUN_SPEED_SLOPE
 
 	Physics.process_ground_movement(player, delta, accel, dragVal, gravity, maxRunSpeed, Physics.DOWN_SNAP)
 	self.transitionToNewStateIfNecessary(player, delta)

@@ -4,7 +4,7 @@ class_name Falling
 # Rate at which the player gains speed in the air. Slower so that jumps are more committal
 const AIR_ACCEL: float = 530.0
 
-const LEDGE_GRACE_PERIOD = 0.016667
+const LEDGE_GRACE_PERIOD = 0.05
 
 var ledgeGraceTimer = 0
 var cameFromGround = false

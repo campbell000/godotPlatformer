@@ -58,6 +58,9 @@ func _handlePlayerStateAfterMove(delta):
 	else:
 		self.sprite.rotation = 0
 		
+	if self.velocity.x <= Physics.MAX_RUN_SPEED and self.velocity.x >= -Physics.MAX_RUN_SPEED:
+		self.maintainInertia = false
+		
 func collidedWithLeftWall():
 	return self.leftRaycast.is_colliding()
 	

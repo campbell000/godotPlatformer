@@ -10,7 +10,8 @@ const AIR_ACCEL: float = 530.0
 # Constant that slows the player down on the ground when they are moving, but not pressing buttons
 const GROUND_DRAG: float = 15.0
 
-const MAINTAIN_INTERTIA_DRAG = 4
+const MAINTAIN_INTERTIA_DRAG = 3.65
+const AIR_MAINTAIN_INTERTIA_DRAG = 3.65
 
 # Consttant that slows the player down in teh air when they are moving, but not pressing buttons.
 # Less drag than on ground
@@ -18,7 +19,7 @@ const AIR_DRAG: float = 2.0;
 
 const MAX_RUN_SPEED: float = 225.0
 
-const MAX_RUN_SPEED_SLOPE: float = 300.0
+const MAX_RUN_SPEED_SLOPE: float = 350.0
 
 const NO_SPEED_LIMIT = 42069
 
@@ -45,10 +46,14 @@ func process_movement(player: KinematicBody2D, delta, xAccel, dragVal=0, gravity
 		player.velocity.x = player.velocity.x / (1 + (dragVal * delta))
 
 	if maxSpeed != NO_SPEED_LIMIT:
-		if player.velocity.x > maxSpeed:
-			player.velocity.x = maxSpeed
-		if player.velocity.x < -maxSpeed:
-			player.velocity.x = -maxSpeed
+		if !player.maintainInertia:
+			if player.velocity.x > maxSpeed:
+				player.velocity.x = maxSpeed
+			if player.velocity.x < -maxSpeed:
+				player.velocity.x = -maxSpeed
+		else:
+			var inertiaDrag = MAINTAIN_INTERTIA_DRAG if !player.is_on_floor() else MAINTAIN_INTERTIA_DRAG
+			player.velocity.x = player.velocity.x / (1 + (inertiaDrag * delta))
 			
 	# Dont allow tiny numbers. Otherwise, the object will keep inching forward
 	if stopSmall and player.velocity.x < 2 and player.velocity.x > -2:
@@ -61,3 +66,7 @@ func process_movement(player: KinematicBody2D, delta, xAccel, dragVal=0, gravity
 	player.velocity.y += gravity * delta
 	
 	player.velocity = player.move_and_slide_with_snap(player.velocity, snap_vector, Vector2.UP, true)
+	#var a = Vector2(0, player.velocity.y)
+	#player.velocity.y = player.move_and_slide_with_snap(a, snap_vector, Vector2.UP, true).y
+	#var b = Vector2(player.velocity.x, 0)
+	#player.velocity.x = player.move_and_slide_with_snap(b, snap_vector, Vector2.UP, true).x
