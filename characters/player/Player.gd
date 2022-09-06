@@ -12,6 +12,8 @@ var isMoving: bool = false
 var isFacingForward: bool = true
 var maintainInertia: bool = false
 
+var currentDirection = null
+
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
 onready var sprite = $Sprite
@@ -35,6 +37,11 @@ func _physics_process(delta):
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
 		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
+		
+	if Input.is_action_just_pressed("move_left"):
+		self.currentDirection = "move_left"
+	elif Input.is_action_just_pressed("move_right"):
+		self.currentDirection = "move_right"
 
 	# First, handle the inputs. 
 	self.state.update(self, delta)
@@ -78,3 +85,14 @@ func isRunningDownHill():
 	
 func isOnSlope():
 	return self.is_on_floor() and self.get_floor_normal().dot(Vector2.UP) != 1
+	
+# Returns the direction (left or right) that is currently being pressed. If both buttons are being held
+# at the same time, then the most recent one wins (i.e. if a player is moving left but then switches right,
+# but they hold left for a split second, we want to immediately start moving right)
+func getDeconflictedDirectionalInput():
+	if self.currentDirection != null && Input.is_action_pressed(self.currentDirection):
+		return self.currentDirection
+	elif Input.is_action_pressed("move_left"):
+		return "move_left"
+	elif Input.is_action_pressed("move_right"):
+		return "move_right"

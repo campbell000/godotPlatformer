@@ -35,7 +35,7 @@ func transitionToNewStateIfNeeded(player, delta):
 			# If jumping, then wall jump
 			if Input.is_action_just_pressed("jump"):
 				player.transition_to_state(player.get_node("States/WallJumping"))
-			elif (collidingRight and Input.is_action_pressed("move_left")) || (collidingLeft and Input.is_action_pressed("move_right")):
+			elif (collidingRight and player.getDeconflictedDirectionalInput() == "move_left") || (collidingLeft and player.getDeconflictedDirectionalInput() == "move_right"):
 				# If the user is moving AWAY from the wall, then force a fall
 				player.transition_to_state(player.get_node("States/Falling"))
 	

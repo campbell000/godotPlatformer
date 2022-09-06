@@ -25,10 +25,17 @@ func start(player: Player):
 func update(player: Player, delta: float):
 	# Allow limited acceleration if holding left or right in the air
 	var accel = 0
-	if Input.is_action_pressed("move_left"):
-		accel = -Physics.AIR_ACCEL
-	elif Input.is_action_pressed("move_right"):
-		accel = Physics.AIR_ACCEL
+	if player.getDeconflictedDirectionalInput() == "move_left":
+		if player.velocity.x <= -Physics.MAX_RUN_SPEED:
+			accel = -Physics.RUN_ACCEL
+		else:
+			accel = -Physics.AIR_ACCEL
+			
+	elif player.getDeconflictedDirectionalInput() == "move_right":
+		if player.velocity.x >= Physics.MAX_RUN_SPEED:
+			accel = Physics.RUN_ACCEL
+		else:
+			accel = Physics.AIR_ACCEL
 		
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 	
@@ -53,7 +60,7 @@ func transitionToNewStateIfNecessary(player, delta):
 	else:
 		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
 		var wallDragState = player.get_node("States/WallDragging") as State
-		if (player.collidedWithLeftWall() && Input.is_action_pressed("move_left")) || (player.collidedWithRightWall() && Input.is_action_pressed("move_right")):
+		if (player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left") || (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right"):
 			player.transition_to_state(wallDragState)
 			
 func getName():

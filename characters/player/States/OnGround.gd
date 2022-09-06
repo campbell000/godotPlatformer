@@ -22,9 +22,9 @@ func update(player: Player, delta: float):
 
 	# Determine if we should apply run acceleration. Do it if teh user is pressing left or right
 	var accel = 0
-	if Input.is_action_pressed("move_left"):
+	if player.getDeconflictedDirectionalInput() == "move_left":
 		accel = -Physics.RUN_ACCEL
-	elif Input.is_action_pressed("move_right"):
+	elif player.getDeconflictedDirectionalInput() == "move_right":
 		accel = Physics.RUN_ACCEL
 		
 	# Drag if the player is doing nothing

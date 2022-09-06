@@ -26,9 +26,9 @@ func start(player: Player):
 func update(player: Player, delta: float):
 	# Allow control in the air when wall jumping
 	var accel = 0
-	if Input.is_action_pressed("move_left"):
+	if player.getDeconflictedDirectionalInput() == "move_left":
 		accel = -Physics.AIR_ACCEL
-	elif Input.is_action_pressed("move_right"):
+	elif player.getDeconflictedDirectionalInput() == "move_right":
 		accel = Physics.AIR_ACCEL
 
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
@@ -42,7 +42,7 @@ func transitionToNewStateIfNecessary(player, delta):
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
 	elif self.wallJumpCooldownTimer <= 0: # needed so that the user can't immediately go from wall jump back to drag on the first frame of the jump.
-		if (player.collidedWithLeftWall() && Input.is_action_pressed("move_left")) || (player.collidedWithRightWall() && Input.is_action_pressed("move_right")):
+		if (player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left") || (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right"):
 			# If we're holding direction towards a wall, go back to wall dragging
 			var wallDragState = player.get_node("States/WallDragging")
 			player.transition_to_state(wallDragState)
