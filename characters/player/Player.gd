@@ -69,6 +69,7 @@ func _handlePlayerStateAfterMove(delta):
 		self.maintainInertia = false
 		
 func collidedWithLeftWall():
+	# NEED TO DIFFERENTIATE BETWEEN WALL AND ONE WAY FLOOR!!!!!
 	return self.leftRaycast.is_colliding()
 	
 func collidedWithRightWall():
