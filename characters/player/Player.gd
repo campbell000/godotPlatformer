@@ -10,9 +10,14 @@ var velocity: Vector2 = Vector2()
 var prevVector: Vector2 = Vector2()
 var isMoving: bool = false
 var isFacingForward: bool = true
-var maintainInertia: bool = false
+var allowedUnlimitedSpeed: bool = false
+var isReturningToNormalSpeed: bool = false
 
 var currentDirection = null
+
+var isMaintainingInertia: bool = false
+var maintainInertiaDrag: float = PHYSICS.INITIAL_MAINTAIN_INERTIA_DRAG
+const INERTIA_DRAG_INCREASE_PER_MS = 1
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
@@ -66,7 +71,11 @@ func _handlePlayerStateAfterMove(delta):
 		self.sprite.rotation = 0
 		
 	if self.velocity.x <= Physics.MAX_RUN_SPEED and self.velocity.x >= -Physics.MAX_RUN_SPEED:
-		self.maintainInertia = false
+		self.isMaintainingInertia = false
+		self.maintainInertiaDrag = Physics.MAINTAIN_INTERTIA_DRAG
+		
+	if self.isMaintainingInertia:
+		self.maintainInertiaDrag = self.maintainInertiaDrag / (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
 		
 func collidedWithLeftWall():
 	# NEED TO DIFFERENTIATE BETWEEN WALL AND ONE WAY FLOOR!!!!!
@@ -76,11 +85,14 @@ func collidedWithRightWall():
 	return self.rightRaycast.is_colliding()
 	
 func isRunningDownHill():
-	var angleOfSlope = get_floor_normal().angle() + PI/2
-	if angleOfSlope > 0 and self.velocity.x > 0:
-		return true
-	elif angleOfSlope < -0.01 and self.velocity.x < 0:
-		return true
+	if self.is_on_floor():
+		var angleOfSlope = get_floor_normal().angle() + PI/2
+		if angleOfSlope > 0 and self.velocity.x > 0:
+			return true
+		elif angleOfSlope < -0.01 and self.velocity.x < 0:
+			return true
+		else:
+			return false
 	else:
 		return false
 	

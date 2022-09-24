@@ -4,6 +4,8 @@ class_name Jumping
 # Gravity when the player is holding the JUMP button
 const JUMP_GRAVITY: float = 300.0
 
+const CANCELLED_JUMP_GRAVITY: float = 1325.0
+
 # Initial velocity of the player's jump
 const JUMP_FORCE: float = 215.0
 
@@ -16,6 +18,7 @@ const JUMP_VEL_LIMIT = -120.0
 
 var isHighJumping = true
 var firstUpdate = false
+var canceledEarly = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,15 +40,20 @@ func update(player: Player, delta: float):
 	if self.isHighJumping:
 		if !Input.is_action_pressed("jump"):
 			self.isHighJumping = false
+			if player.velocity.y < JUMP_VEL_LIMIT:
+				self.canceledEarly = true
 			
-	# If we ARE high high jumping, apply a lesser gravity to the player
-	if self.isHighJumping and player.velocity.y < JUMP_VEL_LIMIT:
-		currentGrav = JUMP_GRAVITY
-
 	# Stop high jumping at a certain point, no matter what. Makes it so the user doesn't need to hold
 	# jump for the entirety of the jump (which would be annoying)
 	if player.velocity.y >= JUMP_VEL_LIMIT:
 		self.isHighJumping = false
+			
+	# If we ARE high high jumping, apply a lesser gravity to the player
+	if self.isHighJumping and player.velocity.y < JUMP_VEL_LIMIT:
+		currentGrav = JUMP_GRAVITY
+		
+	if !self.isHighJumping and player.velocity.y < 0 and self.canceledEarly:
+		currentGrav = CANCELLED_JUMP_GRAVITY
 	
 	var accel = 0
 	if player.getDeconflictedDirectionalInput() == "move_left":
@@ -62,12 +70,10 @@ func update(player: Player, delta: float):
 	
 	# Snap vector must be zero on the first frame to allow the jump to happen at all
 	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
-	
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
-	
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
 	
-	Physics.process_air_movement(player, delta, accel, dragVal, currentGrav, maxRunSpeed, snapVector)
+	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": currentGrav, "maxSpeed": maxRunSpeed, "snapVector": snapVector})
 	
 	if player.velocity.y >= 0:
 		player.animatedSprite.play("Fall")
@@ -93,6 +99,7 @@ func transitionToNewStateIfNecessary(player, delta):
 
 func end(player):
 	self.isHighJumping = false
+	self.canceledEarly = false
 	
 func getName():
 	return "Jumping"
