@@ -16,7 +16,7 @@ var isReturningToNormalSpeed: bool = false
 var currentDirection = null
 
 var isMaintainingInertia: bool = false
-var maintainInertiaDrag: float = PHYSICS.INITIAL_MAINTAIN_INERTIA_DRAG
+var maintainInertiaDrag: float = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
 const INERTIA_DRAG_INCREASE_PER_MS = 1
 
 # Scene Nodes
@@ -72,10 +72,12 @@ func _handlePlayerStateAfterMove(delta):
 		
 	if self.velocity.x <= Physics.MAX_RUN_SPEED and self.velocity.x >= -Physics.MAX_RUN_SPEED:
 		self.isMaintainingInertia = false
-		self.maintainInertiaDrag = Physics.MAINTAIN_INTERTIA_DRAG
+		self.maintainInertiaDrag = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
 		
 	if self.isMaintainingInertia:
+		var before = self.maintainInertiaDrag
 		self.maintainInertiaDrag = self.maintainInertiaDrag / (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
+		print(str(before)+" "+str(self.maintainInertiaDrag))
 		
 func collidedWithLeftWall():
 	# NEED TO DIFFERENTIATE BETWEEN WALL AND ONE WAY FLOOR!!!!!

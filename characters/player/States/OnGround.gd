@@ -35,9 +35,8 @@ func update(player: Player, delta: float):
 	var gravity = 10 #
 	
 	if player.isRunningDownHill():
-		player.maintainInertia = true
+		player.isMaintainingInertia = true
 		maxRunSpeed = Physics.MAX_RUN_SPEED_SLOPE
-		accel = accel * 1.2
 		gravity = 0
 	elif player.isOnSlope():
 		gravity = 200

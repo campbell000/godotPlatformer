@@ -27,7 +27,6 @@ func _ready():
 	pass # Replace with function body.
 	
 func process_movement(player, delta, options={}):
-	#func process_movement(player: KinematicBody2D, delta, xAccel, dragVal=0, gravity=GRAVITY, maxSpeed=NO_SPEED_LIMIT, snap_vector=DOWN_SNAP, stopSmall=false):
 	var xAccel = options.get("xAccel", 0)
 	var dragVal = options.get("noMovementDrag", 0)
 	var gravity = options.get("gravity", GRAVITY)
@@ -44,14 +43,14 @@ func process_movement(player, delta, options={}):
 		player.velocity.x = player.velocity.x / (1 + (dragVal * delta))
 
 	if maxSpeed != NO_SPEED_LIMIT:
-		if !player.maintainInertia:
+		if !player.isMaintainingInertia:
 			if player.velocity.x > maxSpeed:
 				player.velocity.x = maxSpeed
 			if player.velocity.x < -maxSpeed:
 				player.velocity.x = -maxSpeed
 		else:
 			#var inertiaDrag = MAINTAIN_INTERTIA_DRAG if !player.isRunningDownHill() else MAINTAIN_INTERTIA_DRAG/1.3
-			player.velocity.x = player.velocity.x / (1 + (maintainInertiaDrag * delta))
+			player.velocity.x = player.velocity.x * (1 + (maintainInertiaDrag * delta))
 			
 	# Dont allow tiny numbers. Otherwise, the object will keep inching forward
 	if stopSmall and player.velocity.x < 2 and player.velocity.x > -2:
