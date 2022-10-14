@@ -21,25 +21,25 @@ func update(player: Player, delta: float):
 		player.animatedSprite.play("Idle")
 
 	# Determine if we should apply run acceleration. Do it if teh user is pressing left or right
-	var accel = 0
-	if player.getDeconflictedDirectionalInput() == "move_left":
-		accel = -Physics.RUN_ACCEL
-	elif player.getDeconflictedDirectionalInput() == "move_right":
-		accel = Physics.RUN_ACCEL
+	var accel = player.getXAccel()
 		
 	# Drag if the player is doing nothing
 	var dragVal = Physics.GROUND_DRAG if (accel == 0) else 0;
+	if dragVal != 0 and player.isMaintainingInertia:
+		dragVal = 3
 	
 	# If we're on the ground AND running down a slope, allow the max speed to go higher
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
-	var gravity = 10 #
+	var gravity = Physics.GRAVITY
 	
 	if player.isRunningDownHill():
 		player.isMaintainingInertia = true
+		player.isGainingInertia = true
 		maxRunSpeed = Physics.MAX_RUN_SPEED_SLOPE
-		gravity = 0
 	elif player.isOnSlope():
-		gravity = 200
+		player.isGainingInertia = false
+	else:
+		player.isGainingInertia = false
 
 	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed, "snapVector": Physics.DOWN_SNAP})
 	self.transitionToNewStateIfNecessary(player, delta)
@@ -59,3 +59,6 @@ func transitionToNewStateIfNecessary(player, delta):
 
 func getName():
 	return "OnGround"
+	
+func end(character):
+	character.isGainingInertia = false

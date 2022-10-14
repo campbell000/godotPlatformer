@@ -24,18 +24,7 @@ func start(player: Player):
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
 	# Allow limited acceleration if holding left or right in the air
-	var accel = 0
-	if player.getDeconflictedDirectionalInput() == "move_left":
-		if player.velocity.x <= -Physics.MAX_RUN_SPEED:
-			accel = -Physics.RUN_ACCEL
-		else:
-			accel = -Physics.AIR_ACCEL
-			
-	elif player.getDeconflictedDirectionalInput() == "move_right":
-		if player.velocity.x >= Physics.MAX_RUN_SPEED:
-			accel = Physics.RUN_ACCEL
-		else:
-			accel = Physics.AIR_ACCEL
+	var accel = player.getXAccel()
 		
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 	

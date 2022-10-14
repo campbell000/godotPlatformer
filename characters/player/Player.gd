@@ -12,12 +12,12 @@ var isMoving: bool = false
 var isFacingForward: bool = true
 var allowedUnlimitedSpeed: bool = false
 var isReturningToNormalSpeed: bool = false
-
 var currentDirection = null
-
 var isMaintainingInertia: bool = false
+var isGainingInertia: bool = false
 var maintainInertiaDrag: float = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
-const INERTIA_DRAG_INCREASE_PER_MS = 1
+var debugAccel = 0
+const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
 onready var animatedSprite = $AnimatedSprite
@@ -26,6 +26,7 @@ onready var collisionShape = $CollisionShape2D
 onready var leftRaycast = $RaycastContainer/LeftRaycast
 onready var rightRaycast = $RaycastContainer/RightRaycast
 onready var debugStateLabel = $DebugStateLabel
+onready var debugHUD = $CanvasLayer/DebugHUD
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,6 +53,15 @@ func _physics_process(delta):
 	self.state.update(self, delta)
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
+	self.handleDebugHUD()
+	
+func handleDebugHUD():
+	var s = "Maintaining: "+str(self.isMaintainingInertia)
+	s += "\nGaining: "+str(self.isGainingInertia)
+	s += "\nSpeed: "+str(round(self.velocity.x))
+	s += "\nAccel: "+str(round(debugAccel))
+	s += "\nDrag: "+str(self.maintainInertiaDrag)
+	self.debugHUD.text = s
 	
 func justJumpedOrBufferedAJump():
 	return Input.is_action_just_pressed("jump") || self.bufferTimer > 0
@@ -74,10 +84,8 @@ func _handlePlayerStateAfterMove(delta):
 		self.isMaintainingInertia = false
 		self.maintainInertiaDrag = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
 		
-	if self.isMaintainingInertia:
-		var before = self.maintainInertiaDrag
-		self.maintainInertiaDrag = self.maintainInertiaDrag / (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
-		print(str(before)+" "+str(self.maintainInertiaDrag))
+	if self.isMaintainingInertia and !self.isGainingInertia:
+		self.maintainInertiaDrag = self.maintainInertiaDrag * (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
 		
 func collidedWithLeftWall():
 	# NEED TO DIFFERENTIATE BETWEEN WALL AND ONE WAY FLOOR!!!!!
@@ -97,6 +105,35 @@ func isRunningDownHill():
 			return false
 	else:
 		return false
+	
+func getXAccel():
+	var accel = 0
+	var multiplier = 0
+	if self.getDeconflictedDirectionalInput() == "move_left":
+		multiplier = -1
+	elif self.getDeconflictedDirectionalInput() == "move_right":
+		multiplier = 1
+		
+	if self.is_on_floor():
+		if (multiplier == -1 and self.velocity.x > Physics.MAX_RUN_SPEED) || (multiplier == 1 and self.velocity.x < -Physics.MAX_RUN_SPEED):
+			accel = Physics.TURN_AROUND_GROUND_ACCEL
+		else:
+			if abs(self.velocity.x) < Physics.MAX_RUN_SPEED:
+				accel = Physics.START_RUN_ACCEL
+			else:
+				accel = Physics.MAINTAIN_RUN_ACCEL
+	else:
+		if (multiplier == -1 and self.velocity.x > Physics.MAX_RUN_SPEED) || (multiplier == 1 and self.velocity.x < -Physics.MAX_RUN_SPEED):
+			accel = Physics.TURN_AROUND_AIR_ACCEL
+		else:
+			if abs(self.velocity.x) < Physics.MAX_RUN_SPEED:
+				accel = Physics.AIR_ACCEL
+			else:
+				accel = Physics.MAINTAIN_RUN_ACCEL
+			
+	var finalAccel = accel * multiplier
+	self.debugAccel = finalAccel
+	return finalAccel
 	
 func isOnSlope():
 	return self.is_on_floor() and self.get_floor_normal().dot(Vector2.UP) != 1
