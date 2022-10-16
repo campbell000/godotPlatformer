@@ -4,8 +4,6 @@ const DOWN_SNAP = Vector2(0, 8)
 
 const GRAVITY = 1000.0
 
-
-
 # Constant that slows the player down on the ground when they are moving, but not pressing buttons
 const GROUND_DRAG: float = 15.0
 const START_RUN_ACCEL: float = 1550.0
@@ -36,7 +34,7 @@ func process_movement(player, delta, options={}):
 	var gravity = options.get("gravity", GRAVITY)
 	var maxSpeed = options.get("maxSpeed", NO_SPEED_LIMIT)
 	var snap_vector = options.get("snapVector", DOWN_SNAP)
-	var maintainInertiaDrag = player.maintainInertiaDrag #options.get("maintainInertiaDrag", 0)
+	var maintainInertiaDrag =  options.get("maintainInertiaDrag", 0)
 	var stopSmall = options.get("stopSmall", false)
 	
 	###########################################
@@ -69,3 +67,8 @@ func process_movement(player, delta, options={}):
 	player.velocity.y += gravity * delta
 	
 	player.velocity = player.move_and_slide_with_snap(player.velocity, snap_vector, Vector2.UP, true)
+	
+# TODO: Better, faster way to do this?
+const INVALID_WALL_JUMP_CELLS = {
+	18: [41]
+}

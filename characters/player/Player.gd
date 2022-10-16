@@ -23,8 +23,8 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 onready var animatedSprite = $AnimatedSprite
 onready var sprite = $Sprite
 onready var collisionShape = $CollisionShape2D
-onready var leftRaycast = $RaycastContainer/LeftRaycast
-onready var rightRaycast = $RaycastContainer/RightRaycast
+onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
+onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
 onready var debugStateLabel = $DebugStateLabel
 onready var debugHUD = $CanvasLayer/DebugHUD
 
@@ -70,9 +70,9 @@ func _handlePlayerStateAfterMove(delta):
 	if self.bufferTimer > 0:
 		self.bufferTimer -= delta
 		
-	if Input.is_action_pressed("move_left") && self.velocity.x < 0:
+	if Input.is_action_pressed("move_left") && self.velocity.x <= 0:
 		self.sprite.flip_h = true
-	elif Input.is_action_pressed("move_right") && self.velocity.x > 0:
+	elif Input.is_action_pressed("move_right") && self.velocity.x >= 0:
 		self.sprite.flip_h = false
 		
 	if self.is_on_floor():
@@ -88,12 +88,25 @@ func _handlePlayerStateAfterMove(delta):
 		self.maintainInertiaDrag = self.maintainInertiaDrag * (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
 		
 func collidedWithLeftWall():
-	# NEED TO DIFFERENTIATE BETWEEN WALL AND ONE WAY FLOOR!!!!!
-	return self.leftRaycast.is_colliding()
-	
+	return self._collidedWithWall(self.leftRaycast, "left")
+			
 func collidedWithRightWall():
-	return self.rightRaycast.is_colliding()
-	
+	return self._collidedWithWall(self.rightRaycast, "right")
+			
+func _collidedWithWall(raycast: RayCast2D, label):
+	# IMPORTANT! NEED TO ENSURE TILEMAP IS NOT OFFSET IN THE ROOT NODE, OTHERWISE WORLD_TO_MAP RETURNS WRONG CELLS!!!!!!!!!
+	var hit_collider = raycast.get_collider()
+	if hit_collider is TileMap:
+		var globalCollisionPoint = raycast.get_collision_point()
+		var tile_pos = hit_collider.world_to_map(globalCollisionPoint)
+		var _tile_coords = hit_collider.get_cell_autotile_coord(tile_pos[0], tile_pos[1])
+		var int_tile_coords = [int(_tile_coords[0]), int(_tile_coords[1])]
+		if Physics.INVALID_WALL_JUMP_CELLS.has(int_tile_coords[0]) and Physics.INVALID_WALL_JUMP_CELLS[int_tile_coords[0]].has(int_tile_coords[1]):
+			return false
+		else: 
+			print("HIT: "+label)
+			return true
+
 func isRunningDownHill():
 	if self.is_on_floor():
 		var angleOfSlope = get_floor_normal().angle() + PI/2

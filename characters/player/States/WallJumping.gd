@@ -4,7 +4,7 @@ class_name WallJumping
 const WALL_JUMP_FORCE = Vector2(225, -300)
 
 var wallJumpCooldownTimer = 0
-const WALL_JUMP_COOLDOWN = (1/60.0) * 3
+const WALL_JUMP_COOLDOWN = (1/60.0) * 6
 
 var wentBelowMaxRun = false
 
@@ -33,7 +33,7 @@ func update(player: Player, delta: float):
 
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 
-	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": Physics.GRAVITY, "maxSpeed": Physics.MAX_RUN_SPEED, "snapVector": Physics.DOWN_SNAP})
+	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": Physics.GRAVITY, "maxSpeed": Physics.MAX_RUN_SPEED, "snapVector": Physics.DOWN_SNAP, "maintainInertiaDrag": player.maintainInertiaDrag})
 
 	self.wallJumpCooldownTimer -= delta
 	self.transitionToNewStateIfNecessary(player, delta)

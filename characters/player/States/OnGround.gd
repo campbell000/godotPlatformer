@@ -41,7 +41,7 @@ func update(player: Player, delta: float):
 	else:
 		player.isGainingInertia = false
 
-	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed, "snapVector": Physics.DOWN_SNAP})
+	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed, "snapVector": Physics.DOWN_SNAP, "maintainInertiaDrag": player.maintainInertiaDrag})
 	self.transitionToNewStateIfNecessary(player, delta)
 	self.isFirstFrame = false
 

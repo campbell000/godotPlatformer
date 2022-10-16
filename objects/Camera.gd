@@ -18,10 +18,10 @@ const NUMBER_OF_LINES: float = 10.0
 var LINE_UNIT_DISTANCE: float
 var isTransitioning: bool = false
 
-const LINE_ONE = 2.5
+const LINE_ONE = 2
 const LINE_TWO = 4
 const LINE_THREE = 6
-const LINE_FOUR = 7.5
+const LINE_FOUR = 8
 const MIDDLE_LINES_DISTANCE_FROM_CENTER = 1
 
 # Called when the node enters the scene tree for the first time.

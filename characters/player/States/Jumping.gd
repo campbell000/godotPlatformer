@@ -73,7 +73,7 @@ func update(player: Player, delta: float):
 	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
 	var maxRunSpeed = Physics.MAX_RUN_SPEED
 	
-	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": currentGrav, "maxSpeed": maxRunSpeed, "snapVector": snapVector})
+	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": currentGrav, "maxSpeed": maxRunSpeed, "snapVector": snapVector, "maintainInertiaDrag": player.maintainInertiaDrag})
 	
 	if player.velocity.y >= 0:
 		player.animatedSprite.play("Fall")
@@ -94,6 +94,7 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(player.get_node("States/WallJumping"))
 		elif player.velocity.y >= 0 && (player.collidedWithLeftWall() && Input.is_action_pressed("move_left") || player.collidedWithRightWall() && Input.is_action_pressed("move_right")):
 			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
+			print("WALL DRAFG")
 			var wallDraggingState = player.get_node("States/WallDragging")
 			player.transition_to_state(wallDraggingState)	
 
