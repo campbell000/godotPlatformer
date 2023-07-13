@@ -1,5 +1,5 @@
 extends State
-class_name Falling
+class_name AirAttack
 
 # Rate at which the player gains speed in the air. Slower so that jumps are more committal
 const AIR_ACCEL: float = 530.0

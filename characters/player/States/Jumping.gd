@@ -27,10 +27,14 @@ func _ready():
 	set_process_input(false)
 
 func start(player: Player):
+	# Set correct states
 	self.isHighJumping = true
 	player.bufferTimer = 0
 	player.velocity.y = -JUMP_FORCE
 	self.firstUpdate = true
+	
+	# play animations
+	player.animatedSprite.play("Jump")
 	
 func update(player: Player, delta: float):
 	# If the user is holding down the jump button, then do a high jump for this frame.
@@ -52,21 +56,11 @@ func update(player: Player, delta: float):
 	if self.isHighJumping and player.velocity.y < JUMP_VEL_LIMIT:
 		currentGrav = JUMP_GRAVITY
 		
+	# If we ARENT high jumping and the player canceled early, apply a heavier gravity
 	if !self.isHighJumping and player.velocity.y < 0 and self.canceledEarly:
 		currentGrav = CANCELLED_JUMP_GRAVITY
 	
 	var accel = player.getXAccel()
-	#if player.getDeconflictedDirectionalInput() == "move_left":
-	#	if player.velocity.x <= -Physics.MAX_RUN_SPEED:
-	#		accel = -Physics.RUN_ACCEL
-	#	else:
-	#		accel = -Physics.AIR_ACCEL
-	#		
-	#elif player.getDeconflictedDirectionalInput() == "move_right":
-	#	if player.velocity.x >= Physics.MAX_RUN_SPEED:
-	#		accel = Physics.RUN_ACCEL
-	#	else:
-	#		accel = Physics.AIR_ACCEL
 	
 	# Snap vector must be zero on the first frame to allow the jump to happen at all
 	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
@@ -90,13 +84,12 @@ func transitionToNewStateIfNecessary(player, delta):
 		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
 		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
 		var goToWallDrag = false
-		if !self.firstUpdate && player.justJumpedOrBufferedAJump() && (player.collidedWithLeftWall() || player.collidedWithRightWall()):
+		if !self.firstUpdate && Common.shouldWallJump(player):
 			player.transition_to_state(player.get_node("States/WallJumping"))
-		elif player.velocity.y >= 0 && (player.collidedWithLeftWall() && Input.is_action_pressed("move_left") || player.collidedWithRightWall() && Input.is_action_pressed("move_right")):
+		elif Common.shouldWallDrag(player):
 			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
-			print("WALL DRAFG")
-			var wallDraggingState = player.get_node("States/WallDragging")
-			player.transition_to_state(wallDraggingState)	
+			player.transition_to_state(player.get_node("States/WallDragging"))	
+
 
 func end(player):
 	self.isHighJumping = false

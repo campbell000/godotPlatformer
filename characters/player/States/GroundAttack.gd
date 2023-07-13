@@ -1,28 +1,33 @@
 extends State
-class_name OnGround
+class_name GroundAttack
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+var timeElapsed = 0
+
+var ATTACK_DURATION = 0.4
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_process(false)
-	set_physics_process(false)
-	set_process_input(false)
+	pass # Replace with function body.
+
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
-	pass
+	self.timeElapsed = 0
+	player.animatedSprite.play("GroundAttack")
 	
+# Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	# Handle run/idle animations
-	if Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
-		player.animatedSprite.play("Run")
-	elif !Input.is_action_pressed("move_left") and !Input.is_action_pressed("move_right"):
-		player.animatedSprite.play("Idle")
-	
-	# Put into common because it's shared with GroundAttack
 	Common.handleGroundMovement(player, delta)
 	
+	self.timeElapsed += delta	
 	self.transitionToNewStateIfNecessary(player, delta)
 
+		
 func transitionToNewStateIfNecessary(player, delta):
 	# If we're not on the floor, and we're not jumping, then we're falling, no matter what
 	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
@@ -33,12 +38,11 @@ func transitionToNewStateIfNecessary(player, delta):
 		# otherwise, if we're jumping (or the user buffered a jump), transition
 		if player.justJumpedOrBufferedAJump():
 			player.transition_to_state(player.get_node("States/Jumping"))
-		elif Input.is_action_pressed("attack"):
-			var groundAttack = player.get_node("States/GroundAttack");
-			player.transition_to_state(player.get_node("States/GroundAttack"))
-
-func getName():
-	return "OnGround"
+	if self.timeElapsed >= ATTACK_DURATION:
+		player.transition_to_state(player.get_node("States/OnGround"))
 	
-func end(character):
-	character.isGainingInertia = false
+func _on_AnimationPlayer_animation_finished(anim):
+	print("FINISHED!")
+			
+func getName():
+	return "Ground Attack"
