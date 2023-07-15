@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://characters/player/States/GroundAttack.gd" id="8"]
 
 [sub_resource type="RectangleShape2D" id="25"]
-size = Vector2(10, 29)
+size = Vector2(6.5, 14)
 
 [sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
 font_size = 12
@@ -190,7 +190,6 @@ tracks/1/keys = {
 [sub_resource type="Animation" id="24"]
 resource_name = "WallJump"
 length = 0.36
-loop_mode = 1
 step = 0.09
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -261,7 +260,7 @@ _data = {
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1.5)
+position = Vector2(0, 2)
 shape = SubResource("25")
 
 [node name="RaycastContainer" type="Marker2D" parent="."]

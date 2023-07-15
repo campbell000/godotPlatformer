@@ -95,17 +95,8 @@ func collidedWithRightWall():
 func _collidedWithWall(raycast: RayCast2D, label):
 	# IMPORTANT! NEED TO ENSURE TILEMAP IS NOT OFFSET IN THE ROOT NODE, OTHERWISE WORLD_TO_MAP RETURNS WRONG CELLS!!!!!!!!!
 	var hit_collider = raycast.get_collider()
-	return false
-	#if hit_collider is TileMap:
-	#	var globalCollisionPoint = raycast.get_collision_point()
-	#	var tile_pos = hit_collider.local_to_map(globalCollisionPoint)
-	#	var _tile_coords = hit_collider.get_cell_autotile_coord(tile_pos[0], tile_pos[1])
-	#	var int_tile_coords = [int(_tile_coords[0]), int(_tile_coords[1])]
-	#	if Physics.INVALID_WALL_JUMP_CELLS.has(int_tile_coords[0]) and Physics.INVALID_WALL_JUMP_CELLS[int_tile_coords[0]].has(int_tile_coords[1]):
-	#		return false
-	#	else: 
-	#		print("HIT: "+label)
-	#		return true
+	if hit_collider != null and hit_collider is TileMap:
+		return true
 
 func isRunningDownHill():
 	if self.is_on_floor():

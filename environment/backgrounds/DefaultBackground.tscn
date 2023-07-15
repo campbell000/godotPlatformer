@@ -1,13 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://gn7bn77pv6rp"]
 
-[ext_resource path="res://asset_files/backgrounds/DefaultBackrgound.png" type="Texture2D" id=1]
+[ext_resource type="Texture2D" uid="uid://sh0bxanoi5av" path="res://asset_files/backgrounds/DefaultBackrgound.png" id="1"]
 
 [node name="ParallaxBackground" type="ParallaxBackground"]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer"]
-scale = Vector2( 100, 100 )
-texture = ExtResource( 1 )
+scale = Vector2(100, 100)
+texture = ExtResource("1")
 region_enabled = true
-region_rect = Rect2( 0, 0, 384, 216 )
+region_rect = Rect2(0, 0, 384, 216)
