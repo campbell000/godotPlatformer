@@ -29,7 +29,7 @@ func _ready():
 	self.player = get_node(Globals.PLAYER_NODE_PATH)
 	self.target = self.player
 	self.position.x = self.target.position.x
-	self.GAME_WIDTH = ProjectSettings.get_setting("display/window/size/width")
+	self.GAME_WIDTH = ProjectSettings.get_setting("display/window/size/viewport_width")
 	self.LINE_UNIT_DISTANCE = self.GAME_WIDTH / self.NUMBER_OF_LINES
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -116,18 +116,18 @@ func handleDebugCamera(delta):
 		
 	# If debug, disable drag so the debug camera isn't annoying to use
 	if self.is_debug_freeform:
-		self.drag_margin_h_enabled = false
-		self.drag_margin_v_enabled = false
+		self.drag_horizontal_enabled = false
+		self.drag_vertical_enabled = false
 	else:
-		self.drag_margin_h_enabled = true
-		self.drag_margin_v_enabled = true
+		self.drag_horizontal_enabled = true
+		self.drag_vertical_enabled = true
 	
 func getCameraYDisplacement():
 	# Determine the displacement required to move the camera so that there's N number of tiles visible below the target
-	var gameHeight = ProjectSettings.get_setting("display/window/size/height")
+	var gameHeight = ProjectSettings.get_setting("display/window/size/viewport_height")
 	print(gameHeight)
 	var collisionShape = target.get_node("CollisionShape2D") as CollisionShape2D
 	var distanceFromBottom = NUM_TILES_FROM_BOTTOM_OF_VIEWPORT * Globals.TILE_SIZE
-	var playerDisplace = collisionShape.transform.y.y + (collisionShape.shape.extents.y)
+	var playerDisplace = collisionShape.transform.y.y + (collisionShape.shape.size.y)
 	return (gameHeight / 2) - distanceFromBottom - playerDisplace
 

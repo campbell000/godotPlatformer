@@ -1,0 +1,5 @@
+res://default_env.tres
+res://levels/DemoLevel.tscn
+res://characters/player/Player.gd
+res://characters/player/Player.tscn
+res://objects/Camera.gd

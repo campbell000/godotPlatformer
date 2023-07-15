@@ -66,7 +66,12 @@ func process_movement(player, delta, options={}):
 	# Apply Gravity to the char's y pos.
 	player.velocity.y += gravity * delta
 	
-	player.velocity = player.move_and_slide_with_snap(player.velocity, snap_vector, Vector2.UP, true)
+	player.set_velocity(player.velocity)
+	# TODOConverter40 looks that snap in Godot 4.0 is float, not vector like in Godot 3 - previous value `snap_vector`
+	player.set_up_direction(Vector2.UP)
+	player.set_floor_stop_on_slope_enabled(true)
+	player.move_and_slide()
+	player.velocity = player.velocity
 	
 # TODO: Better, faster way to do this?
 const INVALID_WALL_JUMP_CELLS = {

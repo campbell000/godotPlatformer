@@ -18,14 +18,21 @@
 #	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #	SOFTWARE.
 
-extends Spatial
+extends Node3D
 
-export (NodePath) var target: NodePath setget set_target, get_target
+@export
+var target: NodePath:
+	get:
+		return target
+	set(v):
+		target = v
+		set_target()
 
-var _m_Target: Spatial
 
-var _m_trCurr: Transform
-var _m_trPrev: Transform
+var _m_Target: Node3D
+
+var _m_trCurr: Transform3D
+var _m_trPrev: Transform3D
 
 const SF_ENABLED = 1 << 0
 const SF_TRANSLATE = 1 << 1
@@ -33,13 +40,20 @@ const SF_BASIS = 1 << 2
 const SF_SLERP = 1 << 3
 const SF_INVISIBLE = 1 << 4
 
-export (int, FLAGS, "enabled", "translate", "basis", "slerp") var flags: int = SF_ENABLED | SF_TRANSLATE | SF_BASIS setget _set_flags, _get_flags
+@export_flags("enabled", "translate", "basis", "slerp") var flags: int = SF_ENABLED | SF_TRANSLATE | SF_BASIS:
+	set(v):
+		flags = v
+		# we may have enabled or disabled
+		_SetProcessing()
+	get:
+		return flags
+
 
 ##########################################################################################
 # USER FUNCS
 
 
-# call this on e.g. starting a level, AFTER moving the target
+# call this checked e.g. starting a level, AFTER moving the target
 # so we can update both the previous and current values
 func teleport():
 	var temp_flags = flags
@@ -68,20 +82,16 @@ func is_enabled():
 
 
 func _ready():
-	_m_trCurr = Transform()
-	_m_trPrev = Transform()
+	_m_trCurr = Transform3D()
+	_m_trPrev = Transform3D()
 	set_process_priority(100)
+	set_as_top_level(true)
 	Engine.set_physics_jitter_fix(0.0)
 
 
-func set_target(new_value):
-	target = new_value
+func set_target():
 	if is_inside_tree():
 		_FindTarget()
-
-
-func get_target():
-	return target
 
 
 func _set_flags(new_value):
@@ -112,7 +122,7 @@ func _enter_tree():
 
 func _notification(what):
 	match what:
-		# invisible turns off processing
+		# invisible turns unchecked processing
 		NOTIFICATION_VISIBILITY_CHANGED:
 			_ChangeFlags(SF_INVISIBLE, is_visible_in_tree() == false)
 			_SetProcessing()
@@ -123,45 +133,37 @@ func _RefreshTransform():
 		return
 
 	_m_trPrev = _m_trCurr
-	_m_trCurr = _m_Target.transform
-
-
-func _IsTargetParent(node):
-	if node == _m_Target:
-		return true  # disallow
-
-	var parent = node.get_parent()
-	if parent:
-		return _IsTargetParent(parent)
-
-	return false
-
+	_m_trCurr = _m_Target.global_transform
 
 func _FindTarget():
 	_m_Target = null
+	
+	# If no target has been assigned in the property,
+	# default to using the parent as the target.
 	if target.is_empty():
+		var parent = get_parent_node_3d()
+		if parent:
+			_m_Target = parent
 		return
-
+		
 	var targ = get_node(target)
 
 	if ! targ:
-		printerr("ERROR SmoothingNode : Target " + target + " not found")
+		printerr("ERROR SmoothingNode : Target " + str(target) + " not found")
 		return
 
-	if not targ is Spatial:
-		printerr("ERROR SmoothingNode : Target " + target + " is not spatial")
+	if not targ is Node3D:
+		printerr("ERROR SmoothingNode : Target " + str(target) + " is not node 3D")
 		target = ""
 		return
 
 	# if we got to here targ is a spatial
 	_m_Target = targ
 
-	# do a final check
-	# is the target a parent or grandparent of the smoothing node?
-	# if so, disallow
-	if _IsTargetParent(self):
-		var msg = _m_Target.get_name() + " assigned to " + self.get_name() + "]"
-		printerr("ERROR SmoothingNode : Target should not be a parent or grandparent [", msg)
+	# certain targets are disallowed
+	if _m_Target == self:
+		var msg = str(_m_Target.get_name()) + " assigned to " + str(self.get_name()) + "]"
+		printerr("ERROR SmoothingNode : Target should not be self [", msg)
 
 		# error message
 		#OS.alert("Target cannot be a parent or grandparent in the scene tree.", "SmoothingNode")
@@ -185,7 +187,7 @@ func _HasTarget() -> bool:
 func _process(_delta):
 
 	var f = Engine.get_physics_interpolation_fraction()
-	var tr: Transform = Transform()
+	var tr: Transform3D = Transform3D()
 
 	# translate
 	if _TestFlags(SF_TRANSLATE):
@@ -208,9 +210,9 @@ func _physics_process(_delta):
 
 func _LerpBasis(from: Basis, to: Basis, f: float) -> Basis:
 	var res: Basis = Basis()
-	res.x = from.x.linear_interpolate(to.x, f)
-	res.y = from.y.linear_interpolate(to.y, f)
-	res.z = from.z.linear_interpolate(to.z, f)
+	res.x = from.x.lerp(to.x, f)
+	res.y = from.y.lerp(to.y, f)
+	res.z = from.z.lerp(to.z, f)
 	return res
 
 

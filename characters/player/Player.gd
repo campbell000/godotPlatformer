@@ -6,7 +6,6 @@ class_name Player
 const JUMP_BUFFER_TIME_WINDOW = 0.08333
 
 var bufferTimer = 0.0
-var velocity: Vector2 = Vector2()
 var prevVector: Vector2 = Vector2()
 var isMoving: bool = false
 var isFacingForward: bool = true
@@ -20,18 +19,18 @@ var debugAccel = 0
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
-onready var animatedSprite = $AnimatedSprite
-onready var sprite = $Sprite
-onready var collisionShape = $CollisionShape2D
-onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
-onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
-onready var debugStateLabel = $DebugStateLabel
-onready var debugHUD = $CanvasLayer/DebugHUD
+@onready var animatedSprite = $AnimatedSprite2D
+@onready var sprite = $Sprite2D
+@onready var collisionShape = $CollisionShape2D
+@onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
+@onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
+@onready var debugStateLabel = $DebugStateLabel
+@onready var debugHUD = $CanvasLayer/DebugHUD
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.state = self.get_node("States/OnGround")
-	self.sprite = $Sprite
+	self.sprite = $Sprite2D
 	self.state.start(self)
 	pass # Replace with function body.
 
@@ -96,16 +95,17 @@ func collidedWithRightWall():
 func _collidedWithWall(raycast: RayCast2D, label):
 	# IMPORTANT! NEED TO ENSURE TILEMAP IS NOT OFFSET IN THE ROOT NODE, OTHERWISE WORLD_TO_MAP RETURNS WRONG CELLS!!!!!!!!!
 	var hit_collider = raycast.get_collider()
-	if hit_collider is TileMap:
-		var globalCollisionPoint = raycast.get_collision_point()
-		var tile_pos = hit_collider.world_to_map(globalCollisionPoint)
-		var _tile_coords = hit_collider.get_cell_autotile_coord(tile_pos[0], tile_pos[1])
-		var int_tile_coords = [int(_tile_coords[0]), int(_tile_coords[1])]
-		if Physics.INVALID_WALL_JUMP_CELLS.has(int_tile_coords[0]) and Physics.INVALID_WALL_JUMP_CELLS[int_tile_coords[0]].has(int_tile_coords[1]):
-			return false
-		else: 
-			print("HIT: "+label)
-			return true
+	return false
+	#if hit_collider is TileMap:
+	#	var globalCollisionPoint = raycast.get_collision_point()
+	#	var tile_pos = hit_collider.local_to_map(globalCollisionPoint)
+	#	var _tile_coords = hit_collider.get_cell_autotile_coord(tile_pos[0], tile_pos[1])
+	#	var int_tile_coords = [int(_tile_coords[0]), int(_tile_coords[1])]
+	#	if Physics.INVALID_WALL_JUMP_CELLS.has(int_tile_coords[0]) and Physics.INVALID_WALL_JUMP_CELLS[int_tile_coords[0]].has(int_tile_coords[1]):
+	#		return false
+	#	else: 
+	#		print("HIT: "+label)
+	#		return true
 
 func isRunningDownHill():
 	if self.is_on_floor():

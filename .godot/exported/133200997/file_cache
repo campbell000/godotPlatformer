@@ -1,0 +1,5 @@
+res://characters/player/Player.tscn::89710365b1d5febb7d21d6592303c8bc::1689434077::res://.godot/exported/133200997/export-2e8a2acef39243624e8167d16be0ff8c-Player.scn
+res://environment/backgrounds/DefaultBackground.tscn::1d9201b532fcf1555641a55e0b371698::1689432611::res://.godot/exported/133200997/export-8aba89f3895cdde8a73c2d70372b9ad5-DefaultBackground.scn
+res://environment/tilemaps/DefaultForegroundTilemap.tscn::04054410b6b02d9e2db35fe98b767914::1689432611::res://.godot/exported/133200997/export-3c378f0b3a2216f2e153a1c51700d573-DefaultForegroundTilemap.scn
+res://levels/DemoLevel.tscn::ae1e8c074deefcdb0b96c16322255f81::1689434077::res://.godot/exported/133200997/export-d664918718ac7ef634f8583f7c7794d2-DemoLevel.scn
+res://default_env.tres::d847055620d025f73c8034805785b1bc::1689434077::res://.godot/exported/133200997/export-7cf3fd67ad9f55210191d77b582b8209-default_env.res
