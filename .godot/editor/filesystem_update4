@@ -1,8 +1,6 @@
 res://default_env.tres
 res://levels/DemoLevel.tscn
 res://characters/player/Player.tscn
-res://characters/player/Player.gd
 res://environment/tilemaps/DefaultForegroundTilemap.tscn
 res://environment/backgrounds/DefaultBackground.tscn
 res://objects/Physics.gd
-res://characters/player/States/WallDragging.gd
