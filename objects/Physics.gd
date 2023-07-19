@@ -67,6 +67,7 @@ func process_movement(player, delta, options={}):
 	player.velocity.y += gravity * delta
 	
 	# TODOConverter40 looks that snap in Godot 4.0 is float, not vector like in Godot 3 - previous value `snap_vector`
+	# This SORT OF fixes it?
 	player.set_up_direction(player.get_floor_normal())
 	player.floor_snap_length = 32
 	player.set_floor_stop_on_slope_enabled(true)
