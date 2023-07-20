@@ -24,8 +24,11 @@ const MAX_RUN_SPEED_SLOPE: float = 500.0
 
 const NO_SPEED_LIMIT = 42069
 
+var aaa =null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.aaa = null
 	pass # Replace with function body.
 	
 func process_movement(player, delta, options={}):
@@ -55,11 +58,18 @@ func process_movement(player, delta, options={}):
 			player.velocity.x = maxSpeed
 		if player.velocity.x < -maxSpeed:
 			player.velocity.x = -maxSpeed
-			
+
+	# If on a slope, then allow speed increases
+	var floor_normal = player.get_floor_normal()
+	if floor_normal.x != 0:
+		player.velocity.x = player.velocity.x + (floor_normal.x * 10) 
+	
 	# Dont allow tiny numbers. Otherwise, the object will keep inching forward
 	if stopSmall and player.velocity.x < 2 and player.velocity.x > -2:
 		player.velocity.x = 0
-			
+	
+	
+	
 	###########################################
 	# Vertical Movement
 	###########################################
@@ -68,10 +78,12 @@ func process_movement(player, delta, options={}):
 	
 	# TODOConverter40 looks that snap in Godot 4.0 is float, not vector like in Godot 3 - previous value `snap_vector`
 	# This SORT OF fixes it?
-	player.set_up_direction(player.get_floor_normal())
-	player.floor_snap_length = 32
+	player.floor_snap_length = 8
+	player.floor_constant_speed = true
 	player.set_floor_stop_on_slope_enabled(true)
 	player.move_and_slide()
+
+	
 	
 # TODO: Better, faster way to do this?
 const INVALID_WALL_JUMP_CELLS = {
