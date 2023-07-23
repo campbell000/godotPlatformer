@@ -36,7 +36,6 @@ func process_movement(player, delta, options={}):
 	var dragVal = options.get("noMovementDrag", 0)
 	var gravity = options.get("gravity", GRAVITY)
 	var maxSpeed = options.get("maxSpeed", NO_SPEED_LIMIT)
-	var snap_vector = options.get("snapVector", DOWN_SNAP)
 	var maintainInertiaDrag =  options.get("maintainInertiaDrag", 0)
 	var stopSmall = options.get("stopSmall", false)
 	
@@ -44,22 +43,22 @@ func process_movement(player, delta, options={}):
 	# Horizontal Movement
 	###########################################
 	player.velocity.x = player.velocity.x + (xAccel * delta)
-	if dragVal != 0:
-		player.velocity.x = player.velocity.x / (1 + (dragVal * delta))
 	
 	if player.isGainingInertia:
 		player.velocity.x = player.velocity.x / (1 + (GAIN_INERTIA_DRAG * delta))
 	elif !player.isGainingInertia and player.isMaintainingInertia:
 		var oldV = player.velocity.x
 		player.velocity.x = player.velocity.x / (1 + (maintainInertiaDrag * delta))
+	elif dragVal != 0:
+		player.velocity.x = player.velocity.x / (1 + (dragVal * delta))
 		
 	if maxSpeed != NO_SPEED_LIMIT and !player.isMaintainingInertia:
 		if player.velocity.x > maxSpeed:
 			player.velocity.x = maxSpeed
 		if player.velocity.x < -maxSpeed:
 			player.velocity.x = -maxSpeed
-
-	# If on a slope, then allow speed increases
+	
+	# If on a slope, then modify speed based on slope
 	var floor_normal = player.get_floor_normal()
 	if floor_normal.x != 0:
 		player.velocity.x = player.velocity.x + (floor_normal.x * 10) 
@@ -67,8 +66,6 @@ func process_movement(player, delta, options={}):
 	# Dont allow tiny numbers. Otherwise, the object will keep inching forward
 	if stopSmall and player.velocity.x < 2 and player.velocity.x > -2:
 		player.velocity.x = 0
-	
-	
 	
 	###########################################
 	# Vertical Movement
@@ -78,8 +75,6 @@ func process_movement(player, delta, options={}):
 	
 	# TODOConverter40 looks that snap in Godot 4.0 is float, not vector like in Godot 3 - previous value `snap_vector`
 	# This SORT OF fixes it?
-	player.floor_snap_length = 8
-	player.floor_constant_speed = true
 	player.set_floor_stop_on_slope_enabled(true)
 	player.move_and_slide()
 

@@ -6,16 +6,12 @@ class_name Player
 const JUMP_BUFFER_TIME_WINDOW = 0.08333
 
 var bufferTimer = 0.0
-var prevVector: Vector2 = Vector2()
-var isMoving: bool = false
 var isFacingForward: bool = true
-var allowedUnlimitedSpeed: bool = false
-var isReturningToNormalSpeed: bool = false
 var currentDirection = null
-var isMaintainingInertia: bool = false
-var isGainingInertia: bool = false
-var maintainInertiaDrag: float = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
+var isBreakingSpeedLimit: bool = false
+var speedLimitBreakDrag: float = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
 var debugAccel = 0
+var storedWallJumpSpeed = 0
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -31,6 +27,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 func _ready():
 	self.state = self.get_node("States/OnGround")
 	self.sprite = $Sprite2D
+	self.floor_snap_length = 16
 	self.state.start(self)
 	pass # Replace with function body.
 

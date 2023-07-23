@@ -29,6 +29,8 @@ func _ready():
 func start(player: Player):
 	# Set correct states
 	self.isHighJumping = true
+	player.storedWallJumpSpeed = player.velocity.x
+	print(player.storedWallJumpSpeed)
 	player.bufferTimer = 0
 	player.velocity.y = -JUMP_FORCE
 	self.firstUpdate = true

@@ -1,7 +1,10 @@
 res://default_env.tres
-res://characters/player/Player.tscn
-res://objects/Physics.gd
-res://characters/player/Player.gd
 res://levels/DemoLevel.tscn
+res://characters/player/Player.tscn
 res://environment/tilemaps/DefaultForegroundTilemap.tscn
 res://environment/backgrounds/DefaultBackground.tscn
+res://objects/Physics.gd
+res://characters/player/Player.gd
+res://characters/player/States/Jumping.gd
+res://characters/player/States/WallJumping.gd
+res://characters/player/States/Common.gd
