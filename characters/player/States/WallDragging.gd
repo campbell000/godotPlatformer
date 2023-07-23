@@ -2,6 +2,8 @@ extends State
 class_name WallDragging
 
 const WALL_DRAG = 75.0
+var dragTimer = 0
+var STORED_SPEED_CUTOFF = 0.25
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,10 +14,15 @@ func _ready():
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
 	player.animatedSprite.play("WallSlide")
+	dragTimer = 0
 	pass
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
+	self.dragTimer += delta
+	if self.dragTimer > STORED_SPEED_CUTOFF:
+		player.storedWallJumpSpeed = 0
+		
 	# Apply a constant downward velocity
 	player.velocity.y = WALL_DRAG
 	player.set_velocity(player.velocity)

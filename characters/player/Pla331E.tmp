@@ -1,0 +1,317 @@
+[gd_scene load_steps=21 format=3 uid="uid://b4jxjo2fu7drq"]
+
+[ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
+[ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
+[ext_resource type="Script" path="res://characters/player/States/WallDragging.gd" id="3"]
+[ext_resource type="Script" path="res://characters/player/States/WallJumping.gd" id="4"]
+[ext_resource type="Script" path="res://characters/player/States/Jumping.gd" id="5"]
+[ext_resource type="Script" path="res://characters/player/States/OnGround.gd" id="6"]
+[ext_resource type="Script" path="res://characters/player/States/Falling.gd" id="7"]
+[ext_resource type="Script" path="res://characters/player/States/GroundAttack.gd" id="8"]
+
+[sub_resource type="RectangleShape2D" id="25"]
+size = Vector2(10, 29)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
+font_size = 12
+
+[sub_resource type="Animation" id="27"]
+resource_name = "AirAttack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [96, 97, 98, 99]
+}
+
+[sub_resource type="Animation" id="22"]
+resource_name = "Fall"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [22, 23]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="26"]
+resource_name = "GroundAttack"
+length = 0.4
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [47, 48, 49, 50, 51, 52]
+}
+
+[sub_resource type="Animation" id="18"]
+resource_name = "Idle"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="21"]
+resource_name = "Jump"
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.15, 0.3),
+"transitions": PackedFloat32Array(1e-05, 1e-05, 1e-05, 1e-05),
+"update": 1,
+"values": [Vector2(0, -1.5), Vector2(0, -1.5), Vector2(0, 0), Vector2(0, 5)]
+}
+
+[sub_resource type="Animation" id="19"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="20"]
+resource_name = "Run"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="24"]
+resource_name = "WallJump"
+length = 0.36
+loop_mode = 1
+step = 0.09
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.09, 0.18, 0.27),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="23"]
+resource_name = "WallSlide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [34]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x28"]
+_data = {
+"AirAttack": SubResource("27"),
+"Fall": SubResource("22"),
+"GroundAttack": SubResource("26"),
+"Idle": SubResource("18"),
+"Jump": SubResource("21"),
+"RESET": SubResource("19"),
+"Run": SubResource("20"),
+"WallJump": SubResource("24"),
+"WallSlide": SubResource("23")
+}
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("25")
+
+[node name="RaycastContainer" type="Marker2D" parent="."]
+
+[node name="LeftRaycast" type="RayCast2D" parent="RaycastContainer"]
+position = Vector2(-8, -2)
+scale = Vector2(0.5, 1)
+target_position = Vector2(0, 18)
+
+[node name="RightRaycast" type="RayCast2D" parent="RaycastContainer"]
+position = Vector2(8, -2)
+scale = Vector2(0.5, 1)
+target_position = Vector2(0, 18)
+
+[node name="States" type="Node2D" parent="."]
+
+[node name="OnGround" type="Node2D" parent="States"]
+script = ExtResource("6")
+
+[node name="Falling" type="Node2D" parent="States"]
+script = ExtResource("7")
+
+[node name="Jumping" type="Node2D" parent="States"]
+script = ExtResource("5")
+
+[node name="WallDragging" type="Node2D" parent="States"]
+script = ExtResource("3")
+
+[node name="WallJumping" type="Node2D" parent="States"]
+script = ExtResource("4")
+
+[node name="GroundAttack" type="Node2D" parent="States"]
+script = ExtResource("8")
+
+[node name="DebugStateLabel" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -39.0
+offset_right = 58.0
+offset_bottom = -19.0
+scale = Vector2(0.5, 0.5)
+text = "TEST"
+label_settings = SubResource("LabelSettings_qeqnq")
+
+[node name="AnimatedSprite2D" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_y8x28")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1")
+offset = Vector2(0, -1.5)
+hframes = 7
+vframes = 16

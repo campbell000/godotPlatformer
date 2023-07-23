@@ -8,10 +8,9 @@ const JUMP_BUFFER_TIME_WINDOW = 0.08333
 var bufferTimer = 0.0
 var isFacingForward: bool = true
 var currentDirection = null
-var isBreakingSpeedLimit: bool = false
-var speedLimitBreakDrag: float = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
 var debugAccel = 0
 var storedWallJumpSpeed = 0
+var isBreakingSpeedLimit = false
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -27,8 +26,9 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 func _ready():
 	self.state = self.get_node("States/OnGround")
 	self.sprite = $Sprite2D
-	self.floor_snap_length = 16
+	self.floor_snap_length = 8
 	self.state.start(self)
+	self.set_floor_stop_on_slope_enabled(true)
 	pass # Replace with function body.
 
 func _process(delta):
@@ -52,11 +52,9 @@ func _physics_process(delta):
 	self.handleDebugHUD()
 	
 func handleDebugHUD():
-	var s = "Maintaining: "+str(self.isMaintainingInertia)
-	s += "\nGaining: "+str(self.isGainingInertia)
-	s += "\nSpeed: "+str(round(self.velocity.x))
+	var s = "\nSpeed: "+str(round(self.velocity.x))
 	s += "\nAccel: "+str(round(debugAccel))
-	s += "\nDrag: "+str(self.maintainInertiaDrag)
+	s += "\nBreaking Speed Limit: "+str(self.isBreakingSpeedLimit)
 	self.debugHUD.text = s
 	
 func justJumpedOrBufferedAJump():
@@ -76,13 +74,6 @@ func _handlePlayerStateAfterMove(delta):
 	else:
 		self.sprite.rotation = 0
 		
-	if self.velocity.x <= Physics.MAX_RUN_SPEED and self.velocity.x >= -Physics.MAX_RUN_SPEED:
-		self.isMaintainingInertia = false
-		self.maintainInertiaDrag = Physics.INITIAL_MAINTAIN_INERTIA_DRAG
-		
-	if self.isMaintainingInertia and !self.isGainingInertia:
-		self.maintainInertiaDrag = self.maintainInertiaDrag * (1 + (INERTIA_DRAG_INCREASE_PER_MS * delta))
-		
 func collidedWithLeftWall():
 	return self._collidedWithWall(self.leftRaycast, "left")
 			
@@ -90,10 +81,13 @@ func collidedWithRightWall():
 	return self._collidedWithWall(self.rightRaycast, "right")
 			
 func _collidedWithWall(raycast: RayCast2D, label):
-	# IMPORTANT! NEED TO ENSURE TILEMAP IS NOT OFFSET IN THE ROOT NODE, OTHERWISE WORLD_TO_MAP RETURNS WRONG CELLS!!!!!!!!!
 	var hit_collider = raycast.get_collider()
 	if hit_collider != null and hit_collider is TileMap:
-		return true
+		var globalCollisionPoint = raycast.get_collision_point()
+		var tilemap: TileMap = hit_collider
+		var cell = tilemap.local_to_map(globalCollisionPoint)
+		var data = tilemap.get_cell_tile_data(0, cell)
+		return !data.get_custom_data("cannotWallJump")
 
 func isRunningDownHill():
 	if self.is_on_floor():

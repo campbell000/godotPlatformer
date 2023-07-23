@@ -8,3 +8,9 @@ res://characters/player/Player.gd
 res://characters/player/States/Jumping.gd
 res://characters/player/States/WallJumping.gd
 res://characters/player/States/Common.gd
+res://characters/player/States/OnGround.gd
+res://characters/player/States/Falling.gd
+res://objects/Camera.gd
+res://characters/Character.gd
+res://characters/player/States/GroundAttack.gd
+res://characters/player/States/WallDragging.gd

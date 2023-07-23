@@ -42,7 +42,7 @@ func transitionToNewStateIfNecessary(player, delta):
 		player.transition_to_state(player.get_node("States/OnGround"))
 	
 func _on_AnimationPlayer_animation_finished(anim):
-	print("FINISHED!")
+	pass
 			
 func getName():
 	return "Ground Attack"

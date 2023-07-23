@@ -18,17 +18,16 @@ func _ready():
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
 	player.animatedSprite.play("Fall")
+	player.storedWallJumpSpeed = 0
 	self.ledgeGraceTimer = LEDGE_GRACE_PERIOD
 	self.cameFromGround = false
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
 	# Allow limited acceleration if holding left or right in the air
-	var accel = player.getXAccel()
-		
-	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
-	
-	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": Physics.GRAVITY, "maxSpeed": Physics.MAX_RUN_SPEED, "snapVector": Physics.DOWN_SNAP, "maintainInertiaDrag": player.maintainInertiaDrag})
+	if absf(player.velocity.x) > absf(Physics.MAX_RUN_SPEED):
+		player.storedWallJumpSpeed = player.velocity.x
+	Common.handleAirMovement(player, delta)
 	self.transitionToNewStateIfNecessary(player, delta)
 	
 	# Keep track of the ledge grace time.

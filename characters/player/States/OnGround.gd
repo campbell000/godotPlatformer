@@ -39,6 +39,3 @@ func transitionToNewStateIfNecessary(player, delta):
 
 func getName():
 	return "OnGround"
-	
-func end(character):
-	character.isGainingInertia = false

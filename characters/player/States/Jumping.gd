@@ -29,8 +29,7 @@ func _ready():
 func start(player: Player):
 	# Set correct states
 	self.isHighJumping = true
-	player.storedWallJumpSpeed = player.velocity.x
-	print(player.storedWallJumpSpeed)
+	player.storedWallJumpSpeed = 0
 	player.bufferTimer = 0
 	player.velocity.y = -JUMP_FORCE
 	self.firstUpdate = true
@@ -42,6 +41,8 @@ func update(player: Player, delta: float):
 	# If the user is holding down the jump button, then do a high jump for this frame.
 	# If they aren't, then don't allow a high jump for the rest of the jump, even if the
 	# user holds down jump again
+	if absf(player.velocity.x) > absf(Physics.MAX_RUN_SPEED):
+		player.storedWallJumpSpeed = player.velocity.x
 	var currentGrav = Physics.GRAVITY
 	if self.isHighJumping:
 		if !Input.is_action_pressed("jump"):
@@ -62,14 +63,7 @@ func update(player: Player, delta: float):
 	if !self.isHighJumping and player.velocity.y < 0 and self.canceledEarly:
 		currentGrav = CANCELLED_JUMP_GRAVITY
 	
-	var accel = player.getXAccel()
-	
-	# Snap vector must be zero on the first frame to allow the jump to happen at all
-	var snapVector = Vector2.ZERO if self.firstUpdate else Physics.DOWN_SNAP
-	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
-	var maxRunSpeed = Physics.MAX_RUN_SPEED
-	
-	Physics.process_movement(player, delta, {"xAccel": accel, "noMovementDrag": dragVal, "gravity": currentGrav, "maxSpeed": maxRunSpeed, "snapVector": snapVector, "maintainInertiaDrag": player.maintainInertiaDrag})
+	Common.handleAirMovement(player, delta, currentGrav)
 	
 	if player.velocity.y >= 0:
 		player.animatedSprite.play("Fall")

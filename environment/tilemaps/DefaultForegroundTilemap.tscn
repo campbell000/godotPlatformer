@@ -29657,8 +29657,9 @@ texture = ExtResource("1")
 18:41/0 = 0
 18:41/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 18:41/0/physics_layer_0/angular_velocity = 0.0
-18:41/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -6, -8, -6, -8, -8, 8, -8)
+18:41/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -6, -8, -6, -8, -8, 1, -8, 8, -8)
 18:41/0/physics_layer_0/polygon_0/one_way = true
+18:41/0/custom_data_0 = true
 18:41/1 = 1
 18:41/1/flip_h = true
 18:41/1/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -31511,6 +31512,8 @@ margins = Vector2i(272, 640)
 
 [sub_resource type="TileSet" id="1"]
 physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "cannotWallJump"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_ygkgr")
 sources/1 = SubResource("TileSetAtlasSource_pdgtb")
 

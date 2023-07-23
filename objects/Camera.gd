@@ -7,7 +7,7 @@ const DEBUG_CAMERA_SPEED = 300
 const NUM_TILES_FROM_BOTTOM_OF_VIEWPORT = 2
 const NUM_TILES_FROM_CENTER = 4
 const x_offset = 40
-const CAMERA_OFFSET_SPEED = 465
+const CAMERA_OFFSET_SPEED = 600
 const LINE_DISTANCE = 30
 var player
 var target
@@ -125,7 +125,6 @@ func handleDebugCamera(delta):
 func getCameraYDisplacement():
 	# Determine the displacement required to move the camera so that there's N number of tiles visible below the target
 	var gameHeight = ProjectSettings.get_setting("display/window/size/viewport_height")
-	print(gameHeight)
 	var collisionShape = target.get_node("CollisionShape2D") as CollisionShape2D
 	var distanceFromBottom = NUM_TILES_FROM_BOTTOM_OF_VIEWPORT * Globals.TILE_SIZE
 	var playerDisplace = collisionShape.transform.y.y + (collisionShape.shape.size.y)
