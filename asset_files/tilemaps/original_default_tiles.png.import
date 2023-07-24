@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du8f3nbhgsmam"
-path="res://.godot/imported/Retro-Lines-Tiles-transparent.png-8d482853e81bc59e1e5e9f1a8ea0a8e2.ctex"
+uid="uid://b81ltdpb35jx4"
+path="res://.godot/imported/original_default_tiles.png-df968fb57d93f5ee3a06c105bb45c801.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset_files/tilemaps/Retro-Lines-Tiles-transparent.png"
-dest_files=["res://.godot/imported/Retro-Lines-Tiles-transparent.png-8d482853e81bc59e1e5e9f1a8ea0a8e2.ctex"]
+source_file="res://asset_files/tilemaps/original_default_tiles.png"
+dest_files=["res://.godot/imported/original_default_tiles.png-df968fb57d93f5ee3a06c105bb45c801.ctex"]
 
 [params]
 

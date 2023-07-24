@@ -41,7 +41,6 @@ static func handleGroundMovement(player, delta: float):
 	elif player.isBreakingSpeedLimit and !playerIsNotTouchingMovementControls:
 		dragVal = Physics.BREAKING_SPEED_DRAG
 		
-	print(dragVal)
 	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed})
 	
 	Common.setBreakingSpeedLimitFlag(player)
@@ -62,9 +61,8 @@ static func handleAirMovement(player: Player, delta: float, gravity: float = Phy
 		elif accel < 0 && player.velocity.x < 0:
 			accel = 0
 			dragVal = Physics.AIR_BREAKING_SPEED_DRAG
-	print(dragVal)
+			
 	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": Physics.MAX_RUN_SPEED})
-	
 	Common.setBreakingSpeedLimitFlag(player)
 	
 static func setBreakingSpeedLimitFlag(player):
