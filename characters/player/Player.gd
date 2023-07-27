@@ -87,7 +87,7 @@ func _collidedWithWall(raycast: RayCast2D, label):
 		var tilemap: TileMap = hit_collider
 		var cell = tilemap.local_to_map(globalCollisionPoint)
 		var data = tilemap.get_cell_tile_data(0, cell)
-		return !data.get_custom_data("cannotWallJump")
+		return !data.get_custom_data("cannotWalljump")
 
 func isRunningDownHill():
 	if self.is_on_floor():
