@@ -1,7 +1,7 @@
 extends State
 class_name WallJumping
 
-const WALL_JUMP_FORCE = Vector2(Physics.MAX_RUN_SPEED, -300)
+const WALL_JUMP_FORCE = Vector2(Physics.MAX_RUN_SPEED, -295)
 
 var wallJumpCooldownTimer = 0
 const WALL_JUMP_COOLDOWN = (1/60.0) * 6
