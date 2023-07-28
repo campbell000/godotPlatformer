@@ -11,6 +11,7 @@ var currentDirection = null
 var debugAccel = 0
 var storedWallJumpSpeed = 0
 var isBreakingSpeedLimit = false
+var isInSpeedBoost = false
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -33,6 +34,7 @@ func _ready():
 
 func _process(delta):
 	pass
+
 		
 # All of this is placeholder physics logic
 func _physics_process(delta):
@@ -143,3 +145,25 @@ func getDeconflictedDirectionalInput():
 		return "move_left"
 	elif Input.is_action_pressed("move_right"):
 		return "move_right"
+
+func _on_area_2d_body_entered(body):
+	if body != null and body is TileMap:
+		var globalCollisionPoint = body.position
+		var tilemap: TileMap = body
+		var cell = tilemap.local_to_map(globalCollisionPoint)
+		var data = tilemap.get_cell_tile_data(0, cell)
+		return data != null and !data.get_custom_data("cannotWalljump")
+	self.isInSpeedBoost = true
+	print("2dbodyentered")
+
+
+func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	if body != null and body is TileMap:
+		var a = body.collider
+		var globalCollisionPoint = body.global_position
+		var tilemap: TileMap = body
+		var cell = tilemap.local_to_map(globalCollisionPoint)
+		var data = tilemap.get_cell_tile_data(0, cell)
+		return data != null and !data.get_custom_data("cannotWalljump")
+	self.isInSpeedBoost = true
+	print("2dbodyentered")

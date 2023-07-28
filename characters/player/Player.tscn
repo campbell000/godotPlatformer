@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4jxjo2fu7drq"]
+[gd_scene load_steps=22 format=3 uid="uid://b4jxjo2fu7drq"]
 
 [ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
 [ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
@@ -257,6 +257,9 @@ _data = {
 "WallSlide": SubResource("23")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4wpi5"]
+size = Vector2(12, 26)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("2")
 
@@ -315,3 +318,14 @@ texture = ExtResource("1")
 offset = Vector2(0, -1.5)
 hframes = 7
 vframes = 16
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_4wpi5")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
