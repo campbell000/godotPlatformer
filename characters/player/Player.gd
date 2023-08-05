@@ -11,7 +11,7 @@ var currentDirection = null
 var debugAccel = 0
 var storedWallJumpSpeed = 0
 var isBreakingSpeedLimit = false
-var isInSpeedBoost = false
+var speedBoostDir = 0
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -22,6 +22,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
 @onready var debugStateLabel = $DebugStateLabel
 @onready var debugHUD = $CanvasLayer/DebugHUD
+@onready var interactiveTileCollider = $InteractiveTileCollider
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,6 +39,7 @@ func _process(delta):
 		
 # All of this is placeholder physics logic
 func _physics_process(delta):
+	print(self.speedBoostDir)
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
 		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
@@ -146,24 +148,22 @@ func getDeconflictedDirectionalInput():
 	elif Input.is_action_pressed("move_right"):
 		return "move_right"
 
-func _on_area_2d_body_entered(body):
-	if body != null and body is TileMap:
-		var globalCollisionPoint = body.position
-		var tilemap: TileMap = body
-		var cell = tilemap.local_to_map(globalCollisionPoint)
-		var data = tilemap.get_cell_tile_data(0, cell)
-		return data != null and !data.get_custom_data("cannotWalljump")
-	self.isInSpeedBoost = true
-	print("2dbodyentered")
 
 
 func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	if body != null and body is TileMap:
-		var a = body.collider
-		var globalCollisionPoint = body.global_position
-		var tilemap: TileMap = body
-		var cell = tilemap.local_to_map(globalCollisionPoint)
-		var data = tilemap.get_cell_tile_data(0, cell)
-		return data != null and !data.get_custom_data("cannotWalljump")
-	self.isInSpeedBoost = true
-	print("2dbodyentered")
+	var coords = body.get_coords_for_body_rid(body_rid)
+	var tilemap: TileMap = body
+	var data = tilemap.get_cell_tile_data(0, coords)
+	var d = data.get_custom_data("speedBoostDir")
+	if d != null:
+		self.speedBoostDir = d
+
+
+
+func _on_area_2d_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+	var coords = body.get_coords_for_body_rid(body_rid)
+	var tilemap: TileMap = body
+	var data = tilemap.get_cell_tile_data(0, coords)
+	var d = data.get_custom_data("speedBoostDir")
+	if d != null:
+		self.speedBoostDir = 0

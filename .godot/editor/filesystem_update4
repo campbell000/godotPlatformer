@@ -3,5 +3,5 @@ res://levels/DemoLevel.tscn
 res://characters/player/Player.tscn
 res://environment/backgrounds/DefaultBackground.tscn
 res://environment/tilemaps/GroundTilemap.tscn
-res://characters/player/Player.gd
 res://environment/tilemaps/InteractiveTiles.tscn
+res://characters/player/Player.gd
