@@ -39,11 +39,11 @@ func _process(delta):
 		
 # All of this is placeholder physics logic
 func _physics_process(delta):
-	print(self.speedBoostDir)
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
 		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
 		
+	# Gather input presses	
 	if Input.is_action_just_pressed("move_left"):
 		self.currentDirection = "move_left"
 	elif Input.is_action_just_pressed("move_right"):
@@ -59,6 +59,7 @@ func handleDebugHUD():
 	var s = "\nSpeed: "+str(round(self.velocity.x))
 	s += "\nAccel: "+str(round(debugAccel))
 	s += "\nBreaking Speed Limit: "+str(self.isBreakingSpeedLimit)
+	s += "\nSpeed Boost Dir: "+str(self.speedBoostDir)
 	self.debugHUD.text = s
 	
 func justJumpedOrBufferedAJump():
@@ -149,8 +150,7 @@ func getDeconflictedDirectionalInput():
 		return "move_right"
 
 
-
-func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+func interactiveBodyEntered(body_rid, body, body_shape_index, local_shape_index):
 	var coords = body.get_coords_for_body_rid(body_rid)
 	var tilemap: TileMap = body
 	var data = tilemap.get_cell_tile_data(0, coords)
@@ -159,8 +159,7 @@ func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shap
 		self.speedBoostDir = d
 
 
-
-func _on_area_2d_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 	var coords = body.get_coords_for_body_rid(body_rid)
 	var tilemap: TileMap = body
 	var data = tilemap.get_cell_tile_data(0, coords)

@@ -4,7 +4,7 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+var SPEED_BOOST_VEL = 500
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,6 +40,11 @@ static func handleGroundMovement(player, delta: float):
 		player.isBreakingSpeedLimit = true
 	elif player.isBreakingSpeedLimit and !playerIsNotTouchingMovementControls:
 		dragVal = Physics.BREAKING_SPEED_DRAG
+		
+	# Above all, is player is in a speed boost, set constant velocity
+	if player.speedBoostDir != 0:
+		player.velocity.x = Common.SPEED_BOOST_VEL * player.speedBoostDir
+		player.isBreakingSpeedLimit = true
 		
 	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed})
 	

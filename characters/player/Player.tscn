@@ -325,5 +325,5 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_rov84")
 
-[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
-[connection signal="body_shape_exited" from="Area2D" to="." method="_on_area_2d_body_shape_exited"]
+[connection signal="body_shape_entered" from="Area2D" to="." method="interactiveBodyEntered"]
+[connection signal="body_shape_exited" from="Area2D" to="." method="interactiveBodyExited"]
