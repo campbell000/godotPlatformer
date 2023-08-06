@@ -878,8 +878,6 @@ texture = ExtResource("1_2gfer")
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "cannotWalljump"
 custom_data_layer_0/type = 1
-custom_data_layer_1/name = "isSpeedBoost"
-custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_pb83h")
 
 [node name="BackgroundTileMap" type="TileMap"]

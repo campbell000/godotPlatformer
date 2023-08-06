@@ -16,12 +16,25 @@ texture = ExtResource("1_l43ux")
 17:0/1/physics_layer_0/angular_velocity = 0.0
 17:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 17:0/1/custom_data_0 = 1.0
+18:0/animation_columns = 5
+18:0/animation_frame_0/duration = 0.066
+18:0/animation_frame_1/duration = 0.066
+18:0/animation_frame_2/duration = 0.066
+18:0/animation_frame_3/duration = 0.066
+18:0/animation_frame_4/duration = 0.066
+18:0/0 = 0
+18:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+18:0/0/physics_layer_0/angular_velocity = 0.0
+18:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+18:0/0/custom_data_1 = 9999.0
 
 [sub_resource type="TileSet" id="TileSet_2s2l1"]
 physics_layer_0/collision_layer = 2
 physics_layer_0/collision_mask = 2
 custom_data_layer_0/name = "speedBoostDir"
 custom_data_layer_0/type = 3
+custom_data_layer_1/name = "damage"
+custom_data_layer_1/type = 3
 sources/0 = SubResource("TileSetAtlasSource_e48t7")
 
 [node name="InteractiveTiles" type="TileMap"]

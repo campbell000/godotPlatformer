@@ -12,6 +12,7 @@ var debugAccel = 0
 var storedWallJumpSpeed = 0
 var isBreakingSpeedLimit = false
 var speedBoostDir = 0
+var camera
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -27,6 +28,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.state = self.get_node("States/OnGround")
+	self.camera = get_node(Globals.CAMERA_NODE_PATH)
 	self.sprite = $Sprite2D
 	self.floor_snap_length = 8
 	self.state.start(self)
@@ -149,20 +151,31 @@ func getDeconflictedDirectionalInput():
 	elif Input.is_action_pressed("move_right"):
 		return "move_right"
 
+func takeDamage(damageVal):
+	if damageVal == 9999:
+		self.position.x = 0
+		self.position.y =0
+		self.camera.position.x = 0
+		self.camera.position.y = 0
 
 func interactiveBodyEntered(body_rid, body, body_shape_index, local_shape_index):
 	var coords = body.get_coords_for_body_rid(body_rid)
 	var tilemap: TileMap = body
 	var data = tilemap.get_cell_tile_data(0, coords)
+	
 	var d = data.get_custom_data("speedBoostDir")
 	if d != null:
 		self.speedBoostDir = d
 
+	d = data.get_custom_data("damage")
+	if d != null and d != 0:
+		self.takeDamage(d)
 
 func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 	var coords = body.get_coords_for_body_rid(body_rid)
 	var tilemap: TileMap = body
 	var data = tilemap.get_cell_tile_data(0, coords)
+	
 	var d = data.get_custom_data("speedBoostDir")
 	if d != null:
 		self.speedBoostDir = 0

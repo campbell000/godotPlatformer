@@ -5,6 +5,7 @@ extends Node
 # var a = 2
 # var b = "text"
 var PLAYER_NODE_PATH = '/root/GameNode/World/Environment/Player'
+var CAMERA_NODE_PATH = '/root/GameNode/Camera2D'
 
 var TILE_SIZE = 16
 

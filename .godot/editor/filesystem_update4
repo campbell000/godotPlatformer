@@ -6,3 +6,4 @@ res://environment/tilemaps/GroundTilemap.tscn
 res://environment/tilemaps/InteractiveTiles.tscn
 res://characters/player/Player.gd
 res://characters/player/States/Common.gd
+res://objects/Globals.gd
