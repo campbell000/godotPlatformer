@@ -1,53 +1,61 @@
 extends State
 class_name AirAttack
 
-# Rate at which the player gains speed in the air. Slower so that jumps are more committal
-const AIR_ACCEL: float = 530.0
 
-const LEDGE_GRACE_PERIOD = 0.05
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+var timeElapsed = 0
+var isHighJumping = true
+var firstUpdate = false
+var canceledEarly = false
 
-var ledgeGraceTimer = 0
-var cameFromGround = false
+var ATTACK_DURATION = 0.4
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_process(false)
-	set_physics_process(false)
-	set_process_input(false)
+	pass # Replace with function body.
+
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
-	player.animatedSprite.play("Fall")
-	self.ledgeGraceTimer = LEDGE_GRACE_PERIOD
-	self.cameFromGround = false
+	# Set correct states
+	self.isHighJumping = true
+	self.timeElapsed = 0
+	player.animatedSprite.play("AirAttack")
+	player.airAttackHitbox.disabled = false;
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	# Allow limited acceleration if holding left or right in the air
-	var accel = player.getXAccel()
-		
-	var dragVal = Physics.AIR_DRAG if accel == 0 else 0
+	var currentGrav = Common.handleJumpLogic(player, self)	
+	Common.handleAirMovement(player, delta, currentGrav)
 	
-	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": Physics.GRAVITY, "maxSpeed": Physics.MAX_RUN_SPEED, "snapVector": Physics.DOWN_SNAP, "maintainInertiaDrag": player.maintainInertiaDrag})
+	self.timeElapsed += delta
 	self.transitionToNewStateIfNecessary(player, delta)
-	
-	# Keep track of the ledge grace time.
-	if self.ledgeGraceTimer >= 0:
-		self.ledgeGraceTimer -= delta
 		
 func transitionToNewStateIfNecessary(player, delta):
-	# If we're suddenly on the floor, transition to ground state
+	# If on the floor, then transition to ground no matter what
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
-	elif self.cameFromGround && self.ledgeGraceTimer > 0:
-		# Otherwise, if we still have some time in our ledge grace timer, and teh user pressed jump, then allow a jump
-		if Input.is_action_just_pressed("jump"):
-			player.transition_to_state(player.get_node("States/Jumping"))
 	else:
-		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
-		if Common.shouldWallDrag(player):
-			player.transition_to_state(player.get_node("States/WallDragging"))
+		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
+		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
+		var goToWallDrag = false
+		if Common.shouldWallJump(player):
+			player.transition_to_state(player.get_node("States/WallJumping"))
+		elif Common.shouldWallDrag(player):
+			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
+			player.transition_to_state(player.get_node("States/WallDragging"))	
+		elif self.timeElapsed > ATTACK_DURATION:
+			player.transition_to_state(player.get_node("States/Falling"))
+	
+func _on_AnimationPlayer_animation_finished(anim):
+	pass
+	
+func end(player: Player):
+	player.airAttackHitbox.disabled = true;
 			
 func getName():
-	return "Falling"
+	return "Air Attack"

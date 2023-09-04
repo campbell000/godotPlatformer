@@ -1,31 +1,39 @@
 extends State
-class_name Jumping
+class_name UpAirAttack
 
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+var timeElapsed = 0
 var isHighJumping = true
 var firstUpdate = false
 var canceledEarly = false
 
+var ATTACK_DURATION = 0.5
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
 	# Set correct states
 	self.isHighJumping = true
-	player.storedWallJumpSpeed = 0
-	player.bufferTimer = 0
-	player.velocity.y = -Common.JUMP_FORCE
-	self.firstUpdate = true
+	self.timeElapsed = 0
+	player.animatedSprite.play("UpAirAttack")
 	
-	# play animations
-	player.animatedSprite.play("Jump")
-	
+# Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	var currentGrav = Common.handleJumpLogic(player, self)
+	var currentGrav = Common.handleJumpLogic(player, self)	
 	Common.handleAirMovement(player, delta, currentGrav)
 	
-	if player.velocity.y >= 0:
-		player.animatedSprite.play("Fall")
-	
+	self.timeElapsed += delta
 	self.transitionToNewStateIfNecessary(player, delta)
-	self.firstUpdate = false
 
+		
 func transitionToNewStateIfNecessary(player, delta):
 	# If on the floor, then transition to ground no matter what
 	if player.is_on_floor():
@@ -34,21 +42,17 @@ func transitionToNewStateIfNecessary(player, delta):
 	else:
 		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
 		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
-		if !self.firstUpdate && Common.shouldWallJump(player):
+		var goToWallDrag = false
+		if Common.shouldWallJump(player):
 			player.transition_to_state(player.get_node("States/WallJumping"))
 		elif Common.shouldWallDrag(player):
 			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
 			player.transition_to_state(player.get_node("States/WallDragging"))	
-		elif Common.shouldAirAttack(player):
-			if Input.is_action_pressed('move_up'):
-				player.transition_to_state(player.get_node("States/UpAirAttack"))
-			else: 
-				player.transition_to_state(player.get_node("States/AirAttack"))
-
-
-func end(player):
-	self.isHighJumping = false
-	self.canceledEarly = false
+		elif self.timeElapsed > ATTACK_DURATION:
+			player.transition_to_state(player.get_node("States/Falling"))
 	
+func _on_AnimationPlayer_animation_finished(anim):
+	pass
+			
 func getName():
-	return "Jumping"
+	return "Up Air Attack"

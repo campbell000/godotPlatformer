@@ -4,6 +4,14 @@ res://characters/player/Player.tscn
 res://environment/backgrounds/DefaultBackground.tscn
 res://environment/tilemaps/GroundTilemap.tscn
 res://environment/tilemaps/InteractiveTiles.tscn
-res://characters/player/Player.gd
+res://characters/player/States/Jumping.gd
 res://characters/player/States/Common.gd
+res://characters/player/States/AirAttack.gd
+res://characters/player/States/GroundAttack.gd
+res://objects/Physics.gd
+res://characters/player/States/UpAirAttack.gd
+res://characters/player/Player.gd
+res://characters/enemies/Ghost.tscn
+res://characters/enemies/Ghost/Ghost.tscn
+res://characters/enemies/Ghost/Ghost.gd
 res://objects/Globals.gd

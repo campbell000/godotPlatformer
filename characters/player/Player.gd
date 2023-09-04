@@ -25,10 +25,13 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var debugHUD = $CanvasLayer/DebugHUD
 @onready var interactiveTileCollider = $InteractiveTileCollider
 
+@onready var airAttackHitbox: CollisionPolygon2D = $AttackArea2D/AirAttackCollisionShape
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.state = self.get_node("States/OnGround")
 	self.camera = get_node(Globals.CAMERA_NODE_PATH)
+	self.airAttackHitbox.disabled = true
 	self.sprite = $Sprite2D
 	self.floor_snap_length = 8
 	self.state.start(self)
@@ -73,8 +76,10 @@ func _handlePlayerStateAfterMove(delta):
 		
 	if Input.is_action_pressed("move_left") && self.velocity.x <= 0:
 		self.sprite.flip_h = true
+		self.airAttackHitbox.scale.x = -1;
 	elif Input.is_action_pressed("move_right") && self.velocity.x >= 0:
 		self.sprite.flip_h = false
+		self.airAttackHitbox.scale.x = 1;
 		
 	if self.is_on_floor():
 		self.sprite.rotation = get_floor_normal().angle() + PI/2
@@ -179,3 +184,7 @@ func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 	var d = data.get_custom_data("speedBoostDir")
 	if d != null:
 		self.speedBoostDir = 0
+
+
+func areaEntered(area):
+	self.takeDamage(9999)

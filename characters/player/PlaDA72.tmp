@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b4jxjo2fu7drq"]
+[gd_scene load_steps=22 format=3 uid="uid://b4jxjo2fu7drq"]
 
 [ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
 [ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
@@ -8,14 +8,28 @@
 [ext_resource type="Script" path="res://characters/player/States/OnGround.gd" id="6"]
 [ext_resource type="Script" path="res://characters/player/States/Falling.gd" id="7"]
 [ext_resource type="Script" path="res://characters/player/States/GroundAttack.gd" id="8"]
-[ext_resource type="Script" path="res://characters/player/States/AirAttack.gd" id="8_cds65"]
-[ext_resource type="Script" path="res://characters/player/States/UpAirAttack.gd" id="9_usg3x"]
 
 [sub_resource type="RectangleShape2D" id="25"]
-size = Vector2(10, 27)
+size = Vector2(10, 29)
 
 [sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
 font_size = 12
+
+[sub_resource type="Animation" id="27"]
+resource_name = "AirAttack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [96, 97, 98, 99]
+}
 
 [sub_resource type="Animation" id="22"]
 resource_name = "Fall"
@@ -45,10 +59,26 @@ tracks/1/keys = {
 "values": [Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="26"]
+resource_name = "GroundAttack"
+length = 0.4
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [47, 48, 49, 50, 51, 52]
+}
+
 [sub_resource type="Animation" id="18"]
 resource_name = "Idle"
 length = 0.8
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -189,8 +219,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="23"]
 resource_name = "WallSlide"
-length = 0.2
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -198,10 +226,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [79, 80]
+"values": [34]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -216,71 +244,6 @@ tracks/1/keys = {
 "values": [Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="26"]
-resource_name = "GroundAttack"
-length = 0.4
-loop_mode = 1
-step = 0.025
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [47, 48, 49, 50, 51, 52]
-}
-
-[sub_resource type="Animation" id="27"]
-resource_name = "AirAttack"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [96, 97, 98, 99]
-}
-
-[sub_resource type="Animation" id="Animation_rcb23"]
-resource_name = "UpAirAttack"
-length = 0.5
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [42, 43, 44, 45, 46, 47]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(-2, -2)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x28"]
 _data = {
 "AirAttack": SubResource("27"),
@@ -290,25 +253,17 @@ _data = {
 "Jump": SubResource("21"),
 "RESET": SubResource("19"),
 "Run": SubResource("20"),
-"UpAirAttack": SubResource("Animation_rcb23"),
 "WallJump": SubResource("24"),
 "WallSlide": SubResource("23")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rov84"]
-size = Vector2(10, 26)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbiqv"]
-size = Vector2(23, 21)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wn3jq"]
-size = Vector2(23, 25.5)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2.5)
+position = Vector2(0, 1.5)
 shape = SubResource("25")
 
 [node name="RaycastContainer" type="Marker2D" parent="."]
@@ -343,12 +298,6 @@ script = ExtResource("4")
 [node name="GroundAttack" type="Node2D" parent="States"]
 script = ExtResource("8")
 
-[node name="AirAttack" type="Node" parent="States"]
-script = ExtResource("8_cds65")
-
-[node name="UpAirAttack" type="Node2D" parent="States"]
-script = ExtResource("9_usg3x")
-
 [node name="DebugStateLabel" type="Label" parent="."]
 offset_left = -20.0
 offset_top = -39.0
@@ -369,33 +318,12 @@ offset = Vector2(0, -1.5)
 hframes = 7
 vframes = 16
 
-[node name="PlayerHitboxArea2D" type="Area2D" parent="."]
-visible = false
+[node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
 
-[node name="InteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
-position = Vector2(0, 3)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_rov84")
 
-[node name="AttackArea2D" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 4
-
-[node name="GroundAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
-position = Vector2(7.5, 4.5)
-shape = SubResource("RectangleShape2D_wbiqv")
-disabled = true
-
-[node name="AirAttackCollisionShape" type="CollisionPolygon2D" parent="AttackArea2D"]
-polygon = PackedVector2Array(5, -13, 19, -13, 25, -1, 16, 6, -18, -4)
-
-[node name="UpAirAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
-position = Vector2(6.5, -7.25)
-shape = SubResource("RectangleShape2D_wn3jq")
-disabled = true
-
-[connection signal="area_entered" from="PlayerHitboxArea2D" to="." method="areaEntered"]
-[connection signal="body_shape_entered" from="PlayerHitboxArea2D" to="." method="interactiveBodyEntered"]
-[connection signal="body_shape_exited" from="PlayerHitboxArea2D" to="." method="interactiveBodyExited"]
-[connection signal="body_shape_entered" from="AttackArea2D" to="." method="attackHitboxEntered"]
+[connection signal="body_shape_entered" from="Area2D" to="." method="interactiveBodyEntered"]
+[connection signal="body_shape_exited" from="Area2D" to="." method="interactiveBodyExited"]

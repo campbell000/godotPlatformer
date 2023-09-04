@@ -1,5 +1,9 @@
+Node2D
 CollisionShape2D
-Node3D
 Area2D
+AnimatedSprite2D
+CollisionPolygon2D
+AirAttack
+Node3D
 ShapeCast2D
 TileMap
