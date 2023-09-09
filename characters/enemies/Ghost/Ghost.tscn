@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bf2thrpdfa5d1"]
+[gd_scene load_steps=8 format=3 uid="uid://bf2thrpdfa5d1"]
 
 [ext_resource type="Script" path="res://characters/enemies/Ghost/Ghost.gd" id="1_cbjcr"]
 [ext_resource type="Texture2D" uid="uid://cedk3ja7d6m2n" path="res://asset_files/characters/enemies/ghost_animated.png" id="2_t2tt0"]
@@ -28,22 +28,35 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wx0vf"]
 size = Vector2(24, 25)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tvh8a"]
+size = Vector2(300, 150)
+
 [node name="Ghost" type="Node2D"]
 script = ExtResource("1_cbjcr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_twtha")
-frame_progress = 0.972431
+frame_progress = 0.198986
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 6
 collision_mask = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 light_mask = 6
 visibility_layer = 6
 position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_wx0vf")
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[node name="ActivationBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationBox"]
+shape = SubResource("RectangleShape2D_tvh8a")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="ActivationBox" to="." method="activationAreaEntered"]

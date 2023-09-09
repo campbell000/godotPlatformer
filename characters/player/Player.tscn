@@ -34,7 +34,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -63,7 +63,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -91,7 +91,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -146,7 +146,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -176,7 +176,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -205,7 +205,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -270,7 +270,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("Sprite2D:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -299,7 +299,7 @@ _data = {
 size = Vector2(10, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbiqv"]
-size = Vector2(23, 21)
+size = Vector2(25, 21)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wn3jq"]
 size = Vector2(23, 25.5)
@@ -371,7 +371,7 @@ vframes = 16
 
 [node name="PlayerHitboxArea2D" type="Area2D" parent="."]
 visible = false
-collision_layer = 2
+collision_layer = 10
 collision_mask = 2
 
 [node name="InteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
@@ -383,12 +383,12 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="GroundAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
-position = Vector2(7.5, 4.5)
+position = Vector2(8.5, 4.5)
 shape = SubResource("RectangleShape2D_wbiqv")
 disabled = true
 
 [node name="AirAttackCollisionShape" type="CollisionPolygon2D" parent="AttackArea2D"]
-polygon = PackedVector2Array(5, -13, 19, -13, 25, -1, 16, 6, -18, -4)
+polygon = PackedVector2Array(6, -9, 19, -2, 23, 6, 13, 12, -10, 8)
 
 [node name="UpAirAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(6.5, -7.25)

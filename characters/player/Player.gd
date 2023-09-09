@@ -25,7 +25,10 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var debugHUD = $CanvasLayer/DebugHUD
 @onready var interactiveTileCollider = $InteractiveTileCollider
 
+@onready var attackArea2D: Area2D = $AttackArea2D
 @onready var airAttackHitbox: CollisionPolygon2D = $AttackArea2D/AirAttackCollisionShape
+@onready var upAirAttackHitbox: CollisionShape2D = $AttackArea2D/UpAirAttackCollisionShape
+@onready var groundAttackHitbox: CollisionShape2D = $AttackArea2D/GroundAttackCollisionShape
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -75,17 +78,23 @@ func _handlePlayerStateAfterMove(delta):
 		self.bufferTimer -= delta
 		
 	if Input.is_action_pressed("move_left") && self.velocity.x <= 0:
-		self.sprite.flip_h = true
-		self.airAttackHitbox.scale.x = -1;
+		self.handleRotation(true)
 	elif Input.is_action_pressed("move_right") && self.velocity.x >= 0:
-		self.sprite.flip_h = false
-		self.airAttackHitbox.scale.x = 1;
+		self.handleRotation(false)
 		
 	if self.is_on_floor():
 		self.sprite.rotation = get_floor_normal().angle() + PI/2
 	else:
 		self.sprite.rotation = 0
-		
+
+func handleRotation(flip: bool):
+	if (flip):
+		self.attackArea2D.scale.x = -1
+		self.sprite.flip_h = true
+	else:
+		self.sprite.flip_h = false
+		self.attackArea2D.scale.x = 1
+
 func collidedWithLeftWall():
 	return self._collidedWithWall(self.leftRaycast, "left")
 			

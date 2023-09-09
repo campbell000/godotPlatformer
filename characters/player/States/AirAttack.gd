@@ -11,6 +11,7 @@ var firstUpdate = false
 var canceledEarly = false
 
 var ATTACK_DURATION = 0.4
+var ATTACK_START = 0.03333
 
 
 # Called when the node enters the scene tree for the first time.
@@ -24,14 +25,17 @@ func start(player: Player):
 	self.isHighJumping = true
 	self.timeElapsed = 0
 	player.animatedSprite.play("AirAttack")
-	player.airAttackHitbox.disabled = false;
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
+	self.timeElapsed += delta
+	if self.timeElapsed >= ATTACK_START:
+		player.airAttackHitbox.disabled = false;
+		
 	var currentGrav = Common.handleJumpLogic(player, self)	
 	Common.handleAirMovement(player, delta, currentGrav)
 	
-	self.timeElapsed += delta
+
 	self.transitionToNewStateIfNecessary(player, delta)
 		
 func transitionToNewStateIfNecessary(player, delta):

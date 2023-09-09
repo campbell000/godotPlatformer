@@ -24,6 +24,7 @@ func start(player: Player):
 	self.isHighJumping = true
 	self.timeElapsed = 0
 	player.animatedSprite.play("UpAirAttack")
+	player.upAirAttackHitbox.disabled = false
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
@@ -53,6 +54,9 @@ func transitionToNewStateIfNecessary(player, delta):
 	
 func _on_AnimationPlayer_animation_finished(anim):
 	pass
+	
+func end(player: Player):
+	player.upAirAttackHitbox.disabled = true;
 			
 func getName():
 	return "Up Air Attack"
