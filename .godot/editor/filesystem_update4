@@ -15,3 +15,5 @@ res://characters/enemies/Ghost.tscn
 res://characters/enemies/Ghost/Ghost.tscn
 res://characters/enemies/Ghost/Ghost.gd
 res://objects/Globals.gd
+res://characters/player/States/Falling.gd
+res://characters/player/States/WallJumping.gd

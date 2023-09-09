@@ -47,6 +47,11 @@ func transitionToNewStateIfNecessary(player, delta):
 		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
 		if Common.shouldWallDrag(player):
 			player.transition_to_state(player.get_node("States/WallDragging"))
+		elif Common.shouldAirAttack(player):
+			if Input.is_action_pressed('move_up'):
+				player.transition_to_state(player.get_node("States/UpAirAttack"))
+			else: 
+				player.transition_to_state(player.get_node("States/AirAttack"))
 			
 func getName():
 	return "Falling"
