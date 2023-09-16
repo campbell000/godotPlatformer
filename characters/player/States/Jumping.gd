@@ -4,6 +4,7 @@ class_name Jumping
 var isHighJumping = true
 var firstUpdate = false
 var canceledEarly = false
+var nestedState = null
 
 func start(player: Player):
 	# Set correct states
@@ -24,6 +25,9 @@ func update(player: Player, delta: float):
 		player.animatedSprite.play("Fall")
 	
 	self.transitionToNewStateIfNecessary(player, delta)
+	self.transitionInternalState(player, delta)
+	
+	
 	self.firstUpdate = false
 
 func transitionToNewStateIfNecessary(player, delta):
@@ -41,9 +45,19 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(player.get_node("States/WallDragging"))	
 		elif Common.shouldAirAttack(player):
 			if Input.is_action_pressed('move_up'):
-				player.transition_to_state(player.get_node("States/UpAirAttack"))
+				var state = player.get_node("States/UpAirAttack")
+				player.transition_to_state(state)
+				Common.transferJumpState(self, state)
 			else: 
-				player.transition_to_state(player.get_node("States/AirAttack"))
+				var state = player.get_node("States/AirAttack")
+				player.transition_to_state(state)
+				Common.transferJumpState(self, state)
+
+func transitionInternalState(player: Player, delta):
+	if self.nestedState == null:
+		if Common.shouldAirAttack(player):
+			self.nestedState = player.get_node("States/AirAttack")
+			self.nestedS
 
 
 func end(player):

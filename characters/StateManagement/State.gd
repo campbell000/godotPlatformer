@@ -1,6 +1,8 @@
 extends Node
 class_name State
 
+var currentInnerState: NestedState;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(false)
@@ -11,12 +13,15 @@ func _ready():
 func start(player):
 	pass
 	
+func transitionInnerState(player: Player, newInnerState: NestedState, delta: float):
+	if (self.currentInnerState != null):
+		self.currentInnerState.end(player, self)
+	
+	self.currentInnerState = newInnerState
+	newInnerState.start(player, self)
+
 # Called during every update
 func update(player, delta):
-	pass
-	
-# Called during every update, AFTER the update() method and after a character has moved
-func update_after_move(player, delta):
 	pass
 	
 # Called when the state is being exited for a new state. Do cleanup if necessary

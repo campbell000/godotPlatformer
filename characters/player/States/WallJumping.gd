@@ -67,9 +67,13 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(wallDragState)
 	elif Common.shouldAirAttack(player):
 		if Input.is_action_pressed('move_up'):
-			player.transition_to_state(player.get_node("States/UpAirAttack"))
+			var state = player.get_node("States/UpAirAttack")
+			player.transition_to_state(state)
+			Common.transferJumpState(self, state)
 		else: 
-			player.transition_to_state(player.get_node("States/AirAttack"))
+			var state = player.get_node("States/AirAttack")
+			player.transition_to_state(state)
+			Common.transferJumpState(self, state)
 	
 func getName():
 	return "WallJumping"

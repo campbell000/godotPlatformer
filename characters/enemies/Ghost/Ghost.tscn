@@ -37,7 +37,7 @@ script = ExtResource("1_cbjcr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_twtha")
-frame_progress = 0.864144
+frame_progress = 0.20174
 
 [node name="Hitbox" type="Area2D" parent="."]
 visible = false

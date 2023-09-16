@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b4jxjo2fu7drq"]
+[gd_scene load_steps=29 format=3 uid="uid://b4jxjo2fu7drq"]
 
 [ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
 [ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
@@ -8,14 +8,33 @@
 [ext_resource type="Script" path="res://characters/player/States/OnGround.gd" id="6"]
 [ext_resource type="Script" path="res://characters/player/States/Falling.gd" id="7"]
 [ext_resource type="Script" path="res://characters/player/States/GroundAttack.gd" id="8"]
-[ext_resource type="Script" path="res://characters/player/States/AirAttack.gd" id="8_cds65"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/AirAttack.gd" id="8_d8ci3"]
 [ext_resource type="Script" path="res://characters/player/States/UpAirAttack.gd" id="9_usg3x"]
+[ext_resource type="Script" path="res://characters/player/NullState.gd" id="10_ugdl6"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/NullNestedState.gd" id="11_qyo4d"]
 
 [sub_resource type="RectangleShape2D" id="25"]
 size = Vector2(10, 27)
 
 [sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
 font_size = 12
+
+[sub_resource type="Animation" id="27"]
+resource_name = "AirAttack"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [96, 97, 98, 99]
+}
 
 [sub_resource type="Animation" id="22"]
 resource_name = "Fall"
@@ -43,6 +62,24 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="26"]
+resource_name = "GroundAttack"
+length = 0.4
+loop_mode = 1
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [47, 48, 49, 50, 51, 52]
 }
 
 [sub_resource type="Animation" id="18"]
@@ -157,6 +194,36 @@ tracks/1/keys = {
 "values": [Vector2(0, -1.5)]
 }
 
+[sub_resource type="Animation" id="Animation_rcb23"]
+resource_name = "UpAirAttack"
+length = 0.5
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [42, 43, 44, 45, 46, 47]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-2, -2)]
+}
+
 [sub_resource type="Animation" id="24"]
 resource_name = "WallJump"
 length = 0.36
@@ -214,71 +281,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="26"]
-resource_name = "GroundAttack"
-length = 0.4
-loop_mode = 1
-step = 0.025
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [47, 48, 49, 50, 51, 52]
-}
-
-[sub_resource type="Animation" id="27"]
-resource_name = "AirAttack"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [96, 97, 98, 99]
-}
-
-[sub_resource type="Animation" id="Animation_rcb23"]
-resource_name = "UpAirAttack"
-length = 0.5
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [42, 43, 44, 45, 46, 47]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath("Sprite2D:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(-2, -2)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x28"]
@@ -344,10 +346,16 @@ script = ExtResource("4")
 script = ExtResource("8")
 
 [node name="AirAttack" type="Node" parent="States"]
-script = ExtResource("8_cds65")
+script = ExtResource("8_d8ci3")
 
 [node name="UpAirAttack" type="Node2D" parent="States"]
 script = ExtResource("9_usg3x")
+
+[node name="NullState" type="Node2D" parent="States"]
+script = ExtResource("10_ugdl6")
+
+[node name="NullNestedState" type="Node2D" parent="States"]
+script = ExtResource("11_qyo4d")
 
 [node name="DebugStateLabel" type="Label" parent="."]
 offset_left = -20.0
