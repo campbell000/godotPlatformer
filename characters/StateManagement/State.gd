@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 class_name State
 
 var currentInnerState: NestedState;
@@ -13,10 +13,11 @@ func _ready():
 func start(player):
 	pass
 	
-func transitionInnerState(player: Player, newInnerState: NestedState, delta: float):
+func transitionToNestedState(player: Player, newInnerStateObj: NestedState, delta: float):
 	if (self.currentInnerState != null):
 		self.currentInnerState.end(player, self)
 	
+	var newInnerState: NestedState = newInnerStateObj as NestedState
 	self.currentInnerState = newInnerState
 	newInnerState.start(player, self)
 

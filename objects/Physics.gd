@@ -14,6 +14,8 @@ const AIR_ACCEL: float = 750.0
 const GAIN_INERTIA_DRAG = 0.3
 const BREAKING_SPEED_DRAG = 1.15
 const AIR_BREAKING_SPEED_DRAG = 0.5
+const WALL_JUMP_Y_IMPULSE = -295
+const SLIDE_JUMP_Y_IMPULSE = -290
 
 # Consttant that slows the player down in teh air when they are moving, but not pressing buttons.
 # Less drag than on ground

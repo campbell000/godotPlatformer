@@ -1,5 +1,5 @@
 extends NestedState
-class_name NullNestedState
+class_name NullNestedJumpState
 
 
 # Declare member variables here. Examples:
@@ -17,11 +17,17 @@ func _ready():
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player, nestedState: State):
-	pass
+	player.animatedSprite.play("Fall")
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, nestedState: State, delta: float):	
-	pass
+func update(player: Player, parentState: State, delta: float):	
+	if Common.shouldAirAttack(player):
+		if Input.is_action_pressed('move_up'):
+			var state = player.get_node("States/UpAirAttack")
+			parentState.transitionToNestedState(player, state, delta)
+		else:
+			var state = player.get_node("States/AirAttack")
+			parentState.transitionToNestedState(player, state, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
 	pass	
@@ -33,4 +39,4 @@ func end(player: Player, nestedState: State):
 	pass
 			
 func getName():
-	return "NULL NESTED"
+	return "Nothing"

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bfsrvakttjvo4" path="res://environment/tilemaps/GroundTilemap.tscn" id="2_6ev3j"]
-[ext_resource type="PackedScene" uid="uid://b4jxjo2fu7drq" path="res://characters/player/Player.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cxk4hyoolr2vs" path="res://characters/player/Player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://da4hpajbpli3w" path="res://environment/tilemaps/InteractiveTiles.tscn" id="3_2ttdy"]
 [ext_resource type="Script" path="res://objects/Camera.gd" id="4"]
 [ext_resource type="PackedScene" uid="uid://bf2thrpdfa5d1" path="res://characters/enemies/Ghost/Ghost.tscn" id="6_bnxdl"]

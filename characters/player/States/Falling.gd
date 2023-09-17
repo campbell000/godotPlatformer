@@ -1,9 +1,6 @@
 extends State
 class_name Falling
 
-# Rate at which the player gains speed in the air. Slower so that jumps are more committal
-const AIR_ACCEL: float = 530.0
-
 const LEDGE_GRACE_PERIOD = 0.05
 
 var ledgeGraceTimer = 0
@@ -21,6 +18,9 @@ func start(player: Player):
 	player.storedWallJumpSpeed = 0
 	self.ledgeGraceTimer = LEDGE_GRACE_PERIOD
 	self.cameFromGround = false
+
+	# Start with a null inner state. Wait until we need to transition to attacks or something.
+	super.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), 1.0)
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
@@ -34,6 +34,8 @@ func update(player: Player, delta: float):
 	if self.ledgeGraceTimer >= 0:
 		self.ledgeGraceTimer -= delta
 		
+	self.currentInnerState.update(player, self, delta)
+	
 func transitionToNewStateIfNecessary(player, delta):
 	# If we're suddenly on the floor, transition to ground state
 	if player.is_on_floor():
@@ -47,15 +49,6 @@ func transitionToNewStateIfNecessary(player, delta):
 		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
 		if Common.shouldWallDrag(player):
 			player.transition_to_state(player.get_node("States/WallDragging"))
-		elif Common.shouldAirAttack(player):
-			if Input.is_action_pressed('move_up'):
-				var state = player.get_node("States/UpAirAttack")
-				player.transition_to_state(state)
-				Common.transferJumpState(self, state)
-			else: 
-				var state = player.get_node("States/AirAttack")
-				player.transition_to_state(state)
-				Common.transferJumpState(self, state)
 			
 func getName():
 	return "Falling"

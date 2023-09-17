@@ -1,0 +1,66 @@
+extends State
+class_name GroundSlide
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+var timeElapsed = 0
+
+var ATTACK_DURATION = 0.55
+
+var SPEED_MULTIPLIER = 1.25
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called when a state is entered for the first time. Init stuff here
+func start(player: Player):
+	self.timeElapsed = 0
+	player.animatedSprite.play("Slide")
+	player.groundSlideHitbox.disabled = false;
+	player.interactiveCollisionShape.disabled = true
+	player.collisionShape.disabled = true
+	player.slideInteractiveCollisionShape.disabled = false
+	player.slideCollisionShape.disabled = false
+	
+	if abs(player.velocity.x) <= Physics.MAX_RUN_SPEED:
+		player.velocity.x = player.velocity.x * SPEED_MULTIPLIER
+		player.isBreakingSpeedLimit = true
+	
+# Called ON the first time a state is entered, as well as every physics frame that the state is active
+func update(player: Player, delta: float):
+	Common.handleGroundMovement(player, delta)
+	
+	self.timeElapsed += delta	
+	self.transitionToNewStateIfNecessary(player, delta)
+
+		
+func transitionToNewStateIfNecessary(player, delta):
+	# If we're not on the floor, and we're not jumping, then we're falling, no matter what
+	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
+		player.transition_to_state(player.get_node("States/SlideFall"))
+	else:
+		# otherwise, if we're jumping (or the user buffered a jump), transition
+		if player.justJumpedOrBufferedAJump():
+			var jump = player.get_node("States/Jumping")
+			jump.cameFromSlide = true
+			player.transition_to_state(player.get_node("States/Jumping"))
+	if self.timeElapsed >= ATTACK_DURATION:
+		player.transition_to_state(player.get_node("States/OnGround"))
+	
+func _on_AnimationPlayer_animation_finished(anim):
+	pass
+
+func end(player: Player):
+	player.groundSlideHitbox.disabled = true;
+	player.interactiveCollisionShape.disabled = false
+	player.collisionShape.disabled = false
+	player.slideInteractiveCollisionShape.disabled = true
+	player.slideCollisionShape.disabled = true
+
+func getName():
+	return "Ground Attack"

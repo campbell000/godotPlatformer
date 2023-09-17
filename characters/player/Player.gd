@@ -3,7 +3,7 @@ class_name Player
 
 # The length of the buffer window. In other words, the maximum amount of time a user can press the jump button
 # early
-const JUMP_BUFFER_TIME_WINDOW = 0.08333
+const JUMP_BUFFER_TIME_WINDOW = 0.09333
 
 var bufferTimer = 0.0
 var isFacingForward: bool = true
@@ -18,17 +18,21 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 # Scene Nodes
 @onready var animatedSprite = $AnimatedSprite2D
 @onready var sprite = $Sprite2D
-@onready var collisionShape = $CollisionShape2D
+@onready var collisionShape: CollisionShape2D = $CollisionShape2D
+@onready var slideCollisionShape: CollisionShape2D = $SlideCollisionShape2D
 @onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
 @onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
 @onready var debugStateLabel = $DebugStateLabel
 @onready var debugHUD = $CanvasLayer/DebugHUD
-@onready var interactiveTileCollider = $InteractiveTileCollider
 
 @onready var attackArea2D: Area2D = $AttackArea2D
 @onready var airAttackHitbox: CollisionPolygon2D = $AttackArea2D/AirAttackCollisionShape
 @onready var upAirAttackHitbox: CollisionShape2D = $AttackArea2D/UpAirAttackCollisionShape
 @onready var groundAttackHitbox: CollisionShape2D = $AttackArea2D/GroundAttackCollisionShape
+@onready var groundSlideHitbox: CollisionShape2D = $AttackArea2D/SlideAttackCollisionShape
+
+@onready var interactiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/InteractionCollisionShape
+@onready var slideInteractiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/SlideInteractionCollisionShape
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,6 +43,8 @@ func _ready():
 	self.floor_snap_length = 8
 	self.state.start(self)
 	self.set_floor_stop_on_slope_enabled(true)
+	self.slideCollisionShape.disabled = true
+	self.slideInteractiveCollisionShape.disabled = true
 	pass # Replace with function body.
 
 func _process(delta):
@@ -64,7 +70,8 @@ func _physics_process(delta):
 	self.handleDebugHUD()
 	
 func handleDebugHUD():
-	var s = "\nSpeed: "+str(round(self.velocity.x))
+	var s = "FPS: "+str(Engine.get_frames_per_second())
+	s += "\nSpeed: "+str(round(self.velocity.x))
 	s += "\nAccel: "+str(round(debugAccel))
 	s += "\nBreaking Speed Limit: "+str(self.isBreakingSpeedLimit)
 	s += "\nSpeed Boost Dir: "+str(self.speedBoostDir)

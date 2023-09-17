@@ -34,8 +34,10 @@ func transitionToNewStateIfNecessary(player, delta):
 		if player.justJumpedOrBufferedAJump():
 			player.transition_to_state(player.get_node("States/Jumping"))
 		elif Input.is_action_pressed("attack"):
-			var groundAttack = player.get_node("States/GroundAttack");
-			player.transition_to_state(player.get_node("States/GroundAttack"))
+			if Input.is_action_pressed("move_down"):
+				player.transition_to_state(player.get_node("States/GroundSlide"))
+			else:
+				player.transition_to_state(player.get_node("States/GroundAttack"))
 
 func getName():
 	return "OnGround"

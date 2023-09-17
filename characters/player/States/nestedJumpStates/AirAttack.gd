@@ -17,7 +17,9 @@ func _ready():
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player, nestedState: State):
+	self.timeElapsed = 0
 	player.animatedSprite.play("AirAttack")
+	player.airAttackHitbox.disabled = false;
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, nestedState: State, delta: float):
@@ -29,7 +31,7 @@ func update(player: Player, nestedState: State, delta: float):
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
 	if self.timeElapsed >= ATTACK_DURATION:
-			nestedState.transitionInnerState(player.get_node("States/Falling"))
+		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
 	
 func _on_AnimationPlayer_animation_finished(anim):
 	pass
