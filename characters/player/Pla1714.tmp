@@ -449,6 +449,7 @@ position = Vector2(1.5, 9.5)
 shape = SubResource("RectangleShape2D_mr6jc")
 
 [node name="AttackArea2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 4
 
@@ -468,7 +469,6 @@ disabled = true
 [node name="SlideAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(5, 13.5)
 shape = SubResource("RectangleShape2D_gabpp")
-disabled = true
 
 [connection signal="area_entered" from="PlayerHitboxArea2D" to="." method="areaEntered"]
 [connection signal="body_shape_entered" from="PlayerHitboxArea2D" to="." method="interactiveBodyEntered"]

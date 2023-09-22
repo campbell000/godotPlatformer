@@ -19,3 +19,4 @@ res://characters/player/States/OnGround.gd
 res://characters/player/States/GroundAttack.gd
 res://characters/player/States/SlideFall.gd
 res://objects/Physics.gd
+res://characters/player/States/Common.gd

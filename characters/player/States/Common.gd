@@ -37,9 +37,9 @@ static func shouldWallDrag(player, disregardVelocity=false):
 			or (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right")))
 			
 static func shouldAirAttack(player):
-	return Input.is_action_pressed("attack")
+	return Input.is_action_just_pressed("attack")
 
-static func handleGroundMovement(player, delta: float):
+static func handleGroundMovement(player, delta: float, speedModifierFunc = null):
 	# Determine if we should apply run acceleration. Do it if teh user is pressing left or right
 	var accel = player.getXAccel()
 		
@@ -65,7 +65,11 @@ static func handleGroundMovement(player, delta: float):
 		player.velocity.x = Common.SPEED_BOOST_VEL * player.speedBoostDir
 		player.isBreakingSpeedLimit = true
 		
-	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed})
+	var speedParams = {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": maxRunSpeed}
+	if speedModifierFunc != null:
+		speedParams = speedModifierFunc.call(speedParams)
+		
+	Physics.process_movement(player, delta, speedParams)
 	
 	Common.setBreakingSpeedLimitFlag(player)
 

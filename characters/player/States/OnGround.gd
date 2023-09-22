@@ -33,7 +33,7 @@ func transitionToNewStateIfNecessary(player, delta):
 		# otherwise, if we're jumping (or the user buffered a jump), transition
 		if player.justJumpedOrBufferedAJump():
 			player.transition_to_state(player.get_node("States/Jumping"))
-		elif Input.is_action_pressed("attack"):
+		elif Input.is_action_just_pressed("attack"):
 			if Input.is_action_pressed("move_down"):
 				player.transition_to_state(player.get_node("States/GroundSlide"))
 			else:

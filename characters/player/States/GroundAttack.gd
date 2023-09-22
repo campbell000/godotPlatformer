@@ -23,7 +23,11 @@ func start(player: Player):
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	Common.handleGroundMovement(player, delta)
+	Common.handleGroundMovement(player, delta, func speedModifier(x):
+		x['xAccel'] = 0
+		x['drag'] = 3
+		return x	
+	)
 	
 	self.timeElapsed += delta	
 	self.transitionToNewStateIfNecessary(player, delta)
