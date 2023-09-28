@@ -25,7 +25,7 @@ func start(player: Player):
 func update(player: Player, delta: float):
 	Common.handleGroundMovement(player, delta, func speedModifier(x):
 		x['xAccel'] = 0
-		x['drag'] = 3
+		x['drag'] = 4
 		return x	
 	)
 	

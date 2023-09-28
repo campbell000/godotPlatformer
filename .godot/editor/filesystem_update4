@@ -20,3 +20,6 @@ res://characters/player/States/GroundAttack.gd
 res://characters/player/States/SlideFall.gd
 res://objects/Physics.gd
 res://characters/player/States/Common.gd
+res://characters/enemies/Turret/Turret.tscn
+res://characters/enemies/Turret/Turret.gd
+res://objects/Camera.gd

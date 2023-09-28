@@ -9,7 +9,7 @@ var timeElapsed = 0
 
 var ATTACK_DURATION = 0.55
 
-var SPEED_MULTIPLIER = 1.45
+var SPEED_MULTIPLIER = 1.42
 
 var isSlidingRight = false
 

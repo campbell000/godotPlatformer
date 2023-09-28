@@ -73,11 +73,6 @@ static func handleGroundMovement(player, delta: float, speedModifierFunc = null)
 	
 	Common.setBreakingSpeedLimitFlag(player)
 
-static func transferJumpState(oldState, newState):
-	newState.isHighJumping = oldState.isHighJumping
-	newState.canceledEarly = oldState.canceledEarly
-	
-
 static func handleJumpLogic(player, state):
 	# If the user is holding down the jump button, then do a high jump for this frame.
 	# If they aren't, then don't allow a high jump for the rest of the jump, even if the
