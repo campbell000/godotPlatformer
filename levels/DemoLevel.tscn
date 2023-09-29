@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvdbi1u8ent2v"]
+[gd_scene load_steps=10 format=3 uid="uid://bvdbi1u8ent2v"]
 
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bfsrvakttjvo4" path="res://environment/tilemaps/GroundTilemap.tscn" id="2_6ev3j"]
 [ext_resource type="PackedScene" uid="uid://cxk4hyoolr2vs" path="res://characters/player/Player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://da4hpajbpli3w" path="res://environment/tilemaps/InteractiveTiles.tscn" id="3_2ttdy"]
 [ext_resource type="Script" path="res://objects/Camera.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://c4n1qj7jhrtcw" path="res://characters/objects/TurretLaser/TurretLaser.tscn" id="6_36hli"]
 [ext_resource type="PackedScene" uid="uid://bf2thrpdfa5d1" path="res://characters/enemies/Ghost/Ghost.tscn" id="6_bnxdl"]
 [ext_resource type="PackedScene" uid="uid://cyykwm6ag6fq5" path="res://characters/enemies/Turret/Turret.tscn" id="7_te4as"]
 
@@ -63,6 +64,9 @@ label_settings = SubResource("LabelSettings_dw2r1")
 horizontal_alignment = 2
 
 [node name="Enemies" type="Node2D" parent="World/Environment"]
+
+[node name="TurretLaser" parent="World/Environment/Enemies" instance=ExtResource("6_36hli")]
+position = Vector2(71, 166)
 
 [node name="Ghost3" parent="World/Environment/Enemies" instance=ExtResource("6_bnxdl")]
 position = Vector2(1491, -64)
