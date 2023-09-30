@@ -39,4 +39,8 @@ func _draw():
 	self.drawLine()
 	
 func drawLine():
-	self.draw_line(Vector2(0, 0), Vector2(LENGTH, 0), COLORS[currentColor], WIDTH, false)
+	self.draw_line(Vector2((-LENGTH / 2.0), 0), Vector2((LENGTH / 2.0), 0), COLORS[currentColor], WIDTH, false)
+
+
+func _on_area_2d_area_entered(area):
+	pass # Replace with function body.

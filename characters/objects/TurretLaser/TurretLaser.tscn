@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4n1qj7jhrtcw"]
+[gd_scene load_steps=3 format=3 uid="uid://c4n1qj7jhrtcw"]
 
 [ext_resource type="Script" path="res://characters/objects/TurretLaser/TurretLaser.gd" id="1_xdx6m"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7i8yc"]
+size = Vector2(25, 2)
+
 [node name="TurretLaser" type="Node2D"]
 script = ExtResource("1_xdx6m")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 6
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_7i8yc")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

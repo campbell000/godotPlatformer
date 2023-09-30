@@ -17,12 +17,16 @@ var GAME_WIDTH: float
 const NUMBER_OF_LINES: float = 10.0
 var LINE_UNIT_DISTANCE: float
 var isTransitioning: bool = false
+var lineOnePos = self.LINE_UNIT_DISTANCE * LINE_ONE
+var lineTwoPos = self.LINE_UNIT_DISTANCE * LINE_TWO
+var lineThreePos = self.LINE_UNIT_DISTANCE * LINE_THREE
+var lineFourPos = self.LINE_UNIT_DISTANCE * LINE_FOUR
 
-const LINE_ONE = 1.5
-const LINE_TWO = 4
-const LINE_THREE = 6
-const LINE_FOUR = 8.5
-const MIDDLE_LINES_DISTANCE_FROM_CENTER = 1
+const LINE_ONE = 3
+const LINE_TWO = 4.5
+const LINE_THREE = 5.5
+const LINE_FOUR = 7
+const MIDDLE_LINES_DISTANCE_FROM_CENTER = 0.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,6 +35,10 @@ func _ready():
 	self.position.x = self.target.position.x
 	self.GAME_WIDTH = ProjectSettings.get_setting("display/window/size/viewport_width")
 	self.LINE_UNIT_DISTANCE = self.GAME_WIDTH / self.NUMBER_OF_LINES
+	self.lineOnePos = self.LINE_UNIT_DISTANCE * LINE_ONE
+	self.lineTwoPos = self.LINE_UNIT_DISTANCE * LINE_TWO
+	self.lineThreePos = self.LINE_UNIT_DISTANCE * LINE_THREE
+	self.lineFourPos = self.LINE_UNIT_DISTANCE * LINE_FOUR
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -122,6 +130,12 @@ func handleDebugCamera(delta):
 		self.drag_horizontal_enabled = true
 		self.drag_vertical_enabled = true
 	
+	
+	if Input.is_action_just_pressed("snap_camera_left"):
+		self.position.x = self.target.position.x - (self.LINE_UNIT_DISTANCE * MIDDLE_LINES_DISTANCE_FROM_CENTER)
+	if Input.is_action_just_pressed("snap_camera_right"):
+		self.position.x = self.target.position.x + (self.LINE_UNIT_DISTANCE * MIDDLE_LINES_DISTANCE_FROM_CENTER)
+		
 func getCameraYDisplacement():
 	# Determine the displacement required to move the camera so that there's N number of tiles visible below the target
 	var gameHeight = ProjectSettings.get_setting("display/window/size/viewport_height")

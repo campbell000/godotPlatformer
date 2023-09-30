@@ -8,3 +8,5 @@ res://characters/enemies/Ghost/Ghost.tscn
 res://characters/enemies/Turret/Turret.tscn
 res://characters/objects/TurretLaser/TurretLaser.tscn
 res://characters/objects/TurretLaser/TurretLaser.gd
+res://characters/enemies/Turret/Turret.gd
+res://objects/Camera.gd
