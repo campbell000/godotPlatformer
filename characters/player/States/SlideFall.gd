@@ -37,6 +37,7 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(player.get_node("States/WallDragging"))
 
 func end(player):
+	super.end(player)
 	player.groundSlideHitbox.disabled = true;
 	player.interactiveCollisionShape.disabled = false
 	player.collisionShape.disabled = false

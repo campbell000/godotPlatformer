@@ -26,10 +26,9 @@ func start(player: Player):
 	self.timeElapsed = 0
 	player.animatedSprite.play("Slide")
 	player.groundSlideHitbox.disabled = false;
-	player.interactiveCollisionShape.disabled = true
-	player.collisionShape.disabled = true
 	player.slideInteractiveCollisionShape.disabled = false
 	player.slideCollisionShape.disabled = false
+	player.toggleNormalCollisionBoxes(false)
 	
 	if abs(player.velocity.x) <= Physics.MAX_RUN_SPEED:
 		player.velocity.x = player.velocity.x * SPEED_MULTIPLIER
@@ -76,11 +75,11 @@ func _on_AnimationPlayer_animation_finished(anim):
 	pass
 
 func end(player: Player):
+	super.end(player)
 	player.groundSlideHitbox.disabled = true;
-	player.interactiveCollisionShape.disabled = false
-	player.collisionShape.disabled = false
 	player.slideInteractiveCollisionShape.disabled = true
 	player.slideCollisionShape.disabled = true
+	player.toggleNormalCollisionBoxes(true)
 
 func getName():
 	return "Ground Attack"

@@ -1,15 +1,13 @@
 extends NestedState
-class_name AirAttack
+class_name DownAirAttack
 
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 var timeElapsed = 0
-var ATTACK_DURATION = 0.4
+var ATTACK_DURATION = 1
 var ATTACK_START = 0.03333
-var ATTACK_END = 0.23
-var activeHitbox = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,19 +18,14 @@ func _ready():
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player, nestedState: State):
 	self.timeElapsed = 0
-	player.animatedSprite.play("AirAttack")
-	player.airAttackHitbox.disabled = false;
+	player.animatedSprite.play("DownAirAttack")
+	player.downairInteractiveCollisionShape.disabled = false
+	player.downairHitbox.disabled = false
+	player.interactiveCollisionShape.disabled = true
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, nestedState: State, delta: float):
 	self.timeElapsed += delta
-	if self.timeElapsed >= ATTACK_START:
-		player.airAttackHitbox.disabled = false;
-		activeHitbox = true
-	
-	if self.timeElapsed >= ATTACK_END:
-		player.airAttackHitbox.disabled = true
-		activeHitbox = false
 	
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
@@ -44,8 +37,9 @@ func _on_AnimationPlayer_animation_finished(anim):
 	pass
 	
 func end(player: Player, nestedState: State):
-	player.airAttackHitbox.disabled = true;
-	self.activeHitbox = false
+	player.downairInteractiveCollisionShape.disabled = true
+	player.downairHitbox.disabled = true
+	player.interactiveCollisionShape.disabled = false
 			
 func getName():
-	return "Air Attack ("+str(activeHitbox)+")"
+	return "Air Attack"

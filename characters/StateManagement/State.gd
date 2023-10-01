@@ -27,7 +27,8 @@ func update(player, delta):
 	
 # Called when the state is being exited for a new state. Do cleanup if necessary
 func end(player):
-	pass
+	if (self.currentInnerState != null):
+		self.currentInnerState.end(player, self)
 	
 func getName():
 	pass

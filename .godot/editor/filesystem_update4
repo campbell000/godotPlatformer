@@ -10,3 +10,14 @@ res://characters/objects/TurretLaser/TurretLaser.tscn
 res://characters/objects/TurretLaser/TurretLaser.gd
 res://characters/enemies/Turret/Turret.gd
 res://objects/Camera.gd
+res://characters/player/States/DownAirAttack.gd
+res://characters/player/Player.gd
+res://characters/player/States/nestedJumpStates/NullNestedJumpState.gd
+res://characters/StateManagement/State.gd
+res://characters/player/States/Jumping.gd
+res://characters/player/States/nestedJumpStates/UpAirAttack.gd
+res://characters/player/States/SlideFall.gd
+res://characters/player/States/GroundAttack.gd
+res://characters/player/States/GroundSlide.gd
+res://characters/player/States/nestedJumpStates/DownAirAttack.gd
+res://characters/player/States/nestedJumpStates/AirAttack.gd

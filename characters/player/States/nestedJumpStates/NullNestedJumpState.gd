@@ -25,6 +25,9 @@ func update(player: Player, parentState: State, delta: float):
 		if Input.is_action_pressed('move_up'):
 			var state = player.get_node("States/UpAirAttack")
 			parentState.transitionToNestedState(player, state, delta)
+		elif Input.is_action_pressed('move_down'):
+			var state = player.get_node("States/DownAirAttack")
+			parentState.transitionToNestedState(player, state, delta)
 		else:
 			var state = player.get_node("States/AirAttack")
 			parentState.transitionToNestedState(player, state, delta)

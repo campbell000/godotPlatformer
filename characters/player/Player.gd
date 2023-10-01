@@ -20,6 +20,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var sprite = $Sprite2D
 @onready var collisionShape: CollisionShape2D = $CollisionShape2D
 @onready var slideCollisionShape: CollisionShape2D = $SlideCollisionShape2D
+@onready var downairShape: CollisionShape2D = $DownAirCollisionShape2D
 @onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
 @onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
 @onready var debugStateLabel = $DebugStateLabel
@@ -30,9 +31,11 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var upAirAttackHitbox: CollisionShape2D = $AttackArea2D/UpAirAttackCollisionShape
 @onready var groundAttackHitbox: CollisionShape2D = $AttackArea2D/GroundAttackCollisionShape
 @onready var groundSlideHitbox: CollisionShape2D = $AttackArea2D/SlideAttackCollisionShape
+@onready var downairHitbox: CollisionShape2D = $AttackArea2D/DownAirAttackCollisionShape
 
 @onready var interactiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/InteractionCollisionShape
 @onready var slideInteractiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/SlideInteractionCollisionShape
+@onready var downairInteractiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/DownAirCollisionShape
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,6 +48,8 @@ func _ready():
 	self.set_floor_stop_on_slope_enabled(true)
 	self.slideCollisionShape.disabled = true
 	self.slideInteractiveCollisionShape.disabled = true
+	self.downairInteractiveCollisionShape.disabled = true
+	self.downairHitbox.disabled = true
 	pass # Replace with function body.
 
 func _process(delta):
@@ -68,7 +73,11 @@ func _physics_process(delta):
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	self.handleDebugHUD()
-	
+
+func toggleNormalCollisionBoxes(isEnabled):
+	self.interactiveCollisionShape.disabled = !isEnabled
+	self.collisionShape.disabled = !isEnabled
+
 func handleDebugHUD():
 	var s = "FPS: "+str(Engine.get_frames_per_second())
 	s += "\nSpeed: "+str(round(self.velocity.x))

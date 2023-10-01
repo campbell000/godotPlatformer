@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cxk4hyoolr2vs"]
+[gd_scene load_steps=41 format=3 uid="uid://cxk4hyoolr2vs"]
 
 [ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
 [ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
@@ -16,11 +16,14 @@
 [ext_resource type="Script" path="res://characters/player/States/SlideFall.gd" id="13_14xgt"]
 [ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/DownAirAttack.gd" id="14_ea25k"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m56bd"]
+size = Vector2(12, 18)
+
 [sub_resource type="RectangleShape2D" id="25"]
 size = Vector2(10, 27)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7cy8v"]
-size = Vector2(20, 13)
+size = Vector2(23, 13)
 
 [sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
 font_size = 12
@@ -358,13 +361,13 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rov84"]
-size = Vector2(10, 27)
+size = Vector2(10, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mr6jc"]
-size = Vector2(20, 13)
+size = Vector2(23, 13)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1yhjy"]
-size = Vector2(9, 17)
+size = Vector2(14, 17)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbiqv"]
 size = Vector2(25, 21)
@@ -373,7 +376,7 @@ size = Vector2(25, 21)
 size = Vector2(23, 25.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gabpp"]
-size = Vector2(20, 6)
+size = Vector2(20, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dv5nb"]
 size = Vector2(5, 17)
@@ -381,12 +384,16 @@ size = Vector2(5, 17)
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("2")
 
+[node name="DownAirCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -6)
+shape = SubResource("RectangleShape2D_m56bd")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2.5)
 shape = SubResource("25")
 
 [node name="SlideCollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 9.5)
+position = Vector2(1.5, 9.5)
 shape = SubResource("RectangleShape2D_7cy8v")
 disabled = true
 
@@ -468,15 +475,15 @@ collision_layer = 10
 collision_mask = 2
 
 [node name="InteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
-position = Vector2(0, 2.5)
+position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_rov84")
 
 [node name="SlideInteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
-position = Vector2(0, 9.5)
+position = Vector2(1.5, 9.5)
 shape = SubResource("RectangleShape2D_mr6jc")
 
 [node name="DownAirCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
-position = Vector2(-2.5, -5.5)
+position = Vector2(-3, -5.5)
 shape = SubResource("RectangleShape2D_1yhjy")
 disabled = true
 
@@ -499,7 +506,7 @@ shape = SubResource("RectangleShape2D_wn3jq")
 disabled = true
 
 [node name="SlideAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
-position = Vector2(5, 13)
+position = Vector2(5, 13.5)
 shape = SubResource("RectangleShape2D_gabpp")
 disabled = true
 

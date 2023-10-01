@@ -2,7 +2,11 @@
 extends Node2D
 
 var timeElapsed: float = 0
+var colorTimer = 0
 var colorInterval = 0.04
+var speed = 1
+var duration = 1
+
 var COLORS = [
 	Color(0.586275, 0.933333, 0.933333, 1),
 	Color(0.686275, 0.933333, 0.933333, 1),
@@ -23,24 +27,28 @@ func _ready():
 	if Engine.is_editor_hint():
 		self.drawLine()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	self.position.x = self.position.x + (self.speed * delta)
 	self.timeElapsed = self.timeElapsed + delta
+	self.colorTimer = self.colorInterval + delta
 	
-	if self.timeElapsed >= self.colorInterval:
+	if self.colorTimer >= self.colorInterval:
 		self.queue_redraw()
-		self.timeElapsed = 0
+		self.colorTimer = 0
 		self.currentColor = self.currentColor + 1
 		if currentColor >= len(COLORS):
 			currentColor = 0
+			
+	if self.timeElapsed > self.duration:
+		print("FREEING")
+		self.queue_free()
 	
 func _draw():
 	self.drawLine()
 	
 func drawLine():
 	self.draw_line(Vector2((-LENGTH / 2.0), 0), Vector2((LENGTH / 2.0), 0), COLORS[currentColor], WIDTH, false)
-
 
 func _on_area_2d_area_entered(area):
 	pass # Replace with function body.

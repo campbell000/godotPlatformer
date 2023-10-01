@@ -25,7 +25,7 @@ func start(player: Player):
 func update(player: Player, delta: float):
 	Common.handleGroundMovement(player, delta, func speedModifier(x):
 		x['xAccel'] = 0
-		x['drag'] = 4
+		x['drag'] = 10
 		return x	
 	)
 	
@@ -50,6 +50,7 @@ func _on_AnimationPlayer_animation_finished(anim):
 	pass
 
 func end(player: Player):
+	super.end(player)
 	player.groundAttackHitbox.disabled = true;
 
 func getName():
