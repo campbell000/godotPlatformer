@@ -35,9 +35,6 @@ static func shouldWallDrag(player, disregardVelocity=false):
 	return ((player.velocity.y >= 0 or disregardVelocity)
 		and ((player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left")
 			or (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right")))
-			
-static func shouldAirAttack(player):
-	return Input.is_action_just_pressed("attack")
 
 static func handleGroundMovement(player, delta: float, speedModifierFunc = null):
 	# Determine if we should apply run acceleration. Do it if teh user is pressing left or right

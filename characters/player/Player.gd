@@ -218,8 +218,8 @@ func bounce():
 	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
 		self.transition_to_state(self.get_node("States/Falling"))
 		self.velocity.y = -self.velocity.y * 1.05
-		if (self.velocity.y > -300):
-			self.velocity.y = -300
+		if (self.velocity.y > -320):
+			self.velocity.y = -320
 
 func areaEntered(area):
 	self.takeDamage(9999)

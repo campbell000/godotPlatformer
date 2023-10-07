@@ -21,15 +21,15 @@ func start(player: Player, nestedState: State):
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, parentState: State, delta: float):	
-	if Common.shouldAirAttack(player):
+	if Input.is_action_just_pressed('attack') && !Input.is_action_pressed('move_down'):
 		if Input.is_action_pressed('move_up'):
 			var state = player.get_node("States/UpAirAttack")
 			parentState.transitionToNestedState(player, state, delta)
-		elif Input.is_action_pressed('move_down'):
-			var state = player.get_node("States/DownAirAttack")
-			parentState.transitionToNestedState(player, state, delta)
 		else:
 			var state = player.get_node("States/AirAttack")
+			parentState.transitionToNestedState(player, state, delta)
+	elif Input.is_action_pressed('move_down') && Input.is_action_pressed('attack'):
+			var state = player.get_node("States/DownAirAttack")
 			parentState.transitionToNestedState(player, state, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):

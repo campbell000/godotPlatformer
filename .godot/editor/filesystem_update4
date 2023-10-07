@@ -26,3 +26,4 @@ res://asset_files/shaders/Ghost.gdshader
 res://asset_files/shaders/Glitch.gdshader
 res://characters/enemies/Floopy/Floopy.tscn
 res://characters/enemies/Floopy/Floopy.gd
+res://characters/player/States/Common.gd

@@ -1,7 +1,7 @@
 extends Node2D
 
 var verticalLimit = 5.0
-var horizontalLimit = 50.0
+var horizontalLimit = 25.0
 var originalX
 var originalY
 var slowDownMaxX

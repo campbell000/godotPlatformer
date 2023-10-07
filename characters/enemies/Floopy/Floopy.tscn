@@ -30,7 +30,7 @@ script = ExtResource("1_7okwc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_p1g8u")
-frame_progress = 0.793021
+frame_progress = 0.563218
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 6
