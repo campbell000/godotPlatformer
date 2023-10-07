@@ -27,6 +27,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 @onready var debugHUD = $CanvasLayer/DebugHUD
 
 @onready var attackArea2D: Area2D = $AttackArea2D
+@onready var playerHurtbox: Area2D = $PlayerHitboxArea2D
 @onready var airAttackHitbox: CollisionPolygon2D = $AttackArea2D/AirAttackCollisionShape
 @onready var upAirAttackHitbox: CollisionShape2D = $AttackArea2D/UpAirAttackCollisionShape
 @onready var groundAttackHitbox: CollisionShape2D = $AttackArea2D/GroundAttackCollisionShape
@@ -107,9 +108,11 @@ func handleRotation(flip: bool):
 	if (flip):
 		self.attackArea2D.scale.x = -1
 		self.sprite.flip_h = true
+		self.playerHurtbox.scale.x = -1
 	else:
 		self.sprite.flip_h = false
 		self.attackArea2D.scale.x = 1
+		self.playerHurtbox.scale.x = 1
 
 func collidedWithLeftWall():
 	return self._collidedWithWall(self.leftRaycast, "left")
@@ -210,6 +213,13 @@ func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 	if d != null:
 		self.speedBoostDir = 0
 
+
+func bounce():
+	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
+		self.transition_to_state(self.get_node("States/Falling"))
+		self.velocity.y = -self.velocity.y * 1.05
+		if (self.velocity.y > -300):
+			self.velocity.y = -300
 
 func areaEntered(area):
 	self.takeDamage(9999)

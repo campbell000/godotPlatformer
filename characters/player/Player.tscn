@@ -364,7 +364,7 @@ size = Vector2(10, 27)
 size = Vector2(20, 13)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1yhjy"]
-size = Vector2(9, 17)
+size = Vector2(7, 17)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbiqv"]
 size = Vector2(25, 21)
@@ -382,6 +382,7 @@ size = Vector2(5, 17)
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 2.5)
 shape = SubResource("25")
 
@@ -476,7 +477,7 @@ position = Vector2(0, 9.5)
 shape = SubResource("RectangleShape2D_mr6jc")
 
 [node name="DownAirCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
-position = Vector2(-2.5, -5.5)
+position = Vector2(-3.5, -5.5)
 shape = SubResource("RectangleShape2D_1yhjy")
 disabled = true
 

@@ -30,7 +30,7 @@ script = ExtResource("1_7okwc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_p1g8u")
-frame_progress = 0.793021
+frame_progress = 0.428008
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 6
@@ -38,5 +38,3 @@ collision_mask = 6
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitBox"]
 polygon = PackedVector2Array(-1, -11, 9, -9, 10, 3, 6, 8, -2, 10, -8, 5, -10, -1, -8, -7)
-
-[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
