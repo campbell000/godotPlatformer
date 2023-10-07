@@ -21,3 +21,8 @@ res://characters/player/States/GroundAttack.gd
 res://characters/player/States/GroundSlide.gd
 res://characters/player/States/nestedJumpStates/DownAirAttack.gd
 res://characters/player/States/nestedJumpStates/AirAttack.gd
+res://characters/enemies/Ghost/Ghost.gdshader
+res://asset_files/shaders/Ghost.gdshader
+res://asset_files/shaders/Glitch.gdshader
+res://characters/enemies/Floopy/Floopy.tscn
+res://characters/enemies/Floopy/Floopy.gd

@@ -1,8 +1,9 @@
-CollisionShape2D
-Node2D
+CollisionPolygon2D
 Area2D
 AnimatedSprite2D
-CollisionPolygon2D
+ColorRect
+CollisionShape2D
+Node2D
 AirAttack
 Node3D
 ShapeCast2D

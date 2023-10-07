@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvdbi1u8ent2v"]
+[gd_scene load_steps=10 format=3 uid="uid://bvdbi1u8ent2v"]
 
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bfsrvakttjvo4" path="res://environment/tilemaps/GroundTilemap.tscn" id="2_6ev3j"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://objects/Camera.gd" id="4"]
 [ext_resource type="PackedScene" uid="uid://bf2thrpdfa5d1" path="res://characters/enemies/Ghost/Ghost.tscn" id="6_bnxdl"]
 [ext_resource type="PackedScene" uid="uid://cyykwm6ag6fq5" path="res://characters/enemies/Turret/Turret.tscn" id="7_te4as"]
+[ext_resource type="PackedScene" uid="uid://c8mooty02c0bw" path="res://characters/enemies/Floopy/Floopy.tscn" id="8_twlrx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dw2r1"]
 font_size = 8
@@ -77,3 +78,6 @@ position = Vector2(603, 114)
 [node name="Turret" parent="World/Environment/Enemies" instance=ExtResource("7_te4as")]
 z_index = 1
 position = Vector2(-745, 168)
+
+[node name="Floopy" parent="World/Environment/Enemies" instance=ExtResource("8_twlrx")]
+position = Vector2(170, 164)
