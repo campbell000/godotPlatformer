@@ -1,7 +1,6 @@
 extends Node2D
 
-var verticalLimit = 5.0
-var horizontalLimit = 25.0
+
 var originalX
 var originalY
 var slowDownMaxX
@@ -10,15 +9,18 @@ var slowDownMaxY
 var slowDownMinY
 var currentAccel = 1
 var xVel = 5
-var xMaxSpeed = 50
 var yVel = 1
-var yMaxSpeed = 30
 var yAccel = 1
 var xAccel = 1
 var movingRight = true
 var movingUp = true
 var movingUpFPS = 1.1
 var movingDownFPS = 0.6
+
+@export var verticalLimit = 5.0
+@export var horizontalLimit = 25.0
+@export var xMaxSpeed = 50
+@export var yMaxSpeed = 30
 
 @onready var animatedSprite = $AnimatedSprite2D
 
@@ -73,7 +75,6 @@ func manageState(pos, slowDownMin, slowDownMax, currentDir, flipSprite, adjustFp
 		if flipSprite:
 			self.animatedSprite.flip_h = false
 		if adjustFps:
-			print(movingDownFPS)
 			self.animatedSprite.set_speed_scale(movingDownFPS) 
 	
 	return currentDir

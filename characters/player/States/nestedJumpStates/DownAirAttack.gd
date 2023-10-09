@@ -27,10 +27,16 @@ func start(player: Player, nestedState: State):
 func update(player: Player, nestedState: State, delta: float):
 	self.timeElapsed += delta
 	
+	if player.wasBounced:
+		player.wasBounced = false
+		player.velocity.y = -player.velocity.y * 1.05
+		if (player.velocity.y > -320):
+			player.velocity.y = -320
+	
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
-	if self.timeElapsed >= ATTACK_DURATION:
+	if Input.is_action_just_released("attack"):
 		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
 	
 func _on_AnimationPlayer_animation_finished(anim):

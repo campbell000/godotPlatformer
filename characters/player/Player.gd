@@ -13,6 +13,7 @@ var storedWallJumpSpeed = 0
 var isBreakingSpeedLimit = false
 var speedBoostDir = 0
 var camera
+var wasBounced = false
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 
 # Scene Nodes
@@ -215,11 +216,13 @@ func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 
 
 func bounce():
-	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
-		self.transition_to_state(self.get_node("States/Falling"))
-		self.velocity.y = -self.velocity.y * 1.05
-		if (self.velocity.y > -320):
-			self.velocity.y = -320
+	print("Was Bounced")
+	self.wasBounced = true
+	#if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
+	#	self.transition_to_state(self.get_node("States/Falling"))
+	#	self.velocity.y = -self.velocity.y * 1.05
+	#	if (self.velocity.y > -320):
+	#		self.velocity.y = -320
 
 func areaEntered(area):
 	self.takeDamage(9999)

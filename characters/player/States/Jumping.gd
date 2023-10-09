@@ -5,6 +5,7 @@ var isHighJumping = true
 var firstUpdate = false
 var canceledEarly = false
 var cameFromSlide = false
+var wasBounced = false
 
 func _ready():
 	set_process(false)
@@ -32,7 +33,11 @@ func start(player: Player):
 		player.animatedSprite.play("Jump")
 	
 func update(player: Player, delta: float):
-	if !self.cameFromSlide:
+	if player.wasBounced:
+		self.wasBounced = true
+		
+	self.currentInnerState.update(player, self, delta)
+	if !self.cameFromSlide && !self.wasBounced:
 		var currentGrav = Common.handleJumpLogic(player, self)
 		Common.handleAirMovement(player, delta, currentGrav)
 	else:
@@ -43,8 +48,6 @@ func update(player: Player, delta: float):
 	
 	self.transitionToNewStateIfNecessary(player, delta)
 	self.firstUpdate = false
-	
-	self.currentInnerState.update(player, self, delta)
 
 func transitionToNewStateIfNecessary(player, delta):
 	# If on the floor, then transition to ground no matter what
@@ -65,6 +68,7 @@ func end(player):
 	self.isHighJumping = false
 	self.canceledEarly = false
 	self.cameFromSlide = false
+	self.wasBounced = false
 	
 func getName():
 	if self.currentInnerState:
