@@ -1,8 +1,9 @@
 res://default_env.tres
 res://characters/player/Player.tscn
 res://asset_files/shaders/Glitch.gdshader
-res://characters/player/States/Falling.gd
 res://characters/player/Player.gd
+res://characters/player/States/Jumping.gd
+res://characters/player/States/OnGround.gd
 res://environment/backgrounds/DefaultBackground.tscn
 res://environment/tilemaps/GroundTilemap.tscn
 res://environment/tilemaps/InteractiveTiles.tscn
@@ -11,5 +12,7 @@ res://characters/enemies/Turret/Turret.tscn
 res://characters/enemies/Ghost/Ghost.tscn
 res://characters/objects/TurretLaser/TurretLaser.tscn
 res://characters/enemies/Floopy/Floopy.tscn
-res://characters/player/States/Jumping.gd
-res://characters/player/States/nestedJumpStates/DownAirAttack.gd
+res://characters/StateManagement/State.gd
+res://characters/player/States/Falling.gd
+res://objects/Camera.gd
+res://characters/player/States/WallJumping.gd

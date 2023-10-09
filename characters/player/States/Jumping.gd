@@ -5,6 +5,7 @@ var isHighJumping = true
 var firstUpdate = false
 var canceledEarly = false
 var cameFromSlide = false
+var currGrav = Common.JUMP_GRAVITY
 
 func _ready():
 	set_process(false)
@@ -30,35 +31,28 @@ func start(player: Player):
 		player.animatedSprite.play("WallJump")
 	else:
 		player.animatedSprite.play("Jump")
-	
+		
+func input_update(player, event):
+	if !self.firstUpdate && Common.shouldWallJump(player):
+		player.transition_to_state(player.get_node("States/WallJumping"))
+	elif Common.shouldWallDrag(player):
+		# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
+		player.transition_to_state(player.get_node("States/WallDragging"))
+		
 func update(player: Player, delta: float):
 	self.currentInnerState.update(player, self, delta)
-	if !self.cameFromSlide:
-		var currentGrav = Common.handleJumpLogic(player, self)
-		Common.handleAirMovement(player, delta, currentGrav)
-	else:
-		Common.handleAirMovement(player, delta)
-	
 	if player.velocity.y >= 0 && str(self.currentInnerState.get_path()).contains("NullNested"):
 		player.animatedSprite.play("Fall")
-	
-	self.transitionToNewStateIfNecessary(player, delta)
-	self.firstUpdate = false
 
-func transitionToNewStateIfNecessary(player, delta):
-	# If on the floor, then transition to ground no matter what
+func physics_update(player: Player, delta: float):
+	if !self.cameFromSlide:
+		self.currGrav = Common.handleJumpLogic(player, self)	
+	Common.handleAirMovement(player, delta, self.currGrav)
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
-	else:
-		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
-		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
-		if !self.firstUpdate && Common.shouldWallJump(player):
-			player.transition_to_state(player.get_node("States/WallJumping"))
-		elif Common.shouldWallDrag(player):
-			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
-			player.transition_to_state(player.get_node("States/WallDragging"))
-
+	self.firstUpdate = true
+	
 func end(player):
 	super.end(player)
 	self.isHighJumping = false

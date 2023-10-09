@@ -38,9 +38,16 @@ func getWallJumpSpeed(player):
 		player.isBreakingSpeedLimit = true
 	return vel
 	
-# Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func input_update(player, event):
+	if self.wallJumpCooldownTimer <= 0 and Common.shouldWallDrag(player, true): # Cooldown timer needed so user doesn't go from walljump to drag on first frame
+		if (player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left") || (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right"):
+			# If we're holding direction towards a wall, go back to wall dragging
+			var wallDragState = player.get_node("States/WallDragging")
+			player.transition_to_state(wallDragState)
+	
+func physics_update(player: Player, delta: float):	
 	# Allow control in the air when wall jumping, as long as we're out of the cooldown period
+	self.wallJumpCooldownTimer -= delta
 	var accel = 0
 	var options = {"accel": 0}
 	self.controlCooldownTimer += delta
@@ -53,21 +60,15 @@ func update(player: Player, delta: float):
 		options["drag"] = 0
 		
 	Common.handleAirMovement(player, delta, Physics.GRAVITY, options)
-
-	self.wallJumpCooldownTimer -= delta
-	self.transitionToNewStateIfNecessary(player, delta)
 	
-	self.currentInnerState.update(player, self, delta)
-	
-func transitionToNewStateIfNecessary(player, delta):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
-	elif self.wallJumpCooldownTimer <= 0 and Common.shouldWallDrag(player, true): # Cooldown timer needed so user doesn't go from walljump to drag on first frame
-		if (player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left") || (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right"):
-			# If we're holding direction towards a wall, go back to wall dragging
-			var wallDragState = player.get_node("States/WallDragging")
-			player.transition_to_state(wallDragState)
+
+# Called ON the first time a state is entered, as well as every physics frame that the state is active
+func update(player: Player, delta: float):
+	
+	self.currentInnerState.update(player, self, delta)
 	
 func getName():
 	return "WallJumping"

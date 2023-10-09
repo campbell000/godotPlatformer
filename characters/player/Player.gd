@@ -54,11 +54,9 @@ func _ready():
 	pass # Replace with function body.
 
 func _process(delta):
-	pass
-
-		
-# All of this is placeholder physics logic
-func _physics_process(delta):
+	self.state.update(self, delta)
+	
+func _unhandled_input(event):
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
 		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
@@ -68,9 +66,14 @@ func _physics_process(delta):
 		self.currentDirection = "move_left"
 	elif Input.is_action_just_pressed("move_right"):
 		self.currentDirection = "move_right"
+		
+	self.state.input_update(self, event)
+		
+# All of this is placeholder physics logic
+func _physics_process(delta):
 
 	# First, handle the inputs. 
-	self.state.update(self, delta)
+	self.state.physics_update(self, delta)
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	self.handleDebugHUD()
@@ -215,11 +218,7 @@ func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 
 
 func bounce():
-	# BIG NOTE: this was causing an insane lag spike. I THINK it's because 
-	# signals get processed outside of the _physics_proecss loop. So I THINK
-	# lots of things were happening in one frame as a result of me handling this
-	# event, and then transitioning the 
-	#self.wasBounced = true
+	# BIG NOTE: this WAS causing an insane lag spike, but now it's NOT. No idea what changed
 	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
 		self.transition_to_state(self.get_node("States/Falling"))
 		self.velocity.y = -self.velocity.y * 1.05

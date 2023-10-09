@@ -12,32 +12,29 @@ func start(player: Player):
 	pass
 	
 func update(player: Player, delta: float):
-	# Handle run/idle animations
+	if !Input.is_action_pressed("move_left") and !Input.is_action_pressed("move_right"):
+		player.animatedSprite.play("Idle")
 	if Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
 		player.animatedSprite.play("Run")
-	elif !Input.is_action_pressed("move_left") and !Input.is_action_pressed("move_right"):
-		player.animatedSprite.play("Idle")
-	
-	# Put into common because it's shared with GroundAttack
+			
+func input_update(player, event):
+	# otherwise, if we're jumping (or the user buffered a jump), transition
+	if player.justJumpedOrBufferedAJump():
+		player.transition_to_state(player.get_node("States/Jumping"))
+	elif Input.is_action_just_pressed("attack"):
+		if Input.is_action_pressed("move_down"):
+			player.transition_to_state(player.get_node("States/GroundSlide"))
+		else:
+			player.transition_to_state(player.get_node("States/GroundAttack"))
+		
+			
+func physics_update(player, delta):
 	Common.handleGroundMovement(player, delta)
-	
-	self.transitionToNewStateIfNecessary(player, delta)
-
-func transitionToNewStateIfNecessary(player, delta):
-	# If we're not on the floor, and we're not jumping, then we're falling, no matter what
 	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
 		var fallingState = player.get_node("States/Falling")
 		player.transition_to_state(player.get_node("States/Falling"))
 		fallingState.cameFromGround = true
-	else:
-		# otherwise, if we're jumping (or the user buffered a jump), transition
-		if player.justJumpedOrBufferedAJump():
-			player.transition_to_state(player.get_node("States/Jumping"))
-		elif Input.is_action_just_pressed("attack"):
-			if Input.is_action_pressed("move_down"):
-				player.transition_to_state(player.get_node("States/GroundSlide"))
-			else:
-				player.transition_to_state(player.get_node("States/GroundAttack"))
+
 
 func getName():
 	return "OnGround"
