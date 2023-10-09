@@ -26,13 +26,6 @@ func start(player: Player, nestedState: State):
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, nestedState: State, delta: float):
 	self.timeElapsed += delta
-	
-	if player.wasBounced:
-		player.wasBounced = false
-		player.velocity.y = -player.velocity.y * 1.05
-		if (player.velocity.y > -320):
-			player.velocity.y = -320
-	
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
