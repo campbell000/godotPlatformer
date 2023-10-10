@@ -13,9 +13,17 @@ func start(player, parentState: State):
 func update(player, parentState: State, delta):
 	pass
 	
+func physics_update(player, parentState: State, delta):
+	pass #self.update(player, delta)
+	
+func input_update(player, parentState: State, event):
+	pass
+	
 # Called when the state is being exited for a new state. Do cleanup if necessary
 func end(player, parentState: State):
 	pass
+	
+
 	
 func getName():
 	pass

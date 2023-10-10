@@ -93,6 +93,12 @@ func handleDebugHUD():
 func justJumpedOrBufferedAJump():
 	return Input.is_action_just_pressed("jump") || self.bufferTimer > 0
 
+func justJumped():
+	return Input.is_action_just_pressed("jump")
+
+func jumpWasBuffered():
+	return self.bufferTimer > 0
+
 func _handlePlayerStateAfterMove(delta):
 	if self.bufferTimer > 0:
 		self.bufferTimer -= delta
@@ -219,9 +225,11 @@ func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
 
 func bounce():
 	# BIG NOTE: this WAS causing an insane lag spike, but now it's NOT. No idea what changed
-	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
+	var innerState = self.state.currentInnerState
+	if innerState != null && innerState is DownAirAttack:
 		self.transition_to_state(self.get_node("States/Falling"))
-		self.velocity.y = -self.velocity.y * 1.05
+		self.state.resumeInnerState = innerState
+		self.velocity.y = -self.velocity.y * 1.01
 		if (self.velocity.y > -320):
 			self.velocity.y = -320
 

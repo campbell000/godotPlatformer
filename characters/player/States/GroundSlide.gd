@@ -37,8 +37,8 @@ func start(player: Player):
 	self.isSlidingRight = player.velocity.x >= 0
 	self.startingVel = player.velocity.x
 	
-# Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
+	self.timeElapsed += delta	
 	Common.handleGroundMovement(player, delta, func speedModifier(x):
 		# If accelerating BACKWARDS, don't allow them to turn so sharply. Sliding should be a commitment
 		if self.isSlidingRight && x['xAccel'] < 0:
@@ -55,24 +55,21 @@ func update(player: Player, delta: float):
 		return x
 	)
 	
-	self.timeElapsed += delta	
-	self.transitionToNewStateIfNecessary(player, delta)
-		
-func transitionToNewStateIfNecessary(player, delta):
-	# If we're not on the floor, and we're not jumping, then we're falling, no matter what
-	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
-		player.transition_to_state(player.get_node("States/SlideFall"))
+	if self.timeElapsed >= ATTACK_DURATION:
+		player.transition_to_state(player.get_node("States/OnGround"))
 	else:
-		# otherwise, if we're jumping (or the user buffered a jump), transition
 		if player.justJumpedOrBufferedAJump():
 			var jump = player.get_node("States/Jumping")
 			jump.cameFromSlide = true
 			player.transition_to_state(player.get_node("States/Jumping"))
-	if self.timeElapsed >= ATTACK_DURATION:
-		player.transition_to_state(player.get_node("States/OnGround"))
+		
 	
-func _on_AnimationPlayer_animation_finished(anim):
-	pass
+	
+func input_update(player: Player, event):
+	if player.justJumpedOrBufferedAJump():
+		var jump = player.get_node("States/Jumping")
+		jump.cameFromSlide = true
+		player.transition_to_state(player.get_node("States/Jumping"))
 
 func end(player: Player):
 	super.end(player)

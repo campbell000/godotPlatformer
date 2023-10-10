@@ -33,25 +33,37 @@ func start(player: Player):
 		player.animatedSprite.play("Jump")
 		
 func input_update(player, event):
-	if !self.firstUpdate && Common.shouldWallJump(player):
+	if !self.firstUpdate && Input.is_action_just_pressed("jump") && (player.collidedWithLeftWall() || player.collidedWithRightWall()):
 		player.transition_to_state(player.get_node("States/WallJumping"))
 	elif Common.shouldWallDrag(player):
 		# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
 		player.transition_to_state(player.get_node("States/WallDragging"))
 		
+	self.currentInnerState.input_update(player, self, event)
+		
 func update(player: Player, delta: float):
-	self.currentInnerState.update(player, self, delta)
 	if player.velocity.y >= 0 && str(self.currentInnerState.get_path()).contains("NullNested"):
 		player.animatedSprite.play("Fall")
+	self.currentInnerState.update(player, self, delta)
 
 func physics_update(player: Player, delta: float):
 	if !self.cameFromSlide:
-		self.currGrav = Common.handleJumpLogic(player, self)	
+		self.currGrav = Common.handleJumpLogic(player, self)
+	else:
+		self.currGrav = Physics.GRAVITY
 	Common.handleAirMovement(player, delta, self.currGrav)
+	
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
-	self.firstUpdate = true
+	elif !self.firstUpdate && Input.is_action_just_pressed("jump") && (player.collidedWithLeftWall() || player.collidedWithRightWall()):
+		player.transition_to_state(player.get_node("States/WallJumping"))
+	elif Common.shouldWallDrag(player):
+		# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag
+		player.transition_to_state(player.get_node("States/WallDragging"))
+
+	self.firstUpdate = false
+	self.currentInnerState.physics_update(player, self, delta)
 	
 func end(player):
 	super.end(player)

@@ -17,22 +17,17 @@ func start(player: Player):
 	dragTimer = 0
 	pass
 	
-# Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	self.dragTimer += delta
 	if self.dragTimer > STORED_SPEED_CUTOFF:
 		player.storedWallJumpSpeed = 0
 		
 	# Apply a constant downward velocity
 	player.velocity.y = WALL_DRAG
-	player.set_velocity(player.velocity)
-	player.set_up_direction(Vector2.UP)
+	player.velocity.x = 0
 	player.move_and_slide()
 	player.velocity = player.velocity
-	self.transitionToNewStateIfNeeded(player, delta)
 	
-func transitionToNewStateIfNeeded(player, delta):
-	# If we're on the ground, stop what we're doing and go to the ground state
 	if player.is_on_floor():
 		player.transition_to_state(player.get_node("States/OnGround"))
 	else:
@@ -41,13 +36,22 @@ func transitionToNewStateIfNeeded(player, delta):
 		var collidingRight = player.collidedWithRightWall()
 		if (!collidingLeft && !collidingRight):
 			player.transition_to_state(player.get_node("States/Falling"))
-		else:
-			# If jumping, then wall jump
-			if Input.is_action_just_pressed("jump"):
-				player.transition_to_state(player.get_node("States/WallJumping"))
-			elif (collidingRight and player.getDeconflictedDirectionalInput() == "move_left") || (collidingLeft and player.getDeconflictedDirectionalInput() == "move_right"):
-				# If the user is moving AWAY from the wall, then force a fall
-				player.transition_to_state(player.get_node("States/Falling"))
+		elif player.jumpWasBuffered():
+			player.transition_to_state(player.get_node("States/WallJumping"))
+			
+func input_update(player, event):
+	var collidingLeft = player.collidedWithLeftWall()
+	var collidingRight = player.collidedWithRightWall()
+	if (!collidingLeft && !collidingRight):
+		player.transition_to_state(player.get_node("States/Falling"))
+	else:
+		# If jumping, then wall jump
+		if Input.is_action_just_pressed("jump"):
+			player.transition_to_state(player.get_node("States/WallJumping"))
+		elif (collidingRight and player.getDeconflictedDirectionalInput() == "move_left") || (collidingLeft and player.getDeconflictedDirectionalInput() == "move_right"):
+			# If the user is moving AWAY from the wall, then force a fall
+			player.transition_to_state(player.get_node("States/Falling"))
+
 	
 func getName():
 	return "WallDrag"

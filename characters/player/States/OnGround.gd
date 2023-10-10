@@ -18,6 +18,7 @@ func update(player: Player, delta: float):
 		player.animatedSprite.play("Run")
 			
 func input_update(player, event):
+	print("INPUIT=======")
 	# otherwise, if we're jumping (or the user buffered a jump), transition
 	if player.justJumpedOrBufferedAJump():
 		player.transition_to_state(player.get_node("States/Jumping"))
@@ -29,11 +30,15 @@ func input_update(player, event):
 		
 			
 func physics_update(player, delta):
+	print("OHYSICS")
 	Common.handleGroundMovement(player, delta)
 	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
 		var fallingState = player.get_node("States/Falling")
 		player.transition_to_state(player.get_node("States/Falling"))
 		fallingState.cameFromGround = true
+	else:
+		if player.justJumpedOrBufferedAJump():
+			player.transition_to_state(player.get_node("States/Jumping"))
 
 
 func getName():

@@ -1,0 +1,515 @@
+[gd_scene load_steps=40 format=3 uid="uid://cxk4hyoolr2vs"]
+
+[ext_resource type="Texture2D" uid="uid://evuta0aeous2" path="res://asset_files/characters/player/adventurer-v1.5-Sheet.png" id="1"]
+[ext_resource type="Script" path="res://characters/player/Player.gd" id="2"]
+[ext_resource type="Script" path="res://characters/player/States/WallDragging.gd" id="3"]
+[ext_resource type="Script" path="res://characters/player/States/WallJumping.gd" id="4"]
+[ext_resource type="Script" path="res://characters/player/States/Jumping.gd" id="5"]
+[ext_resource type="Script" path="res://characters/player/States/OnGround.gd" id="6"]
+[ext_resource type="Script" path="res://characters/player/States/Falling.gd" id="7"]
+[ext_resource type="Script" path="res://characters/player/States/GroundAttack.gd" id="8"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/AirAttack.gd" id="8_d8ci3"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/UpAirAttack.gd" id="9_wgxk8"]
+[ext_resource type="Script" path="res://characters/player/States/NullState.gd" id="10_v4dma"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/NullNestedJumpState.gd" id="11_g6h8j"]
+[ext_resource type="Script" path="res://characters/player/States/GroundSlide.gd" id="12_8k8cl"]
+[ext_resource type="Script" path="res://characters/player/States/SlideFall.gd" id="13_14xgt"]
+[ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/DownAirAttack.gd" id="14_ea25k"]
+
+[sub_resource type="RectangleShape2D" id="25"]
+size = Vector2(10, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7cy8v"]
+size = Vector2(20, 13)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qeqnq"]
+font_size = 12
+
+[sub_resource type="Animation" id="27"]
+resource_name = "AirAttack"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [96, 97, 98, 99]
+}
+
+[sub_resource type="Animation" id="Animation_7dimy"]
+resource_name = "DownAirAttack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [109]
+}
+
+[sub_resource type="Animation" id="22"]
+resource_name = "Fall"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [22, 23]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="26"]
+resource_name = "GroundAttack"
+length = 0.4
+loop_mode = 1
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.1, 0.225, 0.325),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [47, 48, 49, 50, 51, 52]
+}
+
+[sub_resource type="Animation" id="18"]
+resource_name = "Idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="21"]
+resource_name = "Jump"
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 16, 17]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.15, 0.3),
+"transitions": PackedFloat32Array(1e-05, 1e-05, 1e-05, 1e-05),
+"update": 1,
+"values": [Vector2(0, -1.5), Vector2(0, -1.5), Vector2(0, 0), Vector2(0, 5)]
+}
+
+[sub_resource type="Animation" id="19"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="20"]
+resource_name = "Run"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -1.5)]
+}
+
+[sub_resource type="Animation" id="Animation_v2oje"]
+resource_name = "Slide"
+length = 0.55
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 24, 26, 27, 28]
+}
+
+[sub_resource type="Animation" id="Animation_cwpkq"]
+resource_name = "SlideFall"
+length = 0.2
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [24, 25]
+}
+
+[sub_resource type="Animation" id="Animation_rcb23"]
+resource_name = "UpAirAttack"
+length = 0.5
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [42, 43, 44, 45, 46, 47]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-2, -2)]
+}
+
+[sub_resource type="Animation" id="24"]
+resource_name = "WallJump"
+length = 0.36
+loop_mode = 1
+step = 0.09
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.09, 0.18, 0.27),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="23"]
+resource_name = "WallSlide"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [79, 80]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x28"]
+_data = {
+"AirAttack": SubResource("27"),
+"DownAirAttack": SubResource("Animation_7dimy"),
+"Fall": SubResource("22"),
+"GroundAttack": SubResource("26"),
+"Idle": SubResource("18"),
+"Jump": SubResource("21"),
+"RESET": SubResource("19"),
+"Run": SubResource("20"),
+"Slide": SubResource("Animation_v2oje"),
+"SlideFall": SubResource("Animation_cwpkq"),
+"UpAirAttack": SubResource("Animation_rcb23"),
+"WallJump": SubResource("24"),
+"WallSlide": SubResource("23")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rov84"]
+size = Vector2(10, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr6jc"]
+size = Vector2(20, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1yhjy"]
+size = Vector2(7, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbiqv"]
+size = Vector2(25, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wn3jq"]
+size = Vector2(23, 25.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gabpp"]
+size = Vector2(20, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dv5nb"]
+size = Vector2(5, 17)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 2.5)
+shape = SubResource("25")
+
+[node name="SlideCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9.5)
+shape = SubResource("RectangleShape2D_7cy8v")
+disabled = true
+
+[node name="RaycastContainer" type="Marker2D" parent="."]
+
+[node name="LeftRaycast" type="RayCast2D" parent="RaycastContainer"]
+position = Vector2(-8, -2)
+scale = Vector2(0.5, 1)
+target_position = Vector2(0, 18)
+
+[node name="RightRaycast" type="RayCast2D" parent="RaycastContainer"]
+position = Vector2(8, -2)
+scale = Vector2(0.5, 1)
+target_position = Vector2(0, 18)
+
+[node name="States" type="Node2D" parent="."]
+
+[node name="OnGround" type="Node2D" parent="States"]
+script = ExtResource("6")
+
+[node name="Falling" type="Node2D" parent="States"]
+script = ExtResource("7")
+
+[node name="Jumping" type="Node2D" parent="States"]
+script = ExtResource("5")
+
+[node name="WallDragging" type="Node2D" parent="States"]
+script = ExtResource("3")
+
+[node name="WallJumping" type="Node2D" parent="States"]
+script = ExtResource("4")
+
+[node name="GroundAttack" type="Node2D" parent="States"]
+script = ExtResource("8")
+
+[node name="AirAttack" type="Node" parent="States"]
+script = ExtResource("8_d8ci3")
+
+[node name="UpAirAttack" type="Node2D" parent="States"]
+script = ExtResource("9_wgxk8")
+
+[node name="NullState" type="Node2D" parent="States"]
+script = ExtResource("10_v4dma")
+
+[node name="NullNestedJumpState" type="Node2D" parent="States"]
+script = ExtResource("11_g6h8j")
+
+[node name="GroundSlide" type="Node2D" parent="States"]
+script = ExtResource("12_8k8cl")
+
+[node name="SlideFall" type="Node2D" parent="States"]
+script = ExtResource("13_14xgt")
+
+[node name="DownAirAttack" type="Node2D" parent="States"]
+script = ExtResource("14_ea25k")
+
+[node name="DebugStateLabel" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -39.0
+offset_right = 58.0
+offset_bottom = -19.0
+scale = Vector2(0.5, 0.5)
+text = "TEST"
+label_settings = SubResource("LabelSettings_qeqnq")
+
+[node name="AnimatedSprite2D" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_y8x28")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1")
+offset = Vector2(0, -1.5)
+hframes = 7
+vframes = 16
+
+[node name="PlayerHitboxArea2D" type="Area2D" parent="."]
+collision_layer = 10
+collision_mask = 2
+
+[node name="InteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_rov84")
+
+[node name="SlideInteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
+position = Vector2(0, 9.5)
+shape = SubResource("RectangleShape2D_mr6jc")
+
+[node name="DownAirCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
+position = Vector2(-3.5, -5.5)
+shape = SubResource("RectangleShape2D_1yhjy")
+disabled = true
+
+[node name="AttackArea2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="GroundAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
+position = Vector2(8.5, 4.5)
+shape = SubResource("RectangleShape2D_wbiqv")
+disabled = true
+
+[node name="AirAttackCollisionShape" type="CollisionPolygon2D" parent="AttackArea2D"]
+position = Vector2(1, -6)
+polygon = PackedVector2Array(6, -9, 20, -2, 23, 6, 12, 12, -8, 10)
+
+[node name="UpAirAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
+position = Vector2(6.5, -7.25)
+shape = SubResource("RectangleShape2D_wn3jq")
+disabled = true
+
+[node name="SlideAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
+position = Vector2(5, 13)
+shape = SubResource("RectangleShape2D_gabpp")
+disabled = true
+
+[node name="DownAirAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
+position = Vector2(0.5, 5.5)
+shape = SubResource("RectangleShape2D_dv5nb")
+disabled = true
+
+[connection signal="area_entered" from="PlayerHitboxArea2D" to="." method="areaEntered"]
+[connection signal="body_shape_entered" from="PlayerHitboxArea2D" to="." method="interactiveBodyEntered"]
+[connection signal="body_shape_exited" from="PlayerHitboxArea2D" to="." method="interactiveBodyExited"]
+[connection signal="body_shape_entered" from="AttackArea2D" to="." method="attackHitboxEntered"]

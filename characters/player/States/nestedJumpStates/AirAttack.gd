@@ -23,25 +23,18 @@ func start(player: Player, nestedState: State):
 	player.animatedSprite.play("AirAttack")
 	player.airAttackHitbox.disabled = false;
 	
-# Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, nestedState: State, delta: float):
+func physics_update(player: Player, nestedState: State, delta):
 	self.timeElapsed += delta
 	if self.timeElapsed >= ATTACK_START:
 		player.airAttackHitbox.disabled = false;
 		activeHitbox = true
-	
+		
 	if self.timeElapsed >= ATTACK_END:
 		player.airAttackHitbox.disabled = true
 		activeHitbox = false
-	
-	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
-func transitionToNewStateIfNecessary(player, nestedState: State, delta):
 	if self.timeElapsed >= ATTACK_DURATION:
 		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
-	
-func _on_AnimationPlayer_animation_finished(anim):
-	pass
 	
 func end(player: Player, nestedState: State):
 	player.airAttackHitbox.disabled = true;

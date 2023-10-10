@@ -27,7 +27,7 @@ func _ready():
 	pass # Replace with function body.
 
 static func shouldWallJump(player):
-	return player.justJumpedOrBufferedAJump() && player.justJumpedOrBufferedAJump() && (player.collidedWithLeftWall() || player.collidedWithRightWall())
+	return player.justJumpedOrBufferedAJump() && (player.collidedWithLeftWall() || player.collidedWithRightWall())
 	
 static func shouldWallDrag(player, disregardVelocity=false):
 	# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag

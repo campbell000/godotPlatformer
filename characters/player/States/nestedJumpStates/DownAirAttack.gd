@@ -24,17 +24,15 @@ func start(player: Player, nestedState: State):
 	player.interactiveCollisionShape.disabled = true
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, nestedState: State, delta: float):
-	self.timeElapsed += delta
-	self.transitionToNewStateIfNecessary(player, nestedState, delta)
+func input_update(player: Player, nestedState: State, event):
+	if Input.is_action_just_released("attack") && self.timeElapsed > ATTACK_DURATION:
+		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), 0.0)
 		
-func transitionToNewStateIfNecessary(player, nestedState: State, delta):
-	if Input.is_action_just_released("attack"):
-		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
-	
-func _on_AnimationPlayer_animation_finished(anim):
-	pass
-	
+func physics_update(player, nestedState: State, delta: float):
+	self.timeElapsed += delta
+	if self.timeElapsed > ATTACK_DURATION:
+		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), 0.0)
+
 func end(player: Player, nestedState: State):
 	player.downairInteractiveCollisionShape.disabled = true
 	player.downairHitbox.disabled = true

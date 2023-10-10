@@ -44,6 +44,7 @@ func input_update(player, event):
 			# If we're holding direction towards a wall, go back to wall dragging
 			var wallDragState = player.get_node("States/WallDragging")
 			player.transition_to_state(wallDragState)
+	self.currentInnerState.input_update(player, self, event)
 	
 func physics_update(player: Player, delta: float):	
 	# Allow control in the air when wall jumping, as long as we're out of the cooldown period
@@ -64,10 +65,11 @@ func physics_update(player: Player, delta: float):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
+		
+	self.currentInnerState.physics_update(player,self, delta)
 
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func update(player: Player, delta: float):
-	
 	self.currentInnerState.update(player, self, delta)
 	
 func getName():
