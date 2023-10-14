@@ -38,8 +38,11 @@ func getWallJumpSpeed(player):
 		player.isBreakingSpeedLimit = true
 	return vel
 	
+func process_update(player: Player, delta: float):
+	self.currentInnerState.process_update(player, self, delta)
+	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	# Allow control in the air when wall jumping, as long as we're out of the cooldown period
 	var accel = 0
 	var options = {"accel": 0}
@@ -55,10 +58,9 @@ func update(player: Player, delta: float):
 	Common.handleAirMovement(player, delta, Physics.GRAVITY, options)
 
 	self.wallJumpCooldownTimer -= delta
+	self.currentInnerState.physics_update(player, self, delta)
 	self.transitionToNewStateIfNecessary(player, delta)
-	
-	self.currentInnerState.update(player, self, delta)
-	
+
 func transitionToNewStateIfNecessary(player, delta):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State

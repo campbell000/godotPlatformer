@@ -11,18 +11,18 @@ func _ready():
 func start(player: Player):
 	pass
 	
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
+	# Put into common because it's shared with GroundAttack
+	Common.handleGroundMovement(player, delta)
+	self.transitionToNewStateIfNecessary(player, delta)
+	
+func process_update(player: Player, delta: float):
 	# Handle run/idle animations
 	if Input.is_action_pressed("move_left") || Input.is_action_pressed("move_right"):
 		player.animatedSprite.play("Run")
 	elif !Input.is_action_pressed("move_left") and !Input.is_action_pressed("move_right"):
 		player.animatedSprite.play("Idle")
-	
-	# Put into common because it's shared with GroundAttack
-	Common.handleGroundMovement(player, delta)
-	
-	self.transitionToNewStateIfNecessary(player, delta)
-
+		
 func transitionToNewStateIfNecessary(player, delta):
 	# If we're not on the floor, and we're not jumping, then we're falling, no matter what
 	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):

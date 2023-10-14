@@ -22,7 +22,7 @@ func start(player: Player, nestedState: State):
 	player.upAirAttackHitbox.disabled = false;
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, nestedState: State, delta: float):
+func physics_update(player: Player, nestedState: State, delta: float):
 	self.timeElapsed += delta
 	if self.timeElapsed >= ATTACK_START:
 		player.upAirAttackHitbox.disabled = false;

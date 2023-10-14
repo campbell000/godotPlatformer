@@ -5,6 +5,7 @@ const LEDGE_GRACE_PERIOD = 0.05
 
 var ledgeGraceTimer = 0
 var cameFromGround = false
+var cameFromBounce = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,10 +21,16 @@ func start(player: Player):
 	self.cameFromGround = false
 
 	# Start with a null inner state. Wait until we need to transition to attacks or something.
-	super.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), 1.0)
+	if (!cameFromBounce):
+		super.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), 1.0)
+	else:
+		super.transitionToNestedState(player, player.get_node("States/DownAirAttack"), 1.0)
 	
+func process_update(player: Player, delta: float):
+	self.currentInnerState.process_update(player, self, delta)
+
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	# Allow limited acceleration if holding left or right in the air
 	if absf(player.velocity.x) > absf(Physics.MAX_RUN_SPEED):
 		player.storedWallJumpSpeed = player.velocity.x
@@ -34,7 +41,7 @@ func update(player: Player, delta: float):
 	if self.ledgeGraceTimer >= 0:
 		self.ledgeGraceTimer -= delta
 		
-	self.currentInnerState.update(player, self, delta)
+	self.currentInnerState.physics_update(player, self, delta)
 	
 func transitionToNewStateIfNecessary(player, delta):
 	# If we're suddenly on the floor, transition to ground state
@@ -49,6 +56,10 @@ func transitionToNewStateIfNecessary(player, delta):
 		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
 		if Common.shouldWallDrag(player):
 			player.transition_to_state(player.get_node("States/WallDragging"))
+			
+func end(player: Player):
+	self.cameFromGround = false
+	self.cameFromBounce = false
 			
 func getName():
 	return "Falling"

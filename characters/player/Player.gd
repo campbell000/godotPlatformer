@@ -54,7 +54,7 @@ func _ready():
 	pass # Replace with function body.
 
 func _process(delta):
-	pass
+	self.state.process_update(self, delta)
 
 		
 # All of this is placeholder physics logic
@@ -70,7 +70,7 @@ func _physics_process(delta):
 		self.currentDirection = "move_right"
 
 	# First, handle the inputs. 
-	self.state.update(self, delta)
+	self.state.physics_update(self, delta)
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	self.handleDebugHUD()
@@ -221,7 +221,10 @@ func bounce():
 	# event, and then transitioning the 
 	#self.wasBounced = true
 	if self.state.currentInnerState != null && self.state.currentInnerState is DownAirAttack:
-		self.transition_to_state(self.get_node("States/Falling"))
+		if !(self.state is Falling):
+			var fallingState = self.get_node("States/Falling")
+			fallingState.cameFromBounce = true
+			self.transition_to_state(fallingState)
 		self.velocity.y = -self.velocity.y * 1.05
 		if (self.velocity.y > -320):
 			self.velocity.y = -320

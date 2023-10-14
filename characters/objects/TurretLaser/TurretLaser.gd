@@ -41,7 +41,6 @@ func _process(delta):
 			currentColor = 0
 			
 	if self.timeElapsed > self.duration:
-		print("FREEING")
 		self.queue_free()
 	
 func _draw():

@@ -18,7 +18,7 @@ func start(player: Player):
 	pass
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	self.dragTimer += delta
 	if self.dragTimer > STORED_SPEED_CUTOFF:
 		player.storedWallJumpSpeed = 0

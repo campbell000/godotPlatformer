@@ -10,7 +10,11 @@ func start(player, parentState: State):
 	pass
 	
 # Called during every update
-func update(player, parentState: State, delta):
+func process_update(player, parentState: State, delta):
+	pass
+	
+# Called during every _process update
+func physics_update(player, parentState: State, delta):
 	pass
 	
 # Called when the state is being exited for a new state. Do cleanup if necessary

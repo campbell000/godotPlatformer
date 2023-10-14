@@ -25,11 +25,8 @@ const MAX_RUN_SPEED: float = 225.0
 
 const MAX_RUN_SPEED_SLOPE: float = 500.0
 
-var aaa =null
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.aaa = null
 	pass # Replace with function body.
 	
 func process_movement(player, delta, options={}):

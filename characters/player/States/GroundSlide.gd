@@ -38,7 +38,7 @@ func start(player: Player):
 	self.startingVel = player.velocity.x
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	Common.handleGroundMovement(player, delta, func speedModifier(x):
 		# If accelerating BACKWARDS, don't allow them to turn so sharply. Sliding should be a commitment
 		if self.isSlidingRight && x['xAccel'] < 0:

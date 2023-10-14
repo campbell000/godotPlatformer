@@ -31,8 +31,13 @@ func start(player: Player):
 	else:
 		player.animatedSprite.play("Jump")
 	
-func update(player: Player, delta: float):
-	self.currentInnerState.update(player, self, delta)
+func process_update(player: Player, delta: float):
+	if player.velocity.y >= 0 && str(self.currentInnerState.get_path()).contains("NullNested"):
+		player.animatedSprite.play("Fall")
+		
+	self.currentInnerState.process_update(player, self, delta)
+	
+func physics_update(player: Player, delta: float):
 	if !self.cameFromSlide:
 		var currentGrav = Common.handleJumpLogic(player, self)
 		Common.handleAirMovement(player, delta, currentGrav)
@@ -44,6 +49,8 @@ func update(player: Player, delta: float):
 	
 	self.transitionToNewStateIfNecessary(player, delta)
 	self.firstUpdate = false
+	self.currentInnerState.physics_update(player, self, delta)
+
 
 func transitionToNewStateIfNecessary(player, delta):
 	# If on the floor, then transition to ground no matter what

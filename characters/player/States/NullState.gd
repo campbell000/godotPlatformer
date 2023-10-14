@@ -6,7 +6,10 @@ func start(player: Player):
 	pass
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func process_update(player: Player, delta: float):
+	pass
+	
+func physics_update(player: Player, delta: float):
 	pass
 		
 func transitionToNewStateIfNecessary(player, delta):

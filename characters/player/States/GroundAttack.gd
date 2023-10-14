@@ -22,7 +22,7 @@ func start(player: Player):
 	player.groundAttackHitbox.disabled = false;
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
-func update(player: Player, delta: float):
+func physics_update(player: Player, delta: float):
 	Common.handleGroundMovement(player, delta, func speedModifier(x):
 		x['xAccel'] = 0
 		x['drag'] = 10

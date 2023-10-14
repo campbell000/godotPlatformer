@@ -21,8 +21,12 @@ func transitionToNestedState(player: Player, newInnerStateObj: NestedState, delt
 	self.currentInnerState = newInnerState
 	newInnerState.start(player, self)
 
-# Called during every update
-func update(player, delta):
+# Called during every _process update
+func process_update(player, delta):
+	pass
+	
+# Called during every _physics_process update
+func physics_update(player, delta):
 	pass
 	
 # Called when the state is being exited for a new state. Do cleanup if necessary
