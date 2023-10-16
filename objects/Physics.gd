@@ -33,7 +33,7 @@ func process_movement(player, delta, options={}):
 	var xAccel = options.get("xAccel", 0)
 	var dragVal = options.get("drag", 0)
 	var gravity = options.get("gravity", GRAVITY)
-	var maxSpeed = options.get("maxSpeed")
+	var maxSpeed = options.get("maxSpeed", Physics.MAX_RUN_SPEED)
 	var stopSmall = options.get("stopSmall", false)
 	
 	###########################################

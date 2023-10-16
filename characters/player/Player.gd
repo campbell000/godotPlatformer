@@ -14,6 +14,9 @@ var isBreakingSpeedLimit = false
 var speedBoostDir = 0
 var camera
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
+var invincibleTimer = 0
+var INVINCIBLE_LENGTH = 3
+var blinkTime = 0.03333
 
 # Scene Nodes
 @onready var animatedSprite = $AnimatedSprite2D
@@ -55,10 +58,19 @@ func _ready():
 
 func _process(delta):
 	self.state.process_update(self, delta)
-
 		
 # All of this is placeholder physics logic
 func _physics_process(delta):
+	self.invincibleTimer -= delta
+	if self.invincibleTimer >= 0:
+		print("======")
+		print(INVINCIBLE_LENGTH)
+		print(self.invincibleTimer)
+		print(int(self.invincibleTimer / self.blinkTime))
+		self.sprite.visible = int(self.invincibleTimer / self.blinkTime) % 2 == 0
+	else:
+		self.sprite.visible = true
+	
 	# If the user JUST pressed jump, set the buffer timer
 	if Input.is_action_just_pressed("jump"):
 		self.bufferTimer = JUMP_BUFFER_TIME_WINDOW
@@ -185,11 +197,10 @@ func getDeconflictedDirectionalInput():
 		return "move_right"
 
 func takeDamage(damageVal):
-	if damageVal == 9999:
-		self.position.x = 0
-		self.position.y =0
-		self.camera.position.x = 0
-		self.camera.position.y = 0
+	if self.invincibleTimer <= 0:
+		self.invincibleTimer = self.INVINCIBLE_LENGTH
+		var hurtState = self.get_node("States/Hurt")
+		self.transition_to_state(hurtState)
 
 func interactiveBodyEntered(body_rid, body, body_shape_index, local_shape_index):
 	var coords = body.get_coords_for_body_rid(body_rid)

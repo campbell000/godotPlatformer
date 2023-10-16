@@ -6,7 +6,7 @@ class_name DownAirAttack
 # var a = 2
 # var b = "text"
 var timeElapsed = 0
-var ATTACK_DURATION = 1
+var ATTACK_DURATION = 0.5
 var ATTACK_START = 0.03333
 
 
@@ -29,7 +29,7 @@ func physics_update(player: Player, nestedState: State, delta: float):
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
-	if Input.is_action_just_released("attack"):
+	if !Input.is_action_pressed("attack") && self.timeElapsed >= ATTACK_DURATION:
 		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
 	
 func _on_AnimationPlayer_animation_finished(anim):

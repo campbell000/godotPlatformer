@@ -6,6 +6,7 @@ var colorTimer = 0
 var colorInterval = 0.04
 var speed = 1
 var duration = 1
+@onready var collisionShape = $Area2D/CollisionShape2D
 
 var COLORS = [
 	Color(0.586275, 0.933333, 0.933333, 1),
@@ -19,17 +20,19 @@ var COLORS = [
 ]
 var currentColor = 0
 
-static var WIDTH = 2.0
-static var LENGTH = 25
+@export var WIDTH = 2.0
+@export var LENGTH = 25
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.collisionShape.size.x = LENGTH
 	if Engine.is_editor_hint():
 		self.drawLine()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	self.position.x = self.position.x + (self.speed * delta)
+	if !Engine.is_editor_hint():
+		self.position.x = self.position.x + (self.speed * delta)
 	self.timeElapsed = self.timeElapsed + delta
 	self.colorTimer = self.colorInterval + delta
 	
@@ -40,7 +43,7 @@ func _process(delta):
 		if currentColor >= len(COLORS):
 			currentColor = 0
 			
-	if self.timeElapsed > self.duration:
+	if self.timeElapsed > self.duration && !Engine.is_editor_hint():
 		self.queue_free()
 	
 func _draw():

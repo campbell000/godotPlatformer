@@ -5,6 +5,7 @@ var isHighJumping = true
 var firstUpdate = false
 var canceledEarly = false
 var cameFromSlide = false
+var attackCanceled = false
 
 func _ready():
 	set_process(false)
@@ -13,6 +14,7 @@ func _ready():
 
 func start(player: Player):
 	# Set correct states
+	self.attackCanceled = false
 	self.isHighJumping = true
 	player.storedWallJumpSpeed = 0
 	player.bufferTimer = 0
@@ -71,6 +73,7 @@ func end(player):
 	self.isHighJumping = false
 	self.canceledEarly = false
 	self.cameFromSlide = false
+	self.attackCanceled = false
 
 func getName():
 	if self.currentInnerState:
