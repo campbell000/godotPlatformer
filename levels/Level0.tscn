@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://objects/Camera.gd" id="1_5h5hq"]
 [ext_resource type="PackedScene" uid="uid://bfsrvakttjvo4" path="res://environment/tilemaps/GroundTilemap.tscn" id="2_nef30"]
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="3_ulrpw"]
-[ext_resource type="PackedScene" uid="uid://b4jxjo2fu7drq" path="res://characters/player/Player.tscn" id="4_t68an"]
+[ext_resource type="PackedScene" uid="uid://cxk4hyoolr2vs" path="res://characters/player/Player.tscn" id="4_t68an"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dw2r1"]
 font_size = 8

@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://characters/objects/TurretLaser/TurretLaser.gd" id="1_xdx6m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7i8yc"]
-size = Vector2(25, 2)
+size = Vector2(59, 2)
 
 [node name="TurretLaser" type="Node2D"]
+position = Vector2(147.981, 0)
 script = ExtResource("1_xdx6m")
-WIDTH = null
-LENGTH = null
+offset = 0
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 6

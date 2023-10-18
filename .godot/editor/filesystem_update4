@@ -15,3 +15,4 @@ res://characters/player/States/Hurt.gd
 res://characters/player/Player.gd
 res://objects/Physics.gd
 res://characters/objects/TurretLaser/TurretLaser.gd
+res://levels/Level0.tscn

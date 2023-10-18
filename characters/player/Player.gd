@@ -15,7 +15,7 @@ var speedBoostDir = 0
 var camera
 const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 var invincibleTimer = 0
-var INVINCIBLE_LENGTH = 3
+var INVINCIBLE_LENGTH = 2
 var blinkTime = 0.03333
 
 # Scene Nodes
@@ -63,10 +63,6 @@ func _process(delta):
 func _physics_process(delta):
 	self.invincibleTimer -= delta
 	if self.invincibleTimer >= 0:
-		print("======")
-		print(INVINCIBLE_LENGTH)
-		print(self.invincibleTimer)
-		print(int(self.invincibleTimer / self.blinkTime))
 		self.sprite.visible = int(self.invincibleTimer / self.blinkTime) % 2 == 0
 	else:
 		self.sprite.visible = true
