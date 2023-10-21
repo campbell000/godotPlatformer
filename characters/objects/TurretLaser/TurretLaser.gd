@@ -29,11 +29,12 @@ var currentColor = 0
 func _ready():
 	self.timeElapsed = offset
 	self.collisionShape.shape.size.x = LENGTH
+	self.collisionShape.shape.size.y = WIDTH
 	if Engine.is_editor_hint():
 		self.drawLine()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	self.position.x = self.position.x + (self.speed * delta)
 	self.timeElapsed = self.timeElapsed + delta
 	self.colorTimer = self.colorInterval + delta

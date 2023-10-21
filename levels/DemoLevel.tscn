@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvdbi1u8ent2v"]
+[gd_scene load_steps=13 format=3 uid="uid://bvdbi1u8ent2v"]
 
+[ext_resource type="Script" path="res://levels/DemoLevel.gd" id="1_sh6q2"]
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bfsrvakttjvo4" path="res://environment/tilemaps/GroundTilemap.tscn" id="2_6ev3j"]
+[ext_resource type="PackedScene" uid="uid://dfeel62o5iuii" path="res://objects/DialogBubbles/DialogBubble.tscn" id="2_p8hck"]
 [ext_resource type="PackedScene" uid="uid://cxk4hyoolr2vs" path="res://characters/player/Player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://da4hpajbpli3w" path="res://environment/tilemaps/InteractiveTiles.tscn" id="3_2ttdy"]
 [ext_resource type="Script" path="res://objects/Camera.gd" id="4"]
@@ -14,8 +16,13 @@
 font_size = 8
 
 [node name="GameNode" type="Node2D"]
+script = ExtResource("1_sh6q2")
 
 [node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="DialogBubble" parent="Interface" instance=ExtResource("2_p8hck")]
+offset = Vector2(0, 160)
+transform = Transform2D(1, 0, 0, 1, 0, 160)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 drag_horizontal_enabled = true
