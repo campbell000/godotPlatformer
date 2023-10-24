@@ -1,13 +1,7 @@
-~ test_title
+~ start
 
-alex: [[Hi|Hello|Howdy]], this is some dialogue.
-Nathan: Here are some choices.
-- First one
-	Nathan: You picked the first one.
-- Second one
-	Nathan: You picked the second one.
-- Start again => test_title
-- End the conversation => END
-Nathan: For more information see the online documentation.
+alex: [[Hi|Hello|Howdy]],  this is some dialogue
+alex: Here's some more
+alex [#happy]: For more information see the online documentation.
 
 => END
