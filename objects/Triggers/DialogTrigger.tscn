@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0cxytley1oq5"]
+
+[ext_resource type="Script" path="res://objects/Triggers/DialogTrigger.gd" id="1_omtd6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fwh86"]
+size = Vector2(100, 100)
+
+[node name="DialogTrigger" type="Node2D"]
+script = ExtResource("1_omtd6")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_fwh86")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

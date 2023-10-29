@@ -4,7 +4,7 @@ extends Node2D
 var timeElapsed: float = 0
 var colorTimer = 0
 var colorInterval = 0.04
-@onready var collisionShape = $Area2D/CollisionShape2D
+var collisionShape: CollisionShape2D
 
 var COLORS = [
 	Color(0.586275, 0.933333, 0.933333, 1),
@@ -28,8 +28,8 @@ var currentColor = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.timeElapsed = offset
-	self.collisionShape.shape.size.x = LENGTH
-	self.collisionShape.shape.size.y = WIDTH
+	self.collisionShape = get_node("Area2D/CollisionShape2D")
+	self.collisionShape.shape.size = Vector2(LENGTH, WIDTH)
 	if Engine.is_editor_hint():
 		self.drawLine()
 

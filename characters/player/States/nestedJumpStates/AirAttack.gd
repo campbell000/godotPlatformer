@@ -21,7 +21,6 @@ func _ready():
 func start(player: Player, nestedState: State):
 	self.timeElapsed = 0
 	player.animatedSprite.play("AirAttack")
-	player.airAttackHitbox.disabled = false;
 	
 func physics_update(player: Player, nestedState: State, delta: float):
 	self.timeElapsed += delta

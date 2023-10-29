@@ -49,9 +49,9 @@ func physics_update(player: Player, delta: float):
 	if player.velocity.y >= 0 && str(self.currentInnerState.get_path()).contains("NullNested"):
 		player.animatedSprite.play("Fall")
 	
+	self.currentInnerState.physics_update(player, self, delta)
 	self.transitionToNewStateIfNecessary(player, delta)
 	self.firstUpdate = false
-	self.currentInnerState.physics_update(player, self, delta)
 
 
 func transitionToNewStateIfNecessary(player, delta):

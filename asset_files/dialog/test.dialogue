@@ -1,7 +1,9 @@
 ~ start
 
-alex: [[Hi|Hello|Howdy]],  this is some dialogue
-alex: Here's some more
+alex: [[Hi|Hello|Howdy]], this is some dialogue
+
+alex: Here's some more. This will probably run onto the next line because it's so long.
+
 alex [#happy]: For more information see the online documentation.
 
 => END

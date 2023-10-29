@@ -118,6 +118,10 @@ static func handleAirMovement(player: Player, delta: float, gravity: float = Phy
 	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": Physics.MAX_RUN_SPEED})
 	Common.setBreakingSpeedLimitFlag(player)
 	
+static func getDialogBubble(node: Node2D):
+	var r = node.get_tree().root.get_node("GameNode")
+	return r.get_node("Interface/DialogBubble")
+	
 static func setBreakingSpeedLimitFlag(player):
 	if player.isBreakingSpeedLimit:
 		if player.velocity.x <= Physics.MAX_RUN_SPEED and player.velocity.x >= -Physics.MAX_RUN_SPEED:

@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_10"
+type="Resource"
+uid="uid://c6i1ip5dikfgo"
+path="res://.godot/imported/laser.dialogue-80c4f74cfca34fa861f4fd81d33a2a2d.tres"
+
+[deps]
+
+source_file="res://asset_files/dialog/laser.dialogue"
+dest_files=["res://.godot/imported/laser.dialogue-80c4f74cfca34fa861f4fd81d33a2a2d.tres"]
+
+[params]
+
+defaults=true
