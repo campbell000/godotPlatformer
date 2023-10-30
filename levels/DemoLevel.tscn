@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bvdbi1u8ent2v"]
+[gd_scene load_steps=15 format=3 uid="uid://bvdbi1u8ent2v"]
 
 [ext_resource type="Script" path="res://levels/DemoLevel.gd" id="1_sh6q2"]
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
@@ -12,6 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://c8mooty02c0bw" path="res://characters/enemies/Floopy/Floopy.tscn" id="8_twlrx"]
 [ext_resource type="PackedScene" uid="uid://c4n1qj7jhrtcw" path="res://characters/objects/TurretLaser/TurretLaser.tscn" id="9_8c3g3"]
 [ext_resource type="PackedScene" uid="uid://c0cxytley1oq5" path="res://objects/Triggers/DialogTrigger.tscn" id="12_s8iym"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6e0se"]
+resource_local_to_scene = true
+size = Vector2(100, 54)
 
 [sub_resource type="LabelSettings" id="LabelSettings_dw2r1"]
 font_size = 8
@@ -37,6 +41,97 @@ script = ExtResource("4")
 [node name="Environment" type="Node2D" parent="World"]
 
 [node name="Interactives" type="Node2D" parent="World/Environment"]
+
+[node name="TurretLaser" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2557, -320)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+
+[node name="TurretLaser2" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2573, -320)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.1
+
+[node name="TurretLaser3" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2589, -304)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.2
+
+[node name="TurretLaser4" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2605, -304)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.3
+
+[node name="TurretLaser5" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2621, -288)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.4
+
+[node name="TurretLaser6" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2637, -288)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.5
+
+[node name="TurretLaser7" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2653, -272)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.6
+
+[node name="TurretLaser8" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(2669, -272)
+rotation = -1.5708
+LENGTH = 59
+speed = 0
+liveOnce = false
+offset = -0.7
+
+[node name="DialogTrigger2" parent="World/Environment/Interactives" instance=ExtResource("12_s8iym")]
+position = Vector2(1313, -394)
+dialogResourceName = "laser"
+seeThrough = true
+
+[node name="DialogTrigger" parent="World/Environment/Interactives" instance=ExtResource("12_s8iym")]
+position = Vector2(1080, 77)
+dialogResourceName = "test2"
+seeThrough = true
+
+[node name="CollisionShape2D" parent="World/Environment/Interactives/DialogTrigger/Area2D" index="0"]
+position = Vector2(-8, 23)
+shape = SubResource("RectangleShape2D_6e0se")
+
+[node name="TurretLaser12" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(147, 180)
+speed = 0
+duration = 0
+liveOnce = false
+
+[node name="TurretLaser13" parent="World/Environment/Interactives" instance=ExtResource("9_8c3g3")]
+position = Vector2(149.088, 171)
+WIDTH = 3.0
+LENGTH = 60
+speed = 0
+duration = 0
+liveOnce = false
 
 [node name="Tiles" type="Node2D" parent="World/Environment"]
 
@@ -77,6 +172,7 @@ horizontal_alignment = 2
 [node name="Turret2" parent="World/Environment/Enemies" instance=ExtResource("7_te4as")]
 z_index = 1
 position = Vector2(2102, -312)
+alwaysFire = true
 
 [node name="Floopy4" parent="World/Environment/Enemies" instance=ExtResource("8_twlrx")]
 position = Vector2(1997, -255)
@@ -133,84 +229,4 @@ position = Vector2(-1061, 169)
 horizontalLimit = 0.0
 xMaxSpeed = 0
 
-[node name="TurretLaser" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2557, -320)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-
-[node name="TurretLaser2" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2573, -320)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.1
-
-[node name="TurretLaser3" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2589, -304)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.2
-
-[node name="TurretLaser4" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2605, -304)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.3
-
-[node name="TurretLaser5" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2621, -288)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.4
-
-[node name="TurretLaser6" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2637, -288)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.5
-
-[node name="TurretLaser7" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2653, -272)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.6
-
-[node name="TurretLaser8" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(2669, -272)
-rotation = -1.5708
-LENGTH = 59
-speed = 0
-liveOnce = false
-offset = -0.7
-
-[node name="DialogTrigger" parent="." instance=ExtResource("12_s8iym")]
-position = Vector2(1313, -394)
-dialogResourceName = "laser"
-seeThrough = true
-
-[node name="TurretLaser12" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(147, 180)
-speed = 0
-duration = 0
-liveOnce = false
-
-[node name="TurretLaser13" parent="." instance=ExtResource("9_8c3g3")]
-position = Vector2(149.088, 171)
-WIDTH = 3.0
-LENGTH = 60
-speed = 0
-duration = 0
-liveOnce = false
+[editable path="World/Environment/Interactives/DialogTrigger"]

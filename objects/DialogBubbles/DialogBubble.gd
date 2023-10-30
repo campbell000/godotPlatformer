@@ -23,8 +23,8 @@ var dialogue: DialogueLine
 var is_waiting_for_input: bool = false
 var currDialogResource
 
-
-
+func _ready():
+	self.balloon.hide()
 
 func start(dialogResource: DialogueResource, seeThrough: bool = false) -> void:
 	if seeThrough:

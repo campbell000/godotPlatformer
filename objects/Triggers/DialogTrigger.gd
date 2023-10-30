@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 
 @export var shouldRepeat = false
@@ -7,6 +8,7 @@ var dialogBubble = null
 var resource = null
 var played = false
 
+@onready var collisionShape = $Area2D/CollisionShape2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
