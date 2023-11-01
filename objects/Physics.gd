@@ -61,6 +61,5 @@ func process_movement(player, delta, options={}):
 	###########################################
 	# Vertical Movement
 	###########################################
-	# Apply Gravity to the char's y pos.
-	player.velocity.y += gravity * delta
+	player.velocity.y += (player.gravityModifier * gravity) * delta
 	player.move_and_slide()

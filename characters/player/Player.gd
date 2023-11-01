@@ -17,6 +17,7 @@ const INERTIA_DRAG_INCREASE_PER_MS = 0.5
 var invincibleTimer = 0
 var INVINCIBLE_LENGTH = 2
 var blinkTime = 0.03333
+var gravityModifier = 1
 
 # Scene Nodes
 @onready var animatedSprite = $AnimatedSprite2D
@@ -236,5 +237,15 @@ func bounce():
 		if (self.velocity.y > -320):
 			self.velocity.y = -320
 
+func _on_area_2d_area_exited(area):
+	self.player.revertGravity()
+
 func areaEntered(area):
 	self.takeDamage(9999)
+	
+func setNewGravityModifier(gravityModifier):
+	self.gravityModifier = gravityModifier
+
+func revertGravity():
+	self.gravityModifier = 1
+
