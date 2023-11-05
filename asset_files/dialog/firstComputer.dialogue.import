@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_10"
+type="Resource"
+uid="uid://ch6fxroaev4di"
+path="res://.godot/imported/firstComputer.dialogue-338ab860c5a9822a30d399ff864b2f91.tres"
+
+[deps]
+
+source_file="res://asset_files/dialog/firstComputer.dialogue"
+dest_files=["res://.godot/imported/firstComputer.dialogue-338ab860c5a9822a30d399ff864b2f91.tres"]
+
+[params]
+
+defaults=true

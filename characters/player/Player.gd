@@ -55,6 +55,8 @@ func _ready():
 	self.slideInteractiveCollisionShape.disabled = true
 	self.downairInteractiveCollisionShape.disabled = true
 	self.downairHitbox.disabled = true
+	self.connect("stop_world_started", stopWorldStarted)
+	self.connect("stop_world_ended", stopWorldEnded)
 	pass # Replace with function body.
 
 func _process(delta):
@@ -83,6 +85,12 @@ func _physics_process(delta):
 	self._handlePlayerStateAfterMove(delta)
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	self.handleDebugHUD()
+
+func stopWorldStarted():
+	set_process_unhandled_input(false)
+	
+func stopWorldEnded():
+	set_process_unhandled_input(true)
 
 func toggleNormalCollisionBoxes(isEnabled):
 	self.interactiveCollisionShape.disabled = !isEnabled

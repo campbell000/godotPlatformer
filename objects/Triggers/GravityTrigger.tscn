@@ -36,7 +36,6 @@ shape = SubResource("RectangleShape2D_naigm")
 position = Vector2(0, 50)
 amount = 10
 process_material = SubResource("ParticleProcessMaterial_emh26")
-lifetime = 3.0
 preprocess = 84.81
 visibility_rect = Rect2(-50, -100, 100, 100)
 trail_enabled = true

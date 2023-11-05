@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_10"
+type="Resource"
+uid="uid://bcg61ono2k0cy"
+path="res://.godot/imported/longText.dialogue-2e147f23359aeef0971f9170dfa7c93f.tres"
+
+[deps]
+
+source_file="res://asset_files/dialog/longText.dialogue"
+dest_files=["res://.godot/imported/longText.dialogue-2e147f23359aeef0971f9170dfa7c93f.tres"]
+
+[params]
+
+defaults=true

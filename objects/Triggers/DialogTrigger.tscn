@@ -8,6 +8,7 @@ size = Vector2(100, 100)
 
 [node name="DialogTrigger" type="Node2D"]
 script = ExtResource("1_omtd6")
+stopWorld = null
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

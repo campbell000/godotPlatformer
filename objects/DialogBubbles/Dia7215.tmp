@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfeel62o5iuii"]
+[gd_scene load_steps=7 format=3 uid="uid://dfeel62o5iuii"]
 
 [ext_resource type="Script" path="res://objects/DialogBubbles/DialogBubble.gd" id="1_bhqqj"]
 [ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_label.gd" id="1_xim3l"]
 [ext_resource type="Script" path="res://objects/DialogBubbles/Triangle.gd" id="2_046ed"]
 [ext_resource type="FontFile" uid="uid://d3i2opvfjydpt" path="res://asset_files/fonts/m5x7.ttf" id="2_eiqxj"]
-[ext_resource type="Texture2D" uid="uid://cie2cg04bxdka" path="res://asset_files/dialog/arrow.png" id="3_0s6rg"]
 [ext_resource type="AudioStream" uid="uid://cxhas43nwg3rq" path="res://asset_files/audio/talk.wav" id="4_uroa4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7s4mc"]
@@ -19,9 +18,6 @@ anti_aliasing = false
 [node name="DialogBubble" type="CanvasLayer"]
 script = ExtResource("1_bhqqj")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-
 [node name="Panel" type="Panel" parent="."]
 offset_right = 400.0
 offset_bottom = 40.0
@@ -30,14 +26,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7s4mc")
 
 [node name="Triangle" type="Node2D" parent="Panel"]
 z_index = 4
-position = Vector2(390, 34)
+position = Vector2(394, 36)
 script = ExtResource("2_046ed")
-
-[node name="TextureRect" type="TextureRect" parent="Panel/Triangle"]
-custom_minimum_size = Vector2(6, 3)
-offset_right = 6.0
-offset_bottom = 3.0
-texture = ExtResource("3_0s6rg")
 
 [node name="MarginBox" type="MarginContainer" parent="Panel"]
 clip_contents = true
