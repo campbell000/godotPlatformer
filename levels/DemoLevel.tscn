@@ -127,8 +127,14 @@ height = 300
 gravityModifier = 0.65
 
 [node name="DialogTrigger3" parent="World/Environment/Interactives" instance=ExtResource("12_s8iym")]
-position = Vector2(3258, -272)
+position = Vector2(3309, -275)
 dialogResourceName = "firstComputer"
+stopWorld = true
+
+[node name="DialogTrigger4" parent="World/Environment/Interactives" instance=ExtResource("12_s8iym")]
+position = Vector2(150, 141)
+shouldRepeat = true
+dialogResourceName = "longText"
 stopWorld = true
 
 [node name="Tiles" type="Node2D" parent="World/Environment"]
@@ -229,11 +235,5 @@ xMaxSpeed = 0
 
 [node name="Ghost4" parent="World/Environment/Enemies" instance=ExtResource("6_bnxdl")]
 position = Vector2(-1730, -56)
-
-[node name="DialogTrigger" parent="." instance=ExtResource("12_s8iym")]
-position = Vector2(150, 141)
-shouldRepeat = true
-dialogResourceName = "longText"
-stopWorld = true
 
 [editable path="World/Environment/Interactives/DialogTrigger"]

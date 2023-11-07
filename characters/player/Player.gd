@@ -24,7 +24,6 @@ var gravityModifier = 1
 @onready var sprite = $Sprite2D
 @onready var collisionShape: CollisionShape2D = $CollisionShape2D
 @onready var slideCollisionShape: CollisionShape2D = $SlideCollisionShape2D
-@onready var downairShape: CollisionShape2D = $DownAirCollisionShape2D
 @onready var leftRaycast: RayCast2D = $RaycastContainer/LeftRaycast
 @onready var rightRaycast: RayCast2D = $RaycastContainer/RightRaycast
 @onready var debugStateLabel = $DebugStateLabel
@@ -55,8 +54,6 @@ func _ready():
 	self.slideInteractiveCollisionShape.disabled = true
 	self.downairInteractiveCollisionShape.disabled = true
 	self.downairHitbox.disabled = true
-	self.connect("stop_world_started", stopWorldStarted)
-	self.connect("stop_world_ended", stopWorldEnded)
 	pass # Replace with function body.
 
 func _process(delta):
@@ -86,11 +83,13 @@ func _physics_process(delta):
 	self.debugStateLabel.text = self.state.getName()+"\n"+str(self.velocity.x)
 	self.handleDebugHUD()
 
-func stopWorldStarted():
+func lockControls():
 	set_process_unhandled_input(false)
+	self.transition_to_state(self.get_node("States/InCutscene"))
 	
-func stopWorldEnded():
+func unlockControls():
 	set_process_unhandled_input(true)
+	self.transition_to_state(self.get_node("States/OnGround"))
 
 func toggleNormalCollisionBoxes(isEnabled):
 	self.interactiveCollisionShape.disabled = !isEnabled

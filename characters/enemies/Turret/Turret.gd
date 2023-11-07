@@ -17,7 +17,7 @@ var MAX_LASERS = 2
 var activated = false
 var player = null
 var timeElapsed = 0
-var laserScene = preload("res://characters/objects/TurretLaser/TurretLaser.tscn")
+var laserScene = preload("res://objects/TurretLaser/TurretLaser.tscn")
 var blinkColor = Color.PALE_TURQUOISE
 
 var interBlinkTimer = 0

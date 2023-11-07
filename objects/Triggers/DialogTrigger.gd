@@ -8,8 +8,8 @@ extends Node2D
 var dialogBubble = null
 var resource = null
 var played = false
-signal stop_world_started
-signal stop_world_ended
+var player = null
+var running = false
 
 @onready var collisionShape = $Area2D/CollisionShape2D
 
@@ -23,14 +23,18 @@ func _process(delta):
 	pass
 
 func _on_area_2d_area_entered(area):
-	if (!played || shouldRepeat):
+	if !self.running && (!played || shouldRepeat) && area.get_parent() is Player:
+		self.running = true
 		self.played = true
+		self.dialogBubble.connect("dialog_ended", self.dialogEnded)
 		self.dialogBubble.start(resource, self.seeThrough)
-		if self.stopWorld:
-			self.connect("dialog_ended", self.dialogEnded)
-			stop_world_started.emit()
+		self.player = area.get_parent()
+		if stopWorld:
+			self.player.lockControls()
 
 
 func dialogEnded():
-	self.disconnect("dialog_ended", self.dialogEnded)
-	self.stop_world_ended.emit()
+	self.dialogBubble.connect("dialog_ended", self.dialogEnded)
+	if self.stopWorld:
+		await get_tree().create_timer(0.2).timeout
+		self.player.unlockControls()

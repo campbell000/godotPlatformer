@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://characters/player/States/SlideFall.gd" id="13_14xgt"]
 [ext_resource type="Script" path="res://characters/player/States/nestedJumpStates/DownAirAttack.gd" id="14_ea25k"]
 [ext_resource type="Script" path="res://characters/player/States/Hurt.gd" id="15_ut6cc"]
-[ext_resource type="Script" path="res://characters/player/States/InCutscene.gd" id="16_au0bi"]
+[ext_resource type="Script" path="res://characters/player/InCutscene.gd" id="16_htsko"]
 
 [sub_resource type="RectangleShape2D" id="25"]
 size = Vector2(10, 27)
@@ -450,7 +450,7 @@ script = ExtResource("14_ea25k")
 script = ExtResource("15_ut6cc")
 
 [node name="InCutscene" type="Node2D" parent="States"]
-script = ExtResource("16_au0bi")
+script = ExtResource("16_htsko")
 
 [node name="DebugStateLabel" type="Label" parent="."]
 offset_left = -20.0
