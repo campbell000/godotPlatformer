@@ -63,6 +63,7 @@ func transitionToNewStateIfNecessary(player, delta):
 		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
 		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately
 		if !self.firstUpdate && Common.shouldWallJump(player):
+			print("Wall Jumped!")
 			player.transition_to_state(player.get_node("States/WallJumping"))
 		elif Common.shouldWallDrag(player):
 			# Otherwise, if they've stopped ascending and holding input against a wall, start the wall drag

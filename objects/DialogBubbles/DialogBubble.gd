@@ -25,6 +25,7 @@ var is_waiting_for_input: bool = false
 var currDialogResource
 var isSeeThrough = false
 var isShowing = false
+var NOONE_NAME = "noone"
 @onready var triangleTimer := $Timer
 signal dialog_ended
 
@@ -79,8 +80,13 @@ func next(id):
 	var dialogue_line = await DialogueManager.get_next_dialogue_line(self.currDialogResource, id)
 	self.dialogue = dialogue_line
 	if dialogue_line != null:
-		character_label.text = dialogue_line.character
-		character_portrait.texture = load("res://asset_files/portraits/%s.png" % [dialogue_line.character.to_lower()])
+		if dialogue_line.character.to_lower() != NOONE_NAME:
+			character_portrait.visible = true
+			character_label.text = dialogue_line.character
+			character_portrait.texture = load("res://asset_files/portraits/%s.png" % [dialogue_line.character.to_lower()])
+		else:
+			character_label.text = ""
+			character_portrait.visible = false
 		dialogue_label.dialogue_line = dialogue_line
 		if not dialogue_line.text.is_empty():
 			dialogue_label.type_out()

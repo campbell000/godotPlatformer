@@ -1,6 +1,7 @@
 ~ start
 
-alex: [[Hi|Hello|Howdy]], this is some dialogue. This is something that is kinda long
+noone: this is no one. this is some dialogue. This is something that is kinda long. this is some dialogue.
+alex: [[Hi|Hello|Howdy]], this is some dialogue. This is something that is kinda long. It should go to the next line.
 alex: [[Hi|Hello|Howdy]], this is some dialogue. This is something that is kinda long
 alex: [[Hi|Hello|Howdy]], this is some dialogue. This is something that is kinda long
 

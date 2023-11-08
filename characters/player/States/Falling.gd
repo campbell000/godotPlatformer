@@ -51,6 +51,7 @@ func transitionToNewStateIfNecessary(player, delta):
 	elif self.cameFromGround && self.ledgeGraceTimer > 0:
 		# Otherwise, if we still have some time in our ledge grace timer, and teh user pressed jump, then allow a jump
 		if Input.is_action_just_pressed("jump"):
+			print("Coyote Jumped!") # TODO: BUG WIOTH BEING ABLE TO JUMP IN MIDAIR WHEN WE'RE NOT SUPPOSED TO!!!!!!!!!!!!
 			player.transition_to_state(player.get_node("States/Jumping"))
 	else:
 		# Otherwise, if we're colliding against a wall and the user is holding direction towards the wall, go to wall drag
@@ -58,6 +59,7 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(player.get_node("States/WallDragging"))
 			
 func end(player: Player):
+	super.end(player)
 	self.cameFromGround = false
 	self.cameFromBounce = false
 			

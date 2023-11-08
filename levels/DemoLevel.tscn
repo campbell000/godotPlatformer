@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bf2thrpdfa5d1" path="res://characters/enemies/Ghost/Ghost.tscn" id="6_bnxdl"]
 [ext_resource type="PackedScene" uid="uid://cyykwm6ag6fq5" path="res://characters/enemies/Turret/Turret.tscn" id="7_te4as"]
 [ext_resource type="PackedScene" uid="uid://c8mooty02c0bw" path="res://characters/enemies/Floopy/Floopy.tscn" id="8_twlrx"]
-[ext_resource type="PackedScene" uid="uid://c4n1qj7jhrtcw" path="res://characters/objects/TurretLaser/TurretLaser.tscn" id="9_8c3g3"]
+[ext_resource type="PackedScene" uid="uid://c4n1qj7jhrtcw" path="res://objects/TurretLaser/TurretLaser.tscn" id="9_8c3g3"]
 [ext_resource type="PackedScene" uid="uid://c0cxytley1oq5" path="res://objects/Triggers/DialogTrigger.tscn" id="12_s8iym"]
 [ext_resource type="PackedScene" uid="uid://dmc04d7p1dp4e" path="res://objects/Triggers/GravityTrigger.tscn" id="13_mxtu0"]
 
