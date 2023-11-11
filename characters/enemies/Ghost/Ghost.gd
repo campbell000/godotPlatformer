@@ -2,6 +2,7 @@
 extends Node2D
 
 @onready var animation = $AnimatedSprite2D
+#@onready var animation = $BackBufferCopy/AnimatedSprite2D
 
 var activated = false
 var player = null

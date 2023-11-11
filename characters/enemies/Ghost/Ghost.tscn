@@ -29,12 +29,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx0vf"]
-size = Vector2(24, 25)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tvh8a"]
-size = Vector2(300, 150)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_abak1"]
 shader = ExtResource("3_fkkgn")
 shader_parameter/shake_power = 0.001
@@ -43,6 +37,12 @@ shader_parameter/shake_speed = 10.0
 shader_parameter/shake_block_size = 30.5
 shader_parameter/shake_color_rate = 0.01
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx0vf"]
+size = Vector2(24, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tvh8a"]
+size = Vector2(300, 150)
+
 [node name="Ghost" type="Node2D"]
 script = ExtResource("1_cbjcr")
 
@@ -50,7 +50,17 @@ script = ExtResource("1_cbjcr")
 material = SubResource("ShaderMaterial_6fnsb")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_twtha")
-frame_progress = 0.707817
+frame_progress = 0.684372
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="BackBufferCopy"]
+material = SubResource("ShaderMaterial_abak1")
+offset_left = -12.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 13.0
 
 [node name="Hitbox" type="Area2D" parent="."]
 visible = false
@@ -70,13 +80,6 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationBox"]
 shape = SubResource("RectangleShape2D_tvh8a")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_abak1")
-offset_left = -12.0
-offset_top = -14.0
-offset_right = 14.0
-offset_bottom = 13.0
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="ActivationBox" to="." method="activationAreaEntered"]

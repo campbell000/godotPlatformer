@@ -2,7 +2,6 @@
 
 alex: What is that? Some kind of artifact?
 noone: A wave of uneasiness washes over you, eminating from the object.
-noone: It radiates knowledge, but also despair...
-noone: Destroy it.
+noone:  [do lockRoom()] The exit became blocked.
 
 => END
