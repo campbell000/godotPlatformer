@@ -18,6 +18,7 @@ func start(player: Player):
 	player.animatedSprite.play("Fall")
 	player.storedWallJumpSpeed = 0
 	self.ledgeGraceTimer = LEDGE_GRACE_PERIOD
+	print("Setting came from ground false")
 	self.cameFromGround = false
 
 	# Start with a null inner state. Wait until we need to transition to attacks or something.
@@ -59,6 +60,7 @@ func transitionToNewStateIfNecessary(player, delta):
 			player.transition_to_state(player.get_node("States/WallDragging"))
 			
 func end(player: Player):
+	print("Setting came from ground false")
 	super.end(player)
 	self.cameFromGround = false
 	self.cameFromBounce = false

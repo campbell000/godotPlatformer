@@ -28,6 +28,7 @@ func transitionToNewStateIfNecessary(player, delta):
 	if !player.is_on_floor() && player.state != player.get_node("States/Jumping"):
 		var fallingState = player.get_node("States/Falling")
 		player.transition_to_state(player.get_node("States/Falling"))
+		print("Setting came from ground true")
 		fallingState.cameFromGround = true
 	else:
 		# otherwise, if we're jumping (or the user buffered a jump), transition
