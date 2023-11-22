@@ -1,39 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://uc3ltgbiyegd"]
+[gd_scene load_steps=3 format=3 uid="uid://uc3ltgbiyegd"]
 
 [ext_resource type="Texture2D" uid="uid://ue7xwkxmtaqp" path="res://asset_files/objects/chip.png" id="1_5sfn1"]
 [ext_resource type="Script" path="res://objects/MemoryChip/MemoryChip.gd" id="1_uw803"]
-[ext_resource type="Shader" path="res://characters/enemies/Ghost/Ghost.gdshader" id="2_w1is6"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ne80"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_anp76"]
-shader = ExtResource("2_w1is6")
-shader_parameter/shake_power = 0.01
-shader_parameter/shake_rate = 1.0
-shader_parameter/shake_speed = 1.0
-shader_parameter/shake_block_size = 50.0
-shader_parameter/shake_color_rate = 0.007
 
 [node name="MemoryChip" type="Node2D"]
 script = ExtResource("1_uw803")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_5ne80")
 texture = ExtResource("1_5sfn1")
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
-copy_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="BackBufferCopy"]
-material = SubResource("ShaderMaterial_anp76")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -120.0
-offset_right = -80.0
-offset_bottom = -80.0
-grow_horizontal = 2
-grow_vertical = 2

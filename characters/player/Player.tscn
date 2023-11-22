@@ -384,7 +384,6 @@ size = Vector2(5, 17)
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, 2.5)
 shape = SubResource("25")
 

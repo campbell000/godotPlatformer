@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://bf2thrpdfa5d1"]
+[gd_scene load_steps=9 format=3 uid="uid://bf2thrpdfa5d1"]
 
 [ext_resource type="Script" path="res://characters/enemies/Ghost/Ghost.gd" id="1_cbjcr"]
 [ext_resource type="Texture2D" uid="uid://cedk3ja7d6m2n" path="res://asset_files/characters/enemies/ghost_animated.png" id="2_t2tt0"]
-[ext_resource type="Shader" path="res://asset_files/shaders/Glitch.gdshader" id="3_fkkgn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6fnsb"]
 resource_local_to_scene = true
@@ -29,14 +28,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_abak1"]
-shader = ExtResource("3_fkkgn")
-shader_parameter/shake_power = 0.001
-shader_parameter/shake_rate = 0.187
-shader_parameter/shake_speed = 10.0
-shader_parameter/shake_block_size = 30.5
-shader_parameter/shake_color_rate = 0.01
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wx0vf"]
 size = Vector2(24, 25)
 
@@ -50,25 +41,13 @@ script = ExtResource("1_cbjcr")
 material = SubResource("ShaderMaterial_6fnsb")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_twtha")
-frame_progress = 0.684372
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
-copy_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="BackBufferCopy"]
-material = SubResource("ShaderMaterial_abak1")
-offset_left = -12.0
-offset_top = -14.0
-offset_right = 14.0
-offset_bottom = 13.0
+frame_progress = 0.947032
 
 [node name="Hitbox" type="Area2D" parent="."]
-visible = false
 collision_layer = 6
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-visible = false
 light_mask = 6
 visibility_layer = 6
 position = Vector2(1, 0.5)
