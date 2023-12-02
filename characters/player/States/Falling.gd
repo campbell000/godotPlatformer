@@ -35,7 +35,7 @@ func physics_update(player: Player, delta: float):
 	# Allow limited acceleration if holding left or right in the air
 	if absf(player.velocity.x) > absf(Physics.MAX_RUN_SPEED):
 		player.storedWallJumpSpeed = player.velocity.x
-	Common.handleAirMovement(player, delta)
+	Common.handleAirMovement(self, player, delta)
 	self.transitionToNewStateIfNecessary(player, delta)
 	
 	# Keep track of the ledge grace time.

@@ -98,7 +98,7 @@ static func handleJumpLogic(player, state):
 	
 	return currentGrav
 
-static func handleAirMovement(player: Player, delta: float, gravity: float = Physics.GRAVITY, options = {}):
+static func handleAirMovement(state: State, player: Player, delta: float, gravity: float = Physics.GRAVITY, options = {}, speedModifierFunc = null):
 	var accel = options.get("accel", 696969696)
 	if accel == 696969696:
 		accel = player.getXAccel()
@@ -115,7 +115,15 @@ static func handleAirMovement(player: Player, delta: float, gravity: float = Phy
 			accel = 0
 			dragVal = Physics.AIR_BREAKING_SPEED_DRAG
 			
-	Physics.process_movement(player, delta, {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": Physics.MAX_RUN_SPEED})
+	var speedParams = {"xAccel": accel, "drag": dragVal, "gravity": gravity, "maxSpeed": Physics.MAX_RUN_SPEED}
+	if speedModifierFunc != null:
+		speedParams = speedModifierFunc.call(speedParams)
+		
+	#if state.currentInnerState is AirAttack and player.velocity.y >= 0:
+#		speedParams["gravity"] = 0
+	#	player.velocity.y = 0
+			
+	Physics.process_movement(player, delta, speedParams)
 	Common.setBreakingSpeedLimitFlag(player)
 	
 static func getDialogBubble(node: Node2D):

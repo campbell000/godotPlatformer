@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvdbi1u8ent2v"]
+[gd_scene load_steps=18 format=3 uid="uid://bvdbi1u8ent2v"]
 
 [ext_resource type="Script" path="res://levels/DemoLevel.gd" id="1_sh6q2"]
 [ext_resource type="PackedScene" uid="uid://gn7bn77pv6rp" path="res://environment/backgrounds/DefaultBackground.tscn" id="2"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://c0cxytley1oq5" path="res://objects/Triggers/DialogTrigger.tscn" id="12_s8iym"]
 [ext_resource type="PackedScene" uid="uid://dmc04d7p1dp4e" path="res://objects/Triggers/GravityTrigger.tscn" id="13_mxtu0"]
 [ext_resource type="PackedScene" uid="uid://uc3ltgbiyegd" path="res://objects/MemoryChip/MemoryChip.tscn" id="14_sydj5"]
+[ext_resource type="PackedScene" uid="uid://b7hmayq2rjrvk" path="res://objects/Platform/Platform.tscn" id="15_niobh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6e0se"]
 resource_local_to_scene = true
@@ -242,6 +243,9 @@ position = Vector2(3424, -305)
 
 [node name="Ghost" parent="." instance=ExtResource("6_bnxdl")]
 position = Vector2(553, 111)
+
+[node name="Platform" parent="." instance=ExtResource("15_niobh")]
+position = Vector2(4, 169)
 
 [connection signal="destroyed" from="MemoryChip" to="." method="_on_memory_chip_destroyed"]
 

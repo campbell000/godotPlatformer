@@ -21,7 +21,7 @@ const SLIDE_JUMP_Y_IMPULSE = -260
 # Less drag than on ground
 const AIR_DRAG: float = 2.0;
 
-const MAX_RUN_SPEED: float = 225.0
+const MAX_RUN_SPEED: float = 238.0
 
 const MAX_RUN_SPEED_SLOPE: float = 500.0
 
@@ -53,6 +53,9 @@ func process_movement(player, delta, options={}):
 	var floor_normal = player.get_floor_normal()
 	if floor_normal.x != 0:
 		player.velocity.x = player.velocity.x + (floor_normal.x * 10) 
+		
+	# if on a moving platform, add that
+	#player.velocity.x += get_floor_velocity()
 	
 	# Dont allow tiny numbers. Otherwise, the object will keep inching forward
 	if stopSmall and player.velocity.x < 2 and player.velocity.x > -2:

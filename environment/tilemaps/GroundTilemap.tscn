@@ -887,6 +887,7 @@ texture = ExtResource("1_2gfer")
 1:2/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_h060o"]
+uv_clipping = true
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "cannotWalljump"
 custom_data_layer_0/type = 1
@@ -894,13 +895,8 @@ sources/0 = SubResource("TileSetAtlasSource_pb83h")
 
 [node name="BackgroundTileMap" type="TileMap"]
 tile_set = SubResource("TileSet_h060o")
-collision_animatable = true
 format = 2
 layer_0/name = "Background"
 layer_1/name = "Foreground"
-layer_1/enabled = true
-layer_1/modulate = Color(1, 1, 1, 1)
-layer_1/y_sort_enabled = false
-layer_1/y_sort_origin = 0
 layer_1/z_index = 1
 layer_1/tile_data = PackedInt32Array()

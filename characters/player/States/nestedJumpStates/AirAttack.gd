@@ -10,6 +10,7 @@ var ATTACK_DURATION = 0.4
 var ATTACK_START = 0.03333
 var ATTACK_END = 0.23
 var activeHitbox = false
+var hoverTime = 0.15
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,10 +21,14 @@ func _ready():
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player, nestedState: State):
 	self.timeElapsed = 0
+	
 	player.animatedSprite.play("AirAttack")
 	
 func physics_update(player: Player, nestedState: State, delta: float):
+	
 	self.timeElapsed += delta
+	if self.timeElapsed < hoverTime && player.velocity.y > 0:
+		player.velocity.y = 0
 	if self.timeElapsed >= ATTACK_START:
 		player.airAttackHitbox.disabled = false;
 		activeHitbox = true
@@ -31,7 +36,7 @@ func physics_update(player: Player, nestedState: State, delta: float):
 	if self.timeElapsed >= ATTACK_END:
 		player.airAttackHitbox.disabled = true
 		activeHitbox = false
-	
+		
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):

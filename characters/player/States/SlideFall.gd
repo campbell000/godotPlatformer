@@ -19,7 +19,7 @@ func start(player: Player):
 	
 # Called ON the first time a state is entered, as well as every physics frame that the state is active
 func physics_update(player: Player, delta: float):
-	Common.handleAirMovement(player, delta)
+	Common.handleAirMovement(self, player, delta)
 	self.transitionToNewStateIfNecessary(player, delta)
 	
 func transitionToNewStateIfNecessary(player, delta):

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7hmayq2rjrvk"]
+
+[ext_resource type="Script" path="res://objects/Platform/Platform.gd" id="1_8l30d"]
+[ext_resource type="Texture2D" uid="uid://b81ltdpb35jx4" path="res://asset_files/tilemaps/original_default_tiles.png" id="1_yx6ad"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gh65d"]
+custom_solver_bias = 0.035
+size = Vector2(16, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dofl"]
+atlas = ExtResource("1_yx6ad")
+region = Rect2(80.1, 128, 16, 7)
+filter_clip = true
+
+[node name="Platform" type="AnimatableBody2D"]
+script = ExtResource("1_8l30d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gh65d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_5dofl")
+region_rect = Rect2(80, 128, 16, 16)

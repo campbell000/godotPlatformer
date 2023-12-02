@@ -16,6 +16,9 @@ func start(player):
 func transitionToNestedState(player: Player, newInnerStateObj: NestedState, delta: float):
 	if (self.currentInnerState != null):
 		self.currentInnerState.end(player, self)
+		print(self.currentInnerState.getName()+" => "+newInnerStateObj.getName())
+	else:
+		print("NOTHING => "+newInnerStateObj.getName())
 	
 	var newInnerState: NestedState = newInnerStateObj as NestedState
 	self.currentInnerState = newInnerState

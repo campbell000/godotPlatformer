@@ -29,7 +29,7 @@ func physics_update(player: Player, nestedState: State, delta: float):
 	self.transitionToNewStateIfNecessary(player, nestedState, delta)
 		
 func transitionToNewStateIfNecessary(player, nestedState: State, delta):
-	if !Input.is_action_pressed("attack") && self.timeElapsed >= ATTACK_DURATION:
+	if !Input.is_action_pressed("attack"):
 		nestedState.transitionToNestedState(player, player.get_node("States/NullNestedJumpState"), delta)
 	
 func _on_AnimationPlayer_animation_finished(anim):

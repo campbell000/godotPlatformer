@@ -11,6 +11,7 @@ var state: State
 
 func transition_to_state(newStateNode):
 	# Clean up the current state, and start the new one
+	print(self.state.getName()+" => "+newStateNode.getName())
 	var newState: State = newStateNode as State
 	self.state.end(self)
 	newState.start(self)

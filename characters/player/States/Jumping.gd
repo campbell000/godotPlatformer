@@ -42,9 +42,9 @@ func process_update(player: Player, delta: float):
 func physics_update(player: Player, delta: float):
 	if !self.cameFromSlide:
 		var currentGrav = Common.handleJumpLogic(player, self)
-		Common.handleAirMovement(player, delta, currentGrav)
+		Common.handleAirMovement(self, player, delta, currentGrav)
 	else:
-		Common.handleAirMovement(player, delta)
+		Common.handleAirMovement(self, player, delta)
 	
 	if player.velocity.y >= 0 && str(self.currentInnerState.get_path()).contains("NullNested"):
 		player.animatedSprite.play("Fall")

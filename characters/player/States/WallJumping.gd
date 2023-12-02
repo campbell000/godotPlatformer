@@ -55,7 +55,7 @@ func physics_update(player: Player, delta: float):
 	else:
 		options["drag"] = 0
 		
-	Common.handleAirMovement(player, delta, Physics.GRAVITY, options)
+	Common.handleAirMovement(self, player, delta, Physics.GRAVITY, options)
 
 	self.wallJumpCooldownTimer -= delta
 	self.currentInnerState.physics_update(player, self, delta)
