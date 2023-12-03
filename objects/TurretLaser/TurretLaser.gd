@@ -22,7 +22,7 @@ var currentColor = 0
 @export var WIDTH = 2.0
 @export var LENGTH = 20
 @export var speed = 1
-@export var duration = 1
+@export var duration = 1.0
 @export var liveOnce = true
 @export var offset = 0.0
 

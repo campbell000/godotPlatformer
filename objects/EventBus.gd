@@ -1,7 +1,8 @@
-@tool
-extends Node2D
+extends Node
 
-signal destroyed
+
+signal chip_destroyed
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,8 +12,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-
-func _on_area_2d_area_entered(area):
-	EventBus.chip_destroyed.emit()
-	self.queue_free()

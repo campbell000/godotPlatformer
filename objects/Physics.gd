@@ -21,7 +21,7 @@ const SLIDE_JUMP_Y_IMPULSE = -260
 # Less drag than on ground
 const AIR_DRAG: float = 2.0;
 
-const MAX_RUN_SPEED: float = 238.0
+const MAX_RUN_SPEED: float = 240.0
 
 const MAX_RUN_SPEED_SLOPE: float = 500.0
 

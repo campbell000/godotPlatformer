@@ -16,7 +16,9 @@ var running = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.resource = load("res://asset_files/dialog/"+dialogResourceName+".dialogue")
-	self.dialogBubble = Common.getDialogBubble(self)
+	self.dialogBubble = Dialog.getDialogBubble(self)
+	if self.stopWorld == null:
+		self.stopWorld = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -26,15 +28,11 @@ func _on_area_2d_area_entered(area):
 	if !self.running && (!played || shouldRepeat) && area.get_parent() is Player:
 		self.running = true
 		self.played = true
-		self.dialogBubble.connect("dialog_ended", self.dialogEnded)
-		self.dialogBubble.start(resource, self.seeThrough)
-		self.player = area.get_parent()
-		if stopWorld:
-			self.player.lockControls()
+		Dialog.startDialog(self.resource, area.get_parent(), Callable(), self.stopWorld)
 
 
 func dialogEnded():
-	self.dialogBubble.connect("dialog_ended", self.dialogEnded)
+	self.dialogBubble.disconnect("dialog_ended", self.dialogEnded)
 	if self.stopWorld:
 		await get_tree().create_timer(0.2).timeout
 		self.player.unlockControls()
