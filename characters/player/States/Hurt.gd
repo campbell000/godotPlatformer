@@ -44,4 +44,4 @@ func end(player: Player):
 	player.interactiveCollisionShape.disabled = false
 			
 func getName():
-	return "Air Attack"
+	return "Hurt"

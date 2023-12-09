@@ -65,6 +65,9 @@ func transitionToNewStateIfNecessary(player, delta):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
+	elif player.canAirdodge && Input.is_action_pressed("dodge"):
+		var dodge = player.get_node("States/Dodge") as State
+		player.transition_to_state(dodge)
 	elif self.wallJumpCooldownTimer <= 0 and Common.shouldWallDrag(player, true): # Cooldown timer needed so user doesn't go from walljump to drag on first frame
 		if (player.collidedWithLeftWall() && player.getDeconflictedDirectionalInput() == "move_left") || (player.collidedWithRightWall() && player.getDeconflictedDirectionalInput() == "move_right"):
 			# If we're holding direction towards a wall, go back to wall dragging

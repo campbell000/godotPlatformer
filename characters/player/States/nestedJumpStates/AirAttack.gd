@@ -25,7 +25,7 @@ func start(player: Player, nestedState: State):
 	player.animatedSprite.play("AirAttack")
 	
 func physics_update(player: Player, nestedState: State, delta: float):
-	
+	print("Physics update air attack")
 	self.timeElapsed += delta
 	if self.timeElapsed < hoverTime && player.velocity.y > 0:
 		player.velocity.y = 0
@@ -47,7 +47,8 @@ func _on_AnimationPlayer_animation_finished(anim):
 	pass
 	
 func end(player: Player, nestedState: State):
-	player.airAttackHitbox.disabled = true;
+	print("Air Attack Ended")
+	player.airAttackHitbox.set_deferred("disabled", true)
 	self.activeHitbox = false
 	
 			

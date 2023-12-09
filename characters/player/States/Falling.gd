@@ -49,6 +49,9 @@ func transitionToNewStateIfNecessary(player, delta):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
+	elif player.canAirdodge && Input.is_action_pressed("dodge"):
+		var dodge = player.get_node("States/Dodge") as State
+		player.transition_to_state(dodge)
 	elif self.cameFromGround && self.ledgeGraceTimer > 0:
 		# Otherwise, if we still have some time in our ledge grace timer, and teh user pressed jump, then allow a jump
 		if Input.is_action_just_pressed("jump"):

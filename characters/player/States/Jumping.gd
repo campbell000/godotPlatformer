@@ -59,6 +59,9 @@ func transitionToNewStateIfNecessary(player, delta):
 	if player.is_on_floor():
 		var groundState = player.get_node("States/OnGround") as State
 		player.transition_to_state(groundState)
+	elif player.canAirdodge && Input.is_action_pressed("dodge"):
+		var dodge = player.get_node("States/Dodge") as State
+		player.transition_to_state(dodge)
 	else:
 		# Otherwise, if we're not on the first frame (otherwise, holding jump and direction against a wall on the ground
 		# causes an immediate wall jump), and the user (buffered a) jump and they're against a wall, do the wall jump immediately

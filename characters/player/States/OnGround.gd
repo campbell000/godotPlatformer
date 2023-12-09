@@ -9,6 +9,7 @@ func _ready():
 
 # Called when a state is entered for the first time. Init stuff here
 func start(player: Player):
+	player.canAirdodge = true
 	pass
 	
 func physics_update(player: Player, delta: float):

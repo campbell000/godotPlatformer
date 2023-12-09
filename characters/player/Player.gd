@@ -18,6 +18,7 @@ var invincibleTimer = 0
 var INVINCIBLE_LENGTH = 2
 var blinkTime = 0.03333
 var gravityModifier = 1
+var canAirdodge = true
 
 # Scene Nodes
 @onready var animatedSprite = $AnimatedSprite2D
