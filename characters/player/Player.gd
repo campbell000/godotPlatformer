@@ -246,10 +246,17 @@ func bounce():
 			self.velocity.y = -320
 
 func _on_area_2d_area_exited(area):
-	self.player.revertGravity()
+	if Globals.hasCollidedWithLayer(area.collision_layer, Globals.GRAVITY_LAYER):
+		self.revertGravity()
 
 func areaEntered(area):
-	self.takeDamage(9999)
+	if Globals.hasCollidedWithLayer(area.collision_layer, Globals.HURTBOX_LAYER):
+		self.takeDamage(9999)
+	elif Globals.hasCollidedWithLayer(area.collision_layer, Globals.DELETE_RAY_LAYER):
+		print("DELETE RAY")
+	elif Globals.hasCollidedWithLayer(area.collision_layer, Globals.GRAVITY_LAYER):
+		var gravityTrigger = area.get_parent()
+		self.setNewGravityModifier(gravityTrigger.gravityModifier)
 	
 func setNewGravityModifier(gravityModifier):
 	self.gravityModifier = gravityModifier

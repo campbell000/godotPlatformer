@@ -81,7 +81,7 @@ func manageState(pos, slowDownMin, slowDownMax, currentDir, flipSprite, adjustFp
 
 
 func _on_hit_box_area_entered(area: Area2D):
-	if (area.collision_layer == Globals.ATTACK_LAYER):
+	if (Globals.hasCollidedWithLayer(area.collision_layer, Globals.ATTACK_LAYER)):
 		var player = area.get_parent()
 		player.bounce()
 		self.queue_free()

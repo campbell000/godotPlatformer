@@ -45,6 +45,21 @@ tracks/0/keys = {
 "values": [96, 97, 98, 99]
 }
 
+[sub_resource type="Animation" id="Animation_6ptvp"]
+resource_name = "Dodge"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [53]
+}
+
 [sub_resource type="Animation" id="Animation_7dimy"]
 resource_name = "DownAirAttack"
 tracks/0/type = "value"
@@ -343,21 +358,6 @@ tracks/1/keys = {
 "values": [Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_6ptvp"]
-resource_name = "Dodge"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [53]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x28"]
 _data = {
 "AirAttack": SubResource("27"),
@@ -492,8 +492,8 @@ hframes = 7
 vframes = 16
 
 [node name="PlayerHitboxArea2D" type="Area2D" parent="."]
-collision_layer = 10
-collision_mask = 2
+collision_layer = 26
+collision_mask = 26
 
 [node name="InteractionCollisionShape" type="CollisionShape2D" parent="PlayerHitboxArea2D"]
 position = Vector2(0, 2.5)
@@ -510,7 +510,7 @@ disabled = true
 
 [node name="AttackArea2D" type="Area2D" parent="."]
 collision_layer = 4
-collision_mask = 4
+collision_mask = 0
 
 [node name="GroundAttackCollisionShape" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(8.5, 4.5)
@@ -537,6 +537,7 @@ shape = SubResource("RectangleShape2D_dv5nb")
 disabled = true
 
 [connection signal="area_entered" from="PlayerHitboxArea2D" to="." method="areaEntered"]
+[connection signal="area_exited" from="PlayerHitboxArea2D" to="." method="_on_area_2d_area_exited"]
 [connection signal="body_shape_entered" from="PlayerHitboxArea2D" to="." method="interactiveBodyEntered"]
 [connection signal="body_shape_exited" from="PlayerHitboxArea2D" to="." method="interactiveBodyExited"]
 [connection signal="body_shape_entered" from="AttackArea2D" to="." method="attackHitboxEntered"]

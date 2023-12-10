@@ -3,6 +3,8 @@ extends Node
 
 signal chip_destroyed
 
+signal delete_ray_touched
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

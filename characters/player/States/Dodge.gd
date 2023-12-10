@@ -23,14 +23,11 @@ func start(player: Player):
 	
 	var xDir = Input.get_axis("move_left", "move_right")
 	var yDir = Input.get_axis("move_up", "move_down")
-	var angle = atan2(yDir, xDir)
-	var xImpulse = cos(angle) * AIRDODGE_FORCE
-	var yImpulse = sin(angle) * AIRDODGE_FORCE
-	player.velocity = Vector2(xImpulse, yImpulse)
-	
-	#var xDir = Input.get_axis("move_left", "move_right")
-	#var yDir = Input.get_axis("move_up", "move_down")
-	#player.velocity = Vector2(xDir * AIRDODGE_FORCE, yDir * AIRDODGE_FORCE)
+	if xDir != 0 or yDir != 0:
+		var angle = atan2(yDir, xDir)
+		var xImpulse = cos(angle) * AIRDODGE_FORCE
+		var yImpulse = sin(angle) * AIRDODGE_FORCE
+		player.velocity = Vector2(xImpulse, yImpulse)
 	
 func process_update(player: Player, delta: float):
 	player.sprite.visible = int(self.timeElapsed / self.blinkTime) % 2 == 0

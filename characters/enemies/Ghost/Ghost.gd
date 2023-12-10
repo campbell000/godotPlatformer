@@ -30,7 +30,7 @@ func _process(delta):
 
 
 func _on_area_2d_area_entered(area: Area2D):
-	if (area.collision_layer == Globals.ATTACK_LAYER):
+	if (Globals.hasCollidedWithLayer(area.collision_layer, Globals.ATTACK_LAYER)):
 		self.queue_free()
 
 

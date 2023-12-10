@@ -7,9 +7,11 @@ extends Node
 var PLAYER_NODE_PATH = '/root/GameNode/World/Environment/Player'
 var CAMERA_NODE_PATH = '/root/GameNode/Camera2D'
 
-# NOTE: THese are the VALUES of the collision layers, not the labels themselves
-var ATTACK_LAYER = 4
+# NOTE: Layer = where the node is, Mask = What it collides with
+var ATTACK_LAYER = 3
 var HURTBOX_LAYER = 2
+var DELETE_RAY_LAYER = 5
+var GRAVITY_LAYER = 4
 
 
 var TILE_SIZE = 16
@@ -17,5 +19,9 @@ var TILE_SIZE = 16
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
+	
+static func hasCollidedWithLayer(collisionLayer, layerToCheck):
+	var bitmask = 1 << layerToCheck - 1
+	return collisionLayer & bitmask != 0
 
 

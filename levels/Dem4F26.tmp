@@ -281,7 +281,6 @@ position = Vector2(-1844, -201)
 [node name="DeleteRay" parent="." instance=ExtResource("16_3e1qb")]
 z_index = 3
 position = Vector2(-62, -74)
-speed = -100
 
 [connection signal="destroyed" from="MemoryChip" to="." method="_on_memory_chip_destroyed"]
 

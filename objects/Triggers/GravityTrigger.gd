@@ -3,7 +3,7 @@ extends Node2D
 
 @export var width = 100
 @export var height = 100
-@export var gravityModifier = 0.5
+@export var gravityModifier = 0.47
 
 @onready var collisionShape = $Area2D/CollisionShape2D
 @onready var colorRect:ColorRect = $ColorRect
@@ -24,17 +24,6 @@ func _ready():
 	self.particles.amount = width / 10
 	self.particles.lifetime = height / 100 # assumption is 100px/sec
 
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-
-func _on_area_2d_area_entered(area):
-	self.player = area.get_parent()
-	self.player.setNewGravityModifier(self.gravityModifier)
-
-
-func _on_area_2d_area_exited(area):
-	self.player.revertGravity()

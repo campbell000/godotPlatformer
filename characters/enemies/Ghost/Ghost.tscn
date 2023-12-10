@@ -41,11 +41,11 @@ script = ExtResource("1_cbjcr")
 material = SubResource("ShaderMaterial_6fnsb")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_twtha")
-frame_progress = 0.108358
+frame_progress = 0.130118
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 6
-collision_mask = 6
+collision_layer = 2
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 light_mask = 6

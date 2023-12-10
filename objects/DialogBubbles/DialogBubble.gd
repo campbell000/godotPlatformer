@@ -13,7 +13,6 @@ const DialogueLine = preload("res://addons/dialogue_manager/dialogue_line.gd")
 
 @onready var talk_sound: AudioStreamPlayer = $AudioStreamPlayer
 @onready var balloon := $Panel
-@onready var margin := $Panel/Margin
 @onready var character_label := $Panel/MarginBox/Container/VBoxContainer/CharacterLabel
 @onready var character_portrait := $Panel/MarginBox/Container/Portrait
 @onready var dialogue_label := $Panel/MarginBox/Container/VBoxContainer/DialogLabel
