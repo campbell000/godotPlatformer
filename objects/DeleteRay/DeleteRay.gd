@@ -8,6 +8,7 @@ var collisionShape: CollisionShape2D
 @onready var line2D: Line2D = $Line2D
 @onready var colorRect: ColorRect = $ColorRect
 @export var speed = 0
+@export var isMoving = false
 
 var COLORS = [
 	Color(153.0/255.0, 0, 0, 1),
@@ -39,7 +40,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	if !Engine.is_editor_hint():
+	if isMoving && !Engine.is_editor_hint():
 		self.position.x = self.position.x + (self.speed * delta)
 	self.timeElapsed = self.timeElapsed + delta
 	self.colorTimer = self.colorTimer + delta

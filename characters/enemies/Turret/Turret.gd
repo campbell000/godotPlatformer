@@ -3,8 +3,8 @@ extends Node2D
 @onready var animation = $AnimatedSprite2D
 @onready var oldModulate = animation.modulate
 
-var LASER_DELAY = 1.5
-@export var LASER_TIMER = 1.5
+var LASER_DELAY = 1
+@export var LASER_TIMER = 1.1
 var LASER_SPEED = 220
 var LASER_DURATION = 3
 var INTER_BLINK_LENGTH = 0.07

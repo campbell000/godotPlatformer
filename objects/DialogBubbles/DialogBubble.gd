@@ -60,8 +60,6 @@ func startTriangleToggle():
 	if (testLine != null):
 		self.triangle.visible = true
 		self.triangleTimer.start(0.5)
-	else:
-		print("W")
 		
 func finishedTyping():
 	if (!self.isSeeThrough):

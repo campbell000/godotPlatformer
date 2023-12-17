@@ -9,6 +9,7 @@ size = Vector2(32, 1000)
 [node name="DeleteRay" type="Node2D"]
 script = ExtResource("1_j8ls7")
 speed = 1
+isMoving = null
 WIDTH = 32.0
 HEIGHT = 1000
 

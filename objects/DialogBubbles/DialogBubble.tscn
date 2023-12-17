@@ -88,5 +88,6 @@ script = ExtResource("1_xim3l")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_uroa4")
+bus = &"Dialog"
 
 [connection signal="spoke" from="Panel/MarginBox/Container/VBoxContainer/DialogLabel" to="." method="_on_dialog_label_spoke"]

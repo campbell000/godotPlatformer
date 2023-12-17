@@ -21,7 +21,7 @@ func _ready():
 	self.particles.position.y = height / 2
 	self.particles.visibility_rect = Rect2(-width / 2, -height, width, height)
 	self.particles.process_material.emission_box_extents = Vector3(-width / 2, 0, 1)
-	self.particles.amount = width / 10
+	self.particles.amount = width * height / 2000
 	self.particles.lifetime = height / 100 # assumption is 100px/sec
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

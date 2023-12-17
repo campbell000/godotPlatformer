@@ -42,6 +42,8 @@ var canAirdodge = true
 @onready var slideInteractiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/SlideInteractionCollisionShape
 @onready var downairInteractiveCollisionShape: CollisionShape2D = $PlayerHitboxArea2D/DownAirCollisionShape
 
+@onready var landSound: AudioStreamPlayer = $Sounds/Land
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.state = self.get_node("States/OnGround")

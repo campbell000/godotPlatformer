@@ -19,6 +19,6 @@ shape = SubResource("RectangleShape2D_7i8yc")
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(-10, 0, 10, 0)
 width = 2.0
-default_color = Color(0.906275, 0.943333, 0.943333, 1)
+default_color = Color(0.686275, 0.933333, 0.933333, 1)
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
