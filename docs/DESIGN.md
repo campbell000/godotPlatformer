@@ -105,3 +105,14 @@ Each “level” they regain memories
 AS LONG as you get the secret thing in each level
 Relationship with other char is “optional”
 If you dont spend time, you dont get
+
+# Camera
+- The faster you move, the more of the screen is in front of you. Standing still the player is near center. Walking they sit a little behind center. At full run (and anything over it) they sit around the back third of the screen so you see as far ahead as possible.
+- Look-ahead distance is driven by actual horizontal speed, not just which way you face. A quick tap backwards or a turnaround at low speed does not swing the camera.
+- The camera eases toward the look-ahead target at a capped speed. It never snaps. Reversing at full run swings the view over a short, tunable time.
+- Flipping the look-ahead side needs sustained movement the other way (a short time or distance), so dancing back and forth does not shake the screen.
+- Vertical: when standing, keep about 2 tiles visible below the player's feet (like SMW). Do not follow the player up during a normal jump. Only move vertically when they land on a new height or leave a vertical window near the top or bottom of the screen. Falling fast past the bottom edge of that window, the camera follows at full speed so the player never leaves the screen.
+- Every level has camera limits. Never show outside the level.
+- All camera numbers (look-ahead per speed, ease speed, flip hysteresis, vertical window, tiles below feet) are exported so they can be tuned in the editor.
+- Undecided: holding up or down while standing still to peek.
+- Undecided: whether chase sections shift the view so you can see more of the red current behind you.

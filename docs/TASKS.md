@@ -39,7 +39,7 @@ levels/TestRoom.tscn and becomes the main scene in M1-01. Order follows the
 ## Later milestones (expanded into tasks when Milestone 1 is done)
 
 - M2 Combat and enemies: hitbox and hurtbox framework, port Floopy, Ghost and Turret, player health. Ask first: the health system.
-- M3 Camera: follow with look-ahead and vertical deadzone, level limits.
+- M3 Camera: speed-driven look-ahead and vertical follow rules per the Camera section of DESIGN.md, level limits. Legacy reference: objects/Camera.gd (direction-based four-line offset).
 - M4 Level objects: moving platforms, boost pads, gravity triggers, MemoryChip, checkpoints.
 - M5 Dialog and cutscenes: port DialogBubbles, Cutscene state, between-level conversations.
 - M6 Chase and DeleteRay: timed race, music switch, hit counter, reward picture. Ask first: how chase obstacles stay readable at speed, allotted time per level.
