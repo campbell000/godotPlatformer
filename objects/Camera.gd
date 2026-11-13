@@ -7,7 +7,7 @@ const DEBUG_CAMERA_SPEED = 300
 const NUM_TILES_FROM_BOTTOM_OF_VIEWPORT = 2
 const NUM_TILES_FROM_CENTER = 4
 const x_offset = 40
-const CAMERA_OFFSET_SPEED = 600
+const CAMERA_OFFSET_SPEED = 400
 const LINE_DISTANCE = 30
 var player
 var target
@@ -143,4 +143,3 @@ func getCameraYDisplacement():
 	var distanceFromBottom = NUM_TILES_FROM_BOTTOM_OF_VIEWPORT * Globals.TILE_SIZE
 	var playerDisplace = collisionShape.transform.y.y + (collisionShape.shape.size.y)
 	return (gameHeight / 2) - distanceFromBottom - playerDisplace
-

@@ -214,22 +214,16 @@ func interactiveBodyEntered(body_rid, body, body_shape_index, local_shape_index)
 	var tilemap: TileMap = body
 	var data = tilemap.get_cell_tile_data(0, coords)
 	
-	var d = data.get_custom_data("speedBoostDir")
-	if d != null:
-		self.speedBoostDir = d
+	#var d = data.get_custom_data("speedBoostDir")
+	#if d != null:
+	#		self.speedBoostDir = d
 
-	d = data.get_custom_data("damage")
-	if d != null and d != 0:
-		self.takeDamage(d)
+	#d = data.get_custom_data("damage")
+	#if d != null and d != 0:
+	#	self.takeDamage(d)
 
 func interactiveBodyExited(body_rid, body, body_shape_index, local_shape_index):
-	var coords = body.get_coords_for_body_rid(body_rid)
-	var tilemap: TileMap = body
-	var data = tilemap.get_cell_tile_data(0, coords)
-	
-	var d = data.get_custom_data("speedBoostDir")
-	if d != null:
-		self.speedBoostDir = 0
+	var a = 0
 
 
 func bounce():
@@ -265,4 +259,3 @@ func setNewGravityModifier(gravityModifier):
 
 func revertGravity():
 	self.gravityModifier = 1
-

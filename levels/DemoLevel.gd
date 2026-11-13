@@ -3,6 +3,7 @@ extends Node2D
 @onready var backgroundTileset = $World/Environment/Tiles/BackgroundTileMap
 @onready var player = $World/Environment/Player
 @onready var chipDestroyedDialogResource = load("res://asset_files/dialog/firstChipDestroyed.dialogue")
+@onready var deleteRay = $World/Environment/DeleteRay
 func _ready():
 	EventBus.chip_destroyed.connect(chipDestroyed)
 
@@ -32,3 +33,4 @@ func startChipChase():
 	backgroundTileset.set_cell(1, Vector2i(192, -17), -1)
 	backgroundTileset.set_cell(1, Vector2i(193, -17), -1)
 	backgroundTileset.set_cell(1, Vector2i(194, -17), -1)
+	self.deleteRay.isMoving = true

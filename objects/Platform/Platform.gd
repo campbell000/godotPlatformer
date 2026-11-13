@@ -35,7 +35,6 @@ func _process(delta):
 	
 func _physics_process(delta):
 	if self.active:
-		if 
 		self.timeElapsed += delta
 		if self.timeElapsed >= self.timeDelay:
 			var xResults = self.calcMovement(delta, self.vel.x, self.position.x, self.xAccel, self.xDir, xMaxSpeed, originalX, maxX)
