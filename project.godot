@@ -8,16 +8,11 @@
 
 config_version=5
 
-[animation]
-
-compatibility/default_parent_skeleton_in_mesh_instance_3d=true
-
 [application]
 
 config/name="Platformer Godot"
 run/main_scene="res://levels/DemoLevel.tscn"
 config/features=PackedStringArray("4.7")
-config/icon="res://icon.png"
 
 [autoload]
 
@@ -30,47 +25,18 @@ Dialog="*res://objects/Dialog.gd"
 
 [display]
 
-window/size/viewport_width=400
-window/size/viewport_height=256
-window/size/window_width_override=1600
-window/size/window_height_override=960
+window/size/viewport_width=384
+window/size/viewport_height=216
+window/size/window_width_override=1536
+window/size/window_height_override=864
 window/stretch/mode="viewport"
-window/vsync/vsync_mode=0
+window/stretch/aspect="keep"
+window/stretch/scale_mode="integer"
+window/vsync/vsync_mode=1
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
-
-[global]
-
-window=false
-Snap=false
-GPU=false
-debug=false
-
-[importer_defaults]
-
-texture={
-"compress/bptc_ldr": 0,
-"compress/hdr_mode": 0,
-"compress/lossy_quality": 0.7,
-"compress/mode": 0,
-"compress/normal_map": 0,
-"detect_3d": false,
-"flags/anisotropic": false,
-"flags/filter": false,
-"flags/mipmaps": false,
-"flags/repeat": 0,
-"flags/srgb": 2,
-"process/HDR_as_SRGB": false,
-"process/fix_alpha_border": true,
-"process/invert_color": false,
-"process/normal_map_invert_y": false,
-"process/premult_alpha": false,
-"size_limit": 0,
-"stream": false,
-"svg/scale": 1.0
-}
 
 [input]
 
@@ -100,8 +66,7 @@ move_right={
 }
 jump={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194320,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":90,"key_label":0,"unicode":122,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":90,"key_label":0,"unicode":122,"location":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":0,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
@@ -137,6 +102,13 @@ attack={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":2,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
+run={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":2,"pressure":0.0,"pressed":true,"script":null)
+]
+}
 snap_camera_left={
 "deadzone": 0.5,
 "events": []
@@ -147,7 +119,7 @@ snap_camera_right={
 }
 dodge={
 "deadzone": 0.5,
-"events": [null, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":true,"script":null)
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":true,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":99,"location":0,"echo":false,"script":null)
 ]
 }
@@ -163,17 +135,16 @@ limits/debugger/max_queued_messages=1000
 
 [physics]
 
-2d/run_on_separate_thread=true
+2d/run_on_separate_thread=false
 2d/physics_engine="GodotPhysics2D"
 2d/default_gravity=1000.0
 2d/default_gravity_vector=Vector2(0, 1000)
 common/enable_pause_aware_picking=true
+common/physics_interpolation=true
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 environment/defaults/default_environment="res://default_env.tres"
-quality/driver/driver_name="GLES2"
 2d/snapping/use_gpu_pixel_snap=true
-vram_compression/import_etc=true

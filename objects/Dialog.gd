@@ -15,7 +15,9 @@ func _process(delta):
 	pass
 	
 static func getDialogBubble(node: Node2D):
-	var r = node.get_tree().root.get_node("GameNode")
+	var r = node.get_tree().root.get_node_or_null("GameNode")
+	if r == null:
+		return null
 	return r.get_node("Interface/DialogBubble")
 
 static func startDialog(dialogResource, player, dialogEndedCallback: Callable, stopWorld):

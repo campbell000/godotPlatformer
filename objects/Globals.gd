@@ -19,7 +19,6 @@ var TILE_SIZE = 16
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Engine.max_fps = 60;
 	pass # Replace with function body.
 	
 static func hasCollidedWithLayer(collisionLayer, layerToCheck):

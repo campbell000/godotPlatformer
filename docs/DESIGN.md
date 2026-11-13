@@ -5,6 +5,7 @@ I want a 2D platformer. It needs an NES aesthetic. I want a game that emphasis s
 - effective resolution is a widescreen NES game
 - Godot
 - Sub pixel movement is allowed
+- Base resolution 384x216, integer scaled
 
 # Artistic Specs
 - Minimalist but not aggressively so
